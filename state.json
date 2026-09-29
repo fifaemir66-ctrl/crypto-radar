@@ -20,6 +20,80 @@
     },
     "DOGEUSDT": {
       "last_closed_t": 1790553600
+    },
+    "ADAUSDT": {
+      "last_closed_t": 1790553600
+    },
+    "AVAXUSDT": {
+      "last_closed_t": 1790553600
+    },
+    "LINKUSDT": {
+      "last_closed_t": 1790553600
+    },
+    "DOTUSDT": {
+      "last_closed_t": 1790553600
+    },
+    "LTCUSDT": {
+      "last_closed_t": 1790553600
+    },
+    "TRXUSDT": {
+      "last_closed_t": 1790553600
+    },
+    "TONUSDT": {
+      "last_closed_t": 1782691200
+    },
+    "SUIUSDT": {
+      "last_closed_t": 1790553600
+    },
+    "NEARUSDT": {
+      "last_closed_t": 1790553600
+    },
+    "BCHUSDT": {
+      "last_closed_t": 1790553600
+    },
+    "SPY": {
+      "last_closed_t": 1790602200
+    },
+    "QQQ": {
+      "last_closed_t": 1790602200
+    },
+    "AAPL": {
+      "last_closed_t": 1790602200
+    },
+    "MSFT": {
+      "last_closed_t": 1790602200
+    },
+    "NVDA": {
+      "last_closed_t": 1790602200,
+      "zone_level": 227.9199981689453
+    },
+    "AMZN": {
+      "last_closed_t": 1790602200
+    },
+    "GOOGL": {
+      "last_closed_t": 1790602200
+    },
+    "META": {
+      "last_closed_t": 1790602200
+    },
+    "TSLA": {
+      "last_closed_t": 1790602200
+    },
+    "AMD": {
+      "last_closed_t": 1790602200
+    },
+    "NFLX": {
+      "last_closed_t": 1790602200
+    },
+    "LLY": {
+      "last_closed_t": 1790602200,
+      "zone_level": 1179.2470244140625
+    },
+    "ASML": {
+      "last_closed_t": 1790602200
+    },
+    "PLTR": {
+      "last_closed_t": 1790602200
     }
   },
   "history": [
