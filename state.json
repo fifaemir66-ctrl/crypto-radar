@@ -1,0 +1,48 @@
+{
+  "coins": {
+    "BTCUSDT": {
+      "last_closed_t": 1790553600,
+      "zone_level": 82648.2886
+    },
+    "ETHUSDT": {
+      "last_closed_t": 1790553600,
+      "zone_level": 2636.02828
+    },
+    "SOLUSDT": {
+      "last_closed_t": 1790553600
+    },
+    "XRPUSDT": {
+      "last_closed_t": 1790553600
+    },
+    "BNBUSDT": {
+      "last_closed_t": 1790553600,
+      "zone_level": 755.5550000000001
+    },
+    "DOGEUSDT": {
+      "last_closed_t": 1790553600
+    }
+  },
+  "history": [
+    {
+      "time": "2026-09-29T16:33:12+00:00",
+      "symbol": "BNBUSDT",
+      "kind": "zone",
+      "title": "🎯 BNB is in de koopzone",
+      "message": "Prijs 755,81 in zone 755,56 – 755,56.\nWacht op de dagslot (02:00) en kijk of er een hammer of bullish engulfing komt.\nEntry 755,56 · Stop 744,22 (−1,5%) · Target 780,64 · R/R 2,2x\nPositie €500 (max. kapitaal) → verlies bij stop ≈ €8"
+    },
+    {
+      "time": "2026-09-29T16:33:12+00:00",
+      "symbol": "ETHUSDT",
+      "kind": "zone",
+      "title": "🎯 Ethereum is in de koopzone",
+      "message": "Prijs 2.678 in zone 2.636 – 2.666.\nWacht op de dagslot (02:00) en kijk of er een hammer of bullish engulfing komt.\nEntry 2.666 · Stop 2.596 (−2,6%) · Target 2.807 · R/R 2,0x\nPositie €384 → verlies bij stop ≈ €10"
+    },
+    {
+      "time": "2026-09-29T16:33:12+00:00",
+      "symbol": "BTCUSDT",
+      "kind": "zone",
+      "title": "🎯 Bitcoin is in de koopzone",
+      "message": "Prijs 83.166 in zone 82.648 – 82.850.\nWacht op de dagslot (02:00) en kijk of er een hammer of bullish engulfing komt.\nEntry 82.850 · Stop 81.409 (−1,7%) · Target 87.396 · R/R 3,2x\nPositie €500 (max. kapitaal) → verlies bij stop ≈ €9"
+    }
+  ]
+}
