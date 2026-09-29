@@ -1,8 +1,8 @@
-# Crypto Radar
+# Emir Isiklar · Radar
 
-Live technische analyse van je crypto-watchlist, met meldingen op je telefoon.
+Live technische analyse van crypto (16 coins) en aandelen (14), met meldingen op je telefoon.
 
-- **Website:** live prijzen, grafieken met toppen/bodems, koopzones, RSI, checklist en scenario's per coin.
+- **Website:** knop Crypto / Aandelen, live crypto-prijzen, grafieken met toppen/bodems, koopzones, liquiditeitszones (BSL/SSL), volume profile, RSI/MACD, 7 extra indicatoren, checklist en scenario's.
 - **Monitor:** draait elk uur gratis in de cloud (GitHub Actions) en stuurt een melding via **ntfy** als:
   - 🎯 een coin in zijn koopzone komt (in een uptrend),
   - ✅ na de dagslot alle punten van je checklist groen zijn,
@@ -15,9 +15,9 @@ Live technische analyse van je crypto-watchlist, met meldingen op je telefoon.
 
 | Bestand | Wat |
 |---|---|
-| `analysis.py` | De analyse: trend, zones, Fibonacci, RSI, candles, volume, risico/winst |
-| `monitor.py` | Draait de analyse, stuurt meldingen, schrijft `docs/data.json` |
-| `config.json` | Je coins, risico per trade (€10) en kapitaal (€500) |
+| `analysis.py` | De analyse: trend, zones, Fibonacci, liquiditeit (equal highs/lows, sweeps), volume profile, RSI, MACD, ADX, Stoch RSI, Bollinger, OBV, ATR, risico/winst |
+| `monitor.py` | Draait de analyse, stuurt meldingen, schrijft `docs/data.json` en `docs/charts/*.json` |
+| `config.json` | Je coins (`crypto`) en aandelen (`stocks`), risico per trade (€10) en kapitaal (€500) |
 | `docs/` | De website (GitHub Pages) |
 | `.github/workflows/radar.yml` | De planning: elk uur |
 | `.ntfy_topic` | Je geheime meldingskanaal (wordt niet geüpload) |
@@ -50,12 +50,14 @@ python3 -m http.server 8000 --directory docs   # website openen op http://localh
 
 ## Aanpassen
 
-- Coins toevoegen of verwijderen: `config.json` (Binance-symbolen, bijvoorbeeld `ADAUSDT`).
+- Coins toevoegen of verwijderen: `crypto` in `config.json` (Binance-symbolen, bijvoorbeeld `ADAUSDT`).
+- Aandelen toevoegen: `stocks` in `config.json` (Yahoo-tickers, bijvoorbeeld `AAPL`).
 - Risico of kapitaal: `risk_eur` en `capital_eur` in `config.json`.
 - Na een wijziging: in GitHub Desktop **Commit** en **Push**.
 
 ## Goed om te weten
 
-- Signalen gebruiken alleen **gesloten dagcandles** (slot 00:00 UTC = 02:00 Nederlandse zomertijd).
+- Signalen gebruiken alleen **gesloten dagcandles** (crypto: 00:00 UTC = 02:00 NL-zomertijd; aandelen: beurssluiting 22:00 NL-tijd).
+- Aandelenkoersen komen elk uur van Yahoo Finance (niet realtime); crypto loopt live mee op de website.
 - GitHub start geplande taken soms een paar minuten later dan gepland.
 - De repository is openbaar: je code en analyses zijn zichtbaar, je kanaalnaam niet (die staat als geheim opgeslagen).

@@ -3,12 +3,38 @@
   "capital_eur": 500,
   "pivot": 7,
   "site_url": "",
-  "coins": [
+  "crypto": [
     { "symbol": "BTCUSDT", "name": "Bitcoin", "base": "BTC" },
     { "symbol": "ETHUSDT", "name": "Ethereum", "base": "ETH" },
     { "symbol": "SOLUSDT", "name": "Solana", "base": "SOL" },
     { "symbol": "XRPUSDT", "name": "XRP", "base": "XRP" },
     { "symbol": "BNBUSDT", "name": "BNB", "base": "BNB" },
-    { "symbol": "DOGEUSDT", "name": "Dogecoin", "base": "DOGE" }
+    { "symbol": "DOGEUSDT", "name": "Dogecoin", "base": "DOGE" },
+    { "symbol": "ADAUSDT", "name": "Cardano", "base": "ADA" },
+    { "symbol": "AVAXUSDT", "name": "Avalanche", "base": "AVAX" },
+    { "symbol": "LINKUSDT", "name": "Chainlink", "base": "LINK" },
+    { "symbol": "DOTUSDT", "name": "Polkadot", "base": "DOT" },
+    { "symbol": "LTCUSDT", "name": "Litecoin", "base": "LTC" },
+    { "symbol": "TRXUSDT", "name": "TRON", "base": "TRX" },
+    { "symbol": "TONUSDT", "name": "Toncoin", "base": "TON" },
+    { "symbol": "SUIUSDT", "name": "Sui", "base": "SUI" },
+    { "symbol": "NEARUSDT", "name": "NEAR", "base": "NEAR" },
+    { "symbol": "BCHUSDT", "name": "Bitcoin Cash", "base": "BCH" }
+  ],
+  "stocks": [
+    { "symbol": "SPY", "name": "S&P 500 ETF", "base": "SPY" },
+    { "symbol": "QQQ", "name": "Nasdaq 100 ETF", "base": "QQQ" },
+    { "symbol": "AAPL", "name": "Apple", "base": "AAPL" },
+    { "symbol": "MSFT", "name": "Microsoft", "base": "MSFT" },
+    { "symbol": "NVDA", "name": "Nvidia", "base": "NVDA" },
+    { "symbol": "AMZN", "name": "Amazon", "base": "AMZN" },
+    { "symbol": "GOOGL", "name": "Alphabet", "base": "GOOGL" },
+    { "symbol": "META", "name": "Meta", "base": "META" },
+    { "symbol": "TSLA", "name": "Tesla", "base": "TSLA" },
+    { "symbol": "AMD", "name": "AMD", "base": "AMD" },
+    { "symbol": "NFLX", "name": "Netflix", "base": "NFLX" },
+    { "symbol": "LLY", "name": "Eli Lilly", "base": "LLY" },
+    { "symbol": "ASML", "name": "ASML", "base": "ASML" },
+    { "symbol": "PLTR", "name": "Palantir", "base": "PLTR" }
   ]
 }
