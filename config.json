@@ -1,0 +1,14 @@
+{
+  "risk_eur": 10,
+  "capital_eur": 500,
+  "pivot": 7,
+  "site_url": "",
+  "coins": [
+    { "symbol": "BTCUSDT", "name": "Bitcoin", "base": "BTC" },
+    { "symbol": "ETHUSDT", "name": "Ethereum", "base": "ETH" },
+    { "symbol": "SOLUSDT", "name": "Solana", "base": "SOL" },
+    { "symbol": "XRPUSDT", "name": "XRP", "base": "XRP" },
+    { "symbol": "BNBUSDT", "name": "BNB", "base": "BNB" },
+    { "symbol": "DOGEUSDT", "name": "Dogecoin", "base": "DOGE" }
+  ]
+}
