@@ -25,7 +25,8 @@
     },
     "DOGEUSDT": {
       "last_closed_t": 1790640000,
-      "broken_alerted": false
+      "broken_alerted": false,
+      "zone_level": 0.09515
     },
     "ADAUSDT": {
       "last_closed_t": 1790640000,
@@ -82,7 +83,8 @@
     },
     "MSFT": {
       "last_closed_t": 1790688600,
-      "broken_alerted": false
+      "broken_alerted": false,
+      "zone_level": 513.72998046875
     },
     "NVDA": {
       "last_closed_t": 1790688600,
@@ -128,6 +130,22 @@
     }
   },
   "history": [
+    {
+      "time": "2026-09-30T14:25:44+00:00",
+      "symbol": "MSFT",
+      "market": "stocks",
+      "kind": "zone",
+      "title": "🎯 Microsoft (MSFT) is in de koopzone",
+      "message": "Prijs 518,81 in zone 513,73 – 517,78.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 517,78 · Stop 506,02 (−2,3%) · Target 519,30 · R/R 0,1x\nPositie €440 → verlies bij stop ≈ €10"
+    },
+    {
+      "time": "2026-09-30T14:25:44+00:00",
+      "symbol": "DOGEUSDT",
+      "market": "crypto",
+      "kind": "zone",
+      "title": "🎯 Dogecoin is in de koopzone",
+      "message": "Prijs 0,0952 in zone 0,0951 – 0,0951.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 0,0951 · Stop 0,0937 (−1,5%) · Target 0,1008 · R/R 4,0x\nPositie €500 (max. kapitaal) → verlies bij stop ≈ €8"
+    },
     {
       "time": "2026-09-30T04:23:34+00:00",
       "symbol": "LINKUSDT",
