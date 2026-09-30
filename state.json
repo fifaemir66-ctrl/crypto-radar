@@ -117,7 +117,7 @@
     },
     "LLY": {
       "last_closed_t": 1790688600,
-      "zone_level": 1179.2470244140625,
+      "zone_level": 1154.4812698364258,
       "broken_alerted": false
     },
     "ASML": {
@@ -131,6 +131,14 @@
     }
   },
   "history": [
+    {
+      "time": "2026-09-30T18:24:40+00:00",
+      "symbol": "LLY",
+      "market": "stocks",
+      "kind": "zone",
+      "title": "🎯 Eli Lilly (LLY) is in de koopzone",
+      "message": "Prijs 1.169 in zone 1.154 – 1.164.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 1.164 · Stop 1.137 (−2,3%) · Target 1.183 · R/R 0,7x\nPositie €427 → verlies bij stop ≈ €10"
+    },
     {
       "time": "2026-09-30T15:25:46+00:00",
       "symbol": "PLTR",
