@@ -7,7 +7,7 @@
     },
     "ETHUSDT": {
       "last_closed_t": 1790640000,
-      "zone_level": null,
+      "zone_level": 2636.02828,
       "broken_alerted": false
     },
     "SOLUSDT": {
@@ -126,10 +126,27 @@
     },
     "PLTR": {
       "last_closed_t": 1790688600,
-      "broken_alerted": false
+      "broken_alerted": false,
+      "zone_level": 188.1999969482422
     }
   },
   "history": [
+    {
+      "time": "2026-09-30T15:25:46+00:00",
+      "symbol": "PLTR",
+      "market": "stocks",
+      "kind": "zone",
+      "title": "🎯 Palantir (PLTR) is in de koopzone",
+      "message": "Prijs 190,53 in zone 188,20 – 190,00.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 190,00 · Stop 185,38 (−2,4%) · Target 194,68 · R/R 1,0x\nPositie €411 → verlies bij stop ≈ €10"
+    },
+    {
+      "time": "2026-09-30T15:25:46+00:00",
+      "symbol": "ETHUSDT",
+      "market": "crypto",
+      "kind": "zone",
+      "title": "🎯 Ethereum is in de koopzone",
+      "message": "Prijs 2.673 in zone 2.636 – 2.666.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 2.666 · Stop 2.596 (−2,6%) · Target 2.807 · R/R 2,0x\nPositie €384 → verlies bij stop ≈ €10"
+    },
     {
       "time": "2026-09-30T14:25:44+00:00",
       "symbol": "MSFT",
