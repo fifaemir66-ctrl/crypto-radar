@@ -37,7 +37,8 @@
     },
     "LINKUSDT": {
       "last_closed_t": 1790640000,
-      "broken_alerted": false
+      "broken_alerted": false,
+      "zone_level": 14.24
     },
     "DOTUSDT": {
       "last_closed_t": 1790640000,
@@ -127,6 +128,14 @@
     }
   },
   "history": [
+    {
+      "time": "2026-09-30T04:23:34+00:00",
+      "symbol": "LINKUSDT",
+      "market": "crypto",
+      "kind": "zone",
+      "title": "🎯 Chainlink is in de koopzone",
+      "message": "Prijs 14,42 in zone 14,24 – 14,40.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 14,40 · Stop 14,03 (−2,6%) · Target 15,01 · R/R 1,6x\nPositie €385 → verlies bij stop ≈ €10"
+    },
     {
       "time": "2026-09-30T02:20:48+00:00",
       "symbol": null,
