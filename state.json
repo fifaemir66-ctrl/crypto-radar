@@ -2,7 +2,7 @@
   "coins": {
     "BTCUSDT": {
       "last_closed_t": 1790640000,
-      "zone_level": 82648.2886,
+      "zone_level": null,
       "broken_alerted": false
     },
     "ETHUSDT": {
