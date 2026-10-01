@@ -1,56 +1,57 @@
 {
   "coins": {
     "BTCUSDT": {
-      "last_closed_t": 1790640000,
+      "last_closed_t": 1790726400,
       "zone_level": null,
       "broken_alerted": false
     },
     "ETHUSDT": {
-      "last_closed_t": 1790640000,
+      "last_closed_t": 1790726400,
       "zone_level": 2636.02828,
       "broken_alerted": false
     },
     "SOLUSDT": {
-      "last_closed_t": 1790640000,
+      "last_closed_t": 1790726400,
       "broken_alerted": false
     },
     "XRPUSDT": {
-      "last_closed_t": 1790640000,
-      "broken_alerted": false
+      "last_closed_t": 1790726400,
+      "broken_alerted": false,
+      "zone_level": 1.4835
     },
     "BNBUSDT": {
-      "last_closed_t": 1790640000,
+      "last_closed_t": 1790726400,
       "zone_level": 755.5550000000001,
       "broken_alerted": false
     },
     "DOGEUSDT": {
-      "last_closed_t": 1790640000,
+      "last_closed_t": 1790726400,
       "broken_alerted": false,
       "zone_level": 0.09515
     },
     "ADAUSDT": {
-      "last_closed_t": 1790640000,
+      "last_closed_t": 1790726400,
       "broken_alerted": false
     },
     "AVAXUSDT": {
-      "last_closed_t": 1790640000,
+      "last_closed_t": 1790726400,
       "broken_alerted": false
     },
     "LINKUSDT": {
-      "last_closed_t": 1790640000,
+      "last_closed_t": 1790726400,
       "broken_alerted": false,
       "zone_level": 14.24
     },
     "DOTUSDT": {
-      "last_closed_t": 1790640000,
+      "last_closed_t": 1790726400,
       "broken_alerted": false
     },
     "LTCUSDT": {
-      "last_closed_t": 1790640000,
+      "last_closed_t": 1790726400,
       "broken_alerted": false
     },
     "TRXUSDT": {
-      "last_closed_t": 1790640000,
+      "last_closed_t": 1790726400,
       "broken_alerted": false,
       "zone_level": 0.3336
     },
@@ -58,79 +59,112 @@
       "last_closed_t": 1782691200
     },
     "SUIUSDT": {
-      "last_closed_t": 1790640000,
+      "last_closed_t": 1790726400,
       "broken_alerted": false
     },
     "NEARUSDT": {
-      "last_closed_t": 1790640000,
+      "last_closed_t": 1790726400,
       "broken_alerted": false
     },
     "BCHUSDT": {
-      "last_closed_t": 1790640000,
-      "broken_alerted": false
+      "last_closed_t": 1790726400,
+      "broken_alerted": false,
+      "zone_level": 305.6
     },
     "SPY": {
-      "last_closed_t": 1790775000,
+      "last_closed_t": 1790688600,
       "broken_alerted": false
     },
     "QQQ": {
-      "last_closed_t": 1790775000,
+      "last_closed_t": 1790688600,
       "broken_alerted": false
     },
     "AAPL": {
-      "last_closed_t": 1790775000,
+      "last_closed_t": 1790688600,
       "broken_alerted": false
     },
     "MSFT": {
-      "last_closed_t": 1790775000,
+      "last_closed_t": 1790688600,
       "broken_alerted": false,
       "zone_level": 513.72998046875
     },
     "NVDA": {
-      "last_closed_t": 1790775000,
+      "last_closed_t": 1790688600,
       "zone_level": 227.9199981689453,
       "broken_alerted": false
     },
     "AMZN": {
-      "last_closed_t": 1790775000,
+      "last_closed_t": 1790688600,
       "broken_alerted": false
     },
     "GOOGL": {
-      "last_closed_t": 1790775000,
+      "last_closed_t": 1790688600,
       "broken_alerted": false
     },
     "META": {
-      "last_closed_t": 1790775000,
+      "last_closed_t": 1790688600,
       "broken_alerted": false
     },
     "TSLA": {
-      "last_closed_t": 1790775000,
+      "last_closed_t": 1790688600,
       "broken_alerted": false
     },
     "AMD": {
-      "last_closed_t": 1790775000,
+      "last_closed_t": 1790688600,
       "broken_alerted": false
     },
     "NFLX": {
-      "last_closed_t": 1790775000,
+      "last_closed_t": 1790688600,
       "broken_alerted": false
     },
     "LLY": {
-      "last_closed_t": 1790775000,
+      "last_closed_t": 1790688600,
       "zone_level": 1154.4812698364258,
       "broken_alerted": false
     },
     "ASML": {
-      "last_closed_t": 1790775000,
+      "last_closed_t": 1790688600,
       "broken_alerted": false
     },
     "PLTR": {
-      "last_closed_t": 1790775000,
+      "last_closed_t": 1790688600,
       "broken_alerted": false,
       "zone_level": 188.1999969482422
     }
   },
   "history": [
+    {
+      "time": "2026-10-01T00:31:21+00:00",
+      "symbol": null,
+      "market": "stocks",
+      "kind": "summary",
+      "title": "📊 Dagoverzicht Aandelen",
+      "message": "❌ S&P 500 ETF 764,20 · Geen trend\n❌ Nasdaq 100 ETF 737,93 · Geen trend\n⏳ Apple 329,40 · Wachten\n⏳ Microsoft 508,96 · Wachten\n⏳ Nvidia 227,21 · Wachten\n❌ Amazon 246,67 · Trend negatief\n❌ Alphabet 340,92 · Trend negatief\n⏳ Meta 738,79 · Wachten\n❌ Tesla 352,84 · Trend negatief\n❌ AMD 607,57 · Geen trend\n❌ Netflix 70,30 · Trend negatief\n🎯 Eli Lilly 1.185 · In zone\n⏳ ASML 1.834 · Wachten\n⏳ Palantir 186,97 · Wachten"
+    },
+    {
+      "time": "2026-10-01T00:31:21+00:00",
+      "symbol": null,
+      "market": "crypto",
+      "kind": "summary",
+      "title": "📊 Dagoverzicht Crypto",
+      "message": "⏳ Bitcoin 83.450 · Wachten\n⏳ Ethereum 2.681 · Wachten\n⏳ Solana 117,98 · Wachten\n🎯 XRP 1,49 · In zone\n🎯 BNB 768,55 · In zone\n⏳ Dogecoin 0,0943 · Wachten\n⏳ Cardano 0,2456 · Wachten\n⏳ Avalanche 10,85 · Wachten\n⏳ Chainlink 14,35 · Wachten\n⏳ Polkadot 1,22 · Wachten\n⏳ Litecoin 67,17 · Wachten\n🎯 TRON 0,3378 · In zone\n❌ Toncoin 1,60 · Trend negatief\n❌ Sui 1,16 · Geen trend\n⏳ NEAR 5,30 · Wachten\n🎯 Bitcoin Cash 305,90 · In zone"
+    },
+    {
+      "time": "2026-10-01T00:31:21+00:00",
+      "symbol": "BCHUSDT",
+      "market": "crypto",
+      "kind": "zone",
+      "title": "🎯 Bitcoin Cash is in de koopzone",
+      "message": "Prijs 305,90 in zone 305,60 – 305,60.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 305,60 · Stop 301,02 (−1,5%) · Target 366,40 · R/R 13,3x\nPositie €500 (max. kapitaal) → verlies bij stop ≈ €8"
+    },
+    {
+      "time": "2026-10-01T00:31:21+00:00",
+      "symbol": "XRPUSDT",
+      "market": "crypto",
+      "kind": "zone",
+      "title": "🎯 XRP is in de koopzone",
+      "message": "Prijs 1,49 in zone 1,48 – 1,48.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 1,48 · Stop 1,46 (−1,5%) · Target 1,51 · R/R 1,2x\nPositie €500 (max. kapitaal) → verlies bij stop ≈ €8"
+    },
     {
       "time": "2026-09-30T20:22:42+00:00",
       "symbol": null,
