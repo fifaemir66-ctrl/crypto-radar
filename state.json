@@ -72,67 +72,75 @@
       "zone_level": 305.6
     },
     "SPY": {
-      "last_closed_t": 1790688600,
+      "last_closed_t": 1790775000,
       "broken_alerted": false
     },
     "QQQ": {
-      "last_closed_t": 1790688600,
+      "last_closed_t": 1790775000,
       "broken_alerted": false
     },
     "AAPL": {
-      "last_closed_t": 1790688600,
+      "last_closed_t": 1790775000,
       "broken_alerted": false
     },
     "MSFT": {
-      "last_closed_t": 1790688600,
+      "last_closed_t": 1790775000,
       "broken_alerted": false,
       "zone_level": 513.72998046875
     },
     "NVDA": {
-      "last_closed_t": 1790688600,
+      "last_closed_t": 1790775000,
       "zone_level": 227.9199981689453,
       "broken_alerted": false
     },
     "AMZN": {
-      "last_closed_t": 1790688600,
+      "last_closed_t": 1790775000,
       "broken_alerted": false
     },
     "GOOGL": {
-      "last_closed_t": 1790688600,
+      "last_closed_t": 1790775000,
       "broken_alerted": false
     },
     "META": {
-      "last_closed_t": 1790688600,
+      "last_closed_t": 1790775000,
       "broken_alerted": false
     },
     "TSLA": {
-      "last_closed_t": 1790688600,
+      "last_closed_t": 1790775000,
       "broken_alerted": false
     },
     "AMD": {
-      "last_closed_t": 1790688600,
+      "last_closed_t": 1790775000,
       "broken_alerted": false
     },
     "NFLX": {
-      "last_closed_t": 1790688600,
+      "last_closed_t": 1790775000,
       "broken_alerted": false
     },
     "LLY": {
-      "last_closed_t": 1790688600,
+      "last_closed_t": 1790775000,
       "zone_level": 1154.4812698364258,
       "broken_alerted": false
     },
     "ASML": {
-      "last_closed_t": 1790688600,
+      "last_closed_t": 1790775000,
       "broken_alerted": false
     },
     "PLTR": {
-      "last_closed_t": 1790688600,
+      "last_closed_t": 1790775000,
       "broken_alerted": false,
       "zone_level": 188.1999969482422
     }
   },
   "history": [
+    {
+      "time": "2026-10-01T02:21:49+00:00",
+      "symbol": null,
+      "market": "stocks",
+      "kind": "summary",
+      "title": "📊 Dagoverzicht Aandelen",
+      "message": "❌ S&P 500 ETF 762,63 · Geen trend\n❌ Nasdaq 100 ETF 739,77 · Geen trend\n⏳ Apple 333,02 · Wachten\n⏳ Microsoft 512,90 · Wachten\n🎯 Nvidia 228,38 · In zone\n❌ Amazon 249,15 · Trend negatief\n❌ Alphabet 344,08 · Trend negatief\n⏳ Meta 725,18 · Wachten\n❌ Tesla 354,81 · Trend negatief\n❌ AMD 611,76 · Geen trend\n❌ Netflix 69,58 · Trend negatief\n🎯 Eli Lilly 1.157 · In zone\n⏳ ASML 1.812 · Wachten\n⏳ Palantir 187,05 · Wachten"
+    },
     {
       "time": "2026-10-01T00:31:21+00:00",
       "symbol": null,
