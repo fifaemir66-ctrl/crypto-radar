@@ -21,7 +21,7 @@
     },
     "BNBUSDT": {
       "last_closed_t": 1790812800,
-      "zone_level": null,
+      "zone_level": 780.64,
       "broken_alerted": false
     },
     "DOGEUSDT": {
@@ -90,7 +90,7 @@
     },
     "NVDA": {
       "last_closed_t": 1790861400,
-      "zone_level": 227.9199981689453,
+      "zone_level": null,
       "broken_alerted": false
     },
     "AMZN": {
@@ -133,6 +133,14 @@
     }
   },
   "history": [
+    {
+      "time": "2026-10-02T14:24:50+00:00",
+      "symbol": "BNBUSDT",
+      "market": "crypto",
+      "kind": "zone",
+      "title": "🎯 BNB is in de koopzone",
+      "message": "Prijs 781,35 in zone 780,64 – 780,64.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 780,64 · Stop 768,93 (−1,5%) · Target 807,49 · R/R 2,3x\nPositie €500 (max. kapitaal) → verlies bij stop ≈ €8"
+    },
     {
       "time": "2026-10-02T02:21:03+00:00",
       "symbol": null,
