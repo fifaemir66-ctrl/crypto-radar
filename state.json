@@ -17,7 +17,7 @@
     "XRPUSDT": {
       "last_closed_t": 1790812800,
       "broken_alerted": false,
-      "zone_level": null
+      "zone_level": 1.4835
     },
     "BNBUSDT": {
       "last_closed_t": 1790812800,
@@ -120,7 +120,7 @@
     },
     "LLY": {
       "last_closed_t": 1790861400,
-      "zone_level": 1154.4812698364258,
+      "zone_level": 1133.949951171875,
       "broken_alerted": false
     },
     "ASML": {
@@ -134,6 +134,22 @@
     }
   },
   "history": [
+    {
+      "time": "2026-10-02T16:23:05+00:00",
+      "symbol": "LLY",
+      "market": "stocks",
+      "kind": "zone",
+      "title": "🎯 Eli Lilly (LLY) is in de koopzone",
+      "message": "Prijs 1.139 in zone 1.134 – 1.134.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 1.134 · Stop 1.104 (−2,7%) · Target 1.183 · R/R 1,6x\nPositie €368 → verlies bij stop ≈ €10"
+    },
+    {
+      "time": "2026-10-02T16:23:05+00:00",
+      "symbol": "XRPUSDT",
+      "market": "crypto",
+      "kind": "zone",
+      "title": "🎯 XRP is in de koopzone",
+      "message": "Prijs 1,51 in zone 1,48 – 1,50.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 1,50 · Stop 1,46 (−2,6%) · Target 1,51 · R/R 0,2x\nPositie €378 → verlies bij stop ≈ €10"
+    },
     {
       "time": "2026-10-02T15:24:23+00:00",
       "symbol": "QQQ",
