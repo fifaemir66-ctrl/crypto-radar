@@ -27,7 +27,7 @@
     "DOGEUSDT": {
       "last_closed_t": 1790812800,
       "broken_alerted": false,
-      "zone_level": 0.09515
+      "zone_level": 0.0921
     },
     "ADAUSDT": {
       "last_closed_t": 1790812800,
@@ -41,7 +41,7 @@
     "LINKUSDT": {
       "last_closed_t": 1790812800,
       "broken_alerted": false,
-      "zone_level": 14.24
+      "zone_level": 13.685
     },
     "DOTUSDT": {
       "last_closed_t": 1790812800,
@@ -135,6 +135,22 @@
     }
   },
   "history": [
+    {
+      "time": "2026-10-02T23:18:23+00:00",
+      "symbol": "LINKUSDT",
+      "market": "crypto",
+      "kind": "zone",
+      "title": "🎯 Chainlink is in de koopzone",
+      "message": "Prijs 13,74 in zone 13,69 – 13,69.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 13,69 · Stop 13,48 (−1,5%) · Target 14,24 · R/R 2,7x\nPositie €500 (max. kapitaal) → verlies bij stop ≈ €8"
+    },
+    {
+      "time": "2026-10-02T23:18:23+00:00",
+      "symbol": "DOGEUSDT",
+      "market": "crypto",
+      "kind": "zone",
+      "title": "🎯 Dogecoin is in de koopzone",
+      "message": "Prijs 0,0926 in zone 0,0921 – 0,0925.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 0,0925 · Stop 0,0907 (−1,9%) · Target 0,0951 · R/R 1,5x\nPositie €500 (max. kapitaal) → verlies bij stop ≈ €9"
+    },
     {
       "time": "2026-10-02T20:21:06+00:00",
       "symbol": null,
