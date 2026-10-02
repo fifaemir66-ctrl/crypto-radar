@@ -1,57 +1,57 @@
 {
   "coins": {
     "BTCUSDT": {
-      "last_closed_t": 1790726400,
+      "last_closed_t": 1790812800,
       "zone_level": null,
       "broken_alerted": false
     },
     "ETHUSDT": {
-      "last_closed_t": 1790726400,
+      "last_closed_t": 1790812800,
       "zone_level": null,
       "broken_alerted": false
     },
     "SOLUSDT": {
-      "last_closed_t": 1790726400,
+      "last_closed_t": 1790812800,
       "broken_alerted": false
     },
     "XRPUSDT": {
-      "last_closed_t": 1790726400,
+      "last_closed_t": 1790812800,
       "broken_alerted": false,
       "zone_level": 1.4835
     },
     "BNBUSDT": {
-      "last_closed_t": 1790726400,
+      "last_closed_t": 1790812800,
       "zone_level": 755.5550000000001,
       "broken_alerted": false
     },
     "DOGEUSDT": {
-      "last_closed_t": 1790726400,
+      "last_closed_t": 1790812800,
       "broken_alerted": false,
       "zone_level": 0.09515
     },
     "ADAUSDT": {
-      "last_closed_t": 1790726400,
+      "last_closed_t": 1790812800,
       "broken_alerted": false
     },
     "AVAXUSDT": {
-      "last_closed_t": 1790726400,
+      "last_closed_t": 1790812800,
       "broken_alerted": false
     },
     "LINKUSDT": {
-      "last_closed_t": 1790726400,
+      "last_closed_t": 1790812800,
       "broken_alerted": false,
       "zone_level": 14.24
     },
     "DOTUSDT": {
-      "last_closed_t": 1790726400,
+      "last_closed_t": 1790812800,
       "broken_alerted": false
     },
     "LTCUSDT": {
-      "last_closed_t": 1790726400,
+      "last_closed_t": 1790812800,
       "broken_alerted": false
     },
     "TRXUSDT": {
-      "last_closed_t": 1790726400,
+      "last_closed_t": 1790812800,
       "broken_alerted": false,
       "zone_level": 0.3336
     },
@@ -59,80 +59,96 @@
       "last_closed_t": 1782691200
     },
     "SUIUSDT": {
-      "last_closed_t": 1790726400,
+      "last_closed_t": 1790812800,
       "broken_alerted": false
     },
     "NEARUSDT": {
-      "last_closed_t": 1790726400,
+      "last_closed_t": 1790812800,
       "broken_alerted": false
     },
     "BCHUSDT": {
-      "last_closed_t": 1790726400,
+      "last_closed_t": 1790812800,
       "broken_alerted": false,
       "zone_level": 305.6
     },
     "SPY": {
-      "last_closed_t": 1790861400,
+      "last_closed_t": 1790775000,
       "broken_alerted": false
     },
     "QQQ": {
-      "last_closed_t": 1790861400,
+      "last_closed_t": 1790775000,
       "broken_alerted": false
     },
     "AAPL": {
-      "last_closed_t": 1790861400,
+      "last_closed_t": 1790775000,
       "broken_alerted": false
     },
     "MSFT": {
-      "last_closed_t": 1790861400,
+      "last_closed_t": 1790775000,
       "broken_alerted": false,
       "zone_level": 513.72998046875
     },
     "NVDA": {
-      "last_closed_t": 1790861400,
+      "last_closed_t": 1790775000,
       "zone_level": 227.9199981689453,
       "broken_alerted": false
     },
     "AMZN": {
-      "last_closed_t": 1790861400,
+      "last_closed_t": 1790775000,
       "broken_alerted": false
     },
     "GOOGL": {
-      "last_closed_t": 1790861400,
+      "last_closed_t": 1790775000,
       "broken_alerted": false
     },
     "META": {
-      "last_closed_t": 1790861400,
+      "last_closed_t": 1790775000,
       "broken_alerted": false
     },
     "TSLA": {
-      "last_closed_t": 1790861400,
+      "last_closed_t": 1790775000,
       "broken_alerted": false
     },
     "AMD": {
-      "last_closed_t": 1790861400,
+      "last_closed_t": 1790775000,
       "broken_alerted": false
     },
     "NFLX": {
-      "last_closed_t": 1790861400,
+      "last_closed_t": 1790775000,
       "broken_alerted": false
     },
     "LLY": {
-      "last_closed_t": 1790861400,
+      "last_closed_t": 1790775000,
       "zone_level": 1154.4812698364258,
       "broken_alerted": false
     },
     "ASML": {
-      "last_closed_t": 1790861400,
+      "last_closed_t": 1790775000,
       "broken_alerted": false
     },
     "PLTR": {
-      "last_closed_t": 1790861400,
+      "last_closed_t": 1790775000,
       "broken_alerted": false,
       "zone_level": 188.1999969482422
     }
   },
   "history": [
+    {
+      "time": "2026-10-02T00:30:08+00:00",
+      "symbol": null,
+      "market": "stocks",
+      "kind": "summary",
+      "title": "📊 Dagoverzicht Aandelen",
+      "message": "❌ S&P 500 ETF 762,63 · Geen trend\n❌ Nasdaq 100 ETF 739,77 · Geen trend\n⏳ Apple 333,02 · Wachten\n⏳ Microsoft 512,90 · Wachten\n🎯 Nvidia 228,38 · In zone\n❌ Amazon 249,15 · Trend negatief\n❌ Alphabet 344,08 · Trend negatief\n⏳ Meta 725,18 · Wachten\n❌ Tesla 354,81 · Trend negatief\n❌ AMD 611,76 · Geen trend\n❌ Netflix 69,58 · Trend negatief\n🎯 Eli Lilly 1.157 · In zone\n⏳ ASML 1.812 · Wachten\n⏳ Palantir 187,05 · Wachten"
+    },
+    {
+      "time": "2026-10-02T00:30:08+00:00",
+      "symbol": null,
+      "market": "crypto",
+      "kind": "summary",
+      "title": "📊 Dagoverzicht Crypto",
+      "message": "⏳ Bitcoin 84.793 · Wachten\n⏳ Ethereum 2.705 · Wachten\n⏳ Solana 118,72 · Wachten\n⏳ XRP 1,50 · Wachten\n⏳ BNB 771,76 · Wachten\n⏳ Dogecoin 0,0943 · Wachten\n⏳ Cardano 0,2458 · Wachten\n⏳ Avalanche 10,98 · Wachten\n🎯 Chainlink 14,29 · In zone\n⏳ Polkadot 1,18 · Wachten\n⏳ Litecoin 68,73 · Wachten\n🎯 TRON 0,3343 · In zone\n❌ Toncoin 1,60 · Trend negatief\n❌ Sui 1,18 · Geen trend\n⏳ NEAR 4,82 · Wachten\n🎯 Bitcoin Cash 305,70 · In zone"
+    },
     {
       "time": "2026-10-01T20:22:56+00:00",
       "symbol": null,
