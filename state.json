@@ -17,7 +17,7 @@
     "XRPUSDT": {
       "last_closed_t": 1790812800,
       "broken_alerted": false,
-      "zone_level": 1.4835
+      "zone_level": null
     },
     "BNBUSDT": {
       "last_closed_t": 1790812800,
@@ -69,7 +69,7 @@
     "BCHUSDT": {
       "last_closed_t": 1790812800,
       "broken_alerted": false,
-      "zone_level": 305.6
+      "zone_level": null
     },
     "SPY": {
       "last_closed_t": 1790861400,
