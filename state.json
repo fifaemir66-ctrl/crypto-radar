@@ -7,7 +7,7 @@
     },
     "ETHUSDT": {
       "last_closed_t": 1790812800,
-      "zone_level": null,
+      "zone_level": 2636.02828,
       "broken_alerted": false
     },
     "SOLUSDT": {
@@ -21,7 +21,7 @@
     },
     "BNBUSDT": {
       "last_closed_t": 1790812800,
-      "zone_level": 780.64,
+      "zone_level": 767.81166,
       "broken_alerted": false
     },
     "DOGEUSDT": {
@@ -69,7 +69,7 @@
     "BCHUSDT": {
       "last_closed_t": 1790812800,
       "broken_alerted": false,
-      "zone_level": null
+      "zone_level": 305.6
     },
     "SPY": {
       "last_closed_t": 1790861400,
@@ -134,6 +134,30 @@
     }
   },
   "history": [
+    {
+      "time": "2026-10-02T18:26:07+00:00",
+      "symbol": "BCHUSDT",
+      "market": "crypto",
+      "kind": "zone",
+      "title": "🎯 Bitcoin Cash is in de koopzone",
+      "message": "Prijs 306,20 in zone 305,60 – 305,60.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 305,60 · Stop 301,02 (−1,5%) · Target 366,40 · R/R 13,3x\nPositie €500 (max. kapitaal) → verlies bij stop ≈ €8"
+    },
+    {
+      "time": "2026-10-02T18:26:07+00:00",
+      "symbol": "BNBUSDT",
+      "market": "crypto",
+      "kind": "zone",
+      "title": "🎯 BNB is in de koopzone",
+      "message": "Prijs 770,17 in zone 767,81 – 767,81.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 767,81 · Stop 756,29 (−1,5%) · Target 780,64 · R/R 1,1x\nPositie €500 (max. kapitaal) → verlies bij stop ≈ €7"
+    },
+    {
+      "time": "2026-10-02T18:26:07+00:00",
+      "symbol": "ETHUSDT",
+      "market": "crypto",
+      "kind": "zone",
+      "title": "🎯 Ethereum is in de koopzone",
+      "message": "Prijs 2.679 in zone 2.636 – 2.666.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 2.666 · Stop 2.596 (−2,6%) · Target 2.807 · R/R 2,0x\nPositie €384 → verlies bij stop ≈ €10"
+    },
     {
       "time": "2026-10-02T17:22:36+00:00",
       "symbol": "NVDA",
