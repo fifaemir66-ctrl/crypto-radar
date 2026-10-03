@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
 """
-Radar -- monitor voor crypto en aandelen.
+ZoneHunter -- monitor for crypto and stocks.
 
-Draait elk uur (GitHub Actions of lokaal):
-  * analyseert alle crypto en aandelen uit config.json
-  * schrijft docs/data.json (overzicht) en docs/charts/<SYMBOOL>.json (details) voor de website
-  * stuurt ntfy-meldingen bij: koopzone, setup na dagslot, trendbreuk, dagoverzicht
-  * houdt in state.json bij wat al gemeld is (geen dubbele meldingen)
+Runs every hour (GitHub Actions or locally):
+  * analyses every market in config.json
+  * writes docs/data.json (overview) and docs/charts/<SYMBOL>.json (details) for the website
+  * signals are decided on the daily close, so they change at most once per day
+  * sends an ntfy alert only when a signal changes at the close (BUY SIGNAL, GET READY, AVOID),
+    plus one daily digest per market
+  * remembers in state.json what was already sent (no duplicates)
 
-Gebruik:
-    python3 monitor.py            normale run
-    python3 monitor.py --dry-run  geen meldingen, state.json niet bijwerken (website-data wel)
-    python3 monitor.py --test     stuur een testmelding
+Usage:
+    python3 monitor.py            normal run
+    python3 monitor.py --dry-run  no alerts, state.json untouched (website data is written)
+    python3 monitor.py --test     send a test alert
 
-Educatief hulpmiddel -- geen financieel advies.
+Signals follow fixed strategy rules. Educational tool -- not financial advice.
 """
 
 import argparse
@@ -23,7 +25,7 @@ import sys
 import urllib.request
 from datetime import datetime, timezone
 
-from analysis import analyse, dec, eur, fetch_crypto, fetch_stock, fmt
+from analysis import analyse, eur, fetch_crypto, fetch_stock, fmt
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 CONFIG_FILE = os.path.join(ROOT, "config.json")
@@ -33,7 +35,8 @@ TOPIC_FILE = os.path.join(ROOT, ".ntfy_topic")
 
 CHART_CANDLES = 260
 HISTORY_MAX = 60
-MARKET_LABEL = {"crypto": "Crypto", "stocks": "Aandelen"}
+MARKET_LABEL = {"crypto": "Crypto", "stocks": "Stocks"}
+ICON = {"buy": "🟢", "ready": "🟡", "watch": "🔵", "avoid": "🔴"}
 
 
 def load_json(path, default):
@@ -71,12 +74,12 @@ def ntfy_topic():
 
 
 def send(title, message, priority=3, tags=None, click=None, dry_run=False):
-    print(f"\n[melding p{priority}] {title}\n{message}")
+    print(f"\n[alert p{priority}] {title}\n{message}")
     topic = ntfy_topic()
     if dry_run:
         return
     if not topic:
-        print("  (geen NTFY_TOPIC ingesteld, melding niet verstuurd)")
+        print("  (no NTFY_TOPIC set, alert not sent)")
         return
     body = {"topic": topic, "title": title, "message": message, "priority": priority, "tags": tags or []}
     if click:
@@ -86,18 +89,10 @@ def send(title, message, priority=3, tags=None, click=None, dry_run=False):
     try:
         urllib.request.urlopen(req, timeout=15).read()
     except Exception as e:
-        print(f"  ntfy-fout: {e}")
+        print(f"  ntfy error: {e}")
 
 
-def plan_lines(p):
-    if not p:
-        return ""
-    return (f"Entry {fmt(p['entry'])} · Stop {fmt(p['stop'])} (−{dec(p['stop_pct'])}%) · "
-            f"Target {fmt(p['target'])} · R/R {dec(p['rr'])}x\n"
-            f"Positie {eur(p['position'])}{' (max. kapitaal)' if p['capped'] else ''} → verlies bij stop ≈ {eur(p['loss_eur'])}")
-
-
-# ---------------------------------------------------------------- output voor de website
+# ---------------------------------------------------------------- website output
 
 def r(x):
     return None if x is None else float(f"{x:.8g}")
@@ -112,17 +107,17 @@ def chart_payload(a):
     m_line, m_sig, m_hist = a["macd"]
     lines = []
     if a["zone1"]:
-        lines += [{"price": a["zone1"]["high"], "title": "Zone 1", "kind": "zone1"},
+        lines += [{"price": a["zone1"]["high"], "title": "Buy zone 1", "kind": "zone1"},
                   {"price": a["zone1"]["low"], "title": "", "kind": "zone1"}]
     if a["zone2"]:
-        lines += [{"price": a["zone2"]["high"], "title": "Zone 2", "kind": "zone2"},
+        lines += [{"price": a["zone2"]["high"], "title": "Buy zone 2", "kind": "zone2"},
                   {"price": a["zone2"]["low"], "title": "", "kind": "zone2"}]
     if a["target"]:
         lines.append({"price": a["target"], "title": "Target", "kind": "target"})
     if a["last_bottom"]:
-        lines.append({"price": a["last_bottom"], "title": "Trendgrens", "kind": "stop"})
-    price = a["price"]
-    open_pools = [p for p in a["pools"] if p["status"] == "open" and abs(p["price"] - price) / price < 0.2]
+        lines.append({"price": a["last_bottom"], "title": "Trend line", "kind": "stop"})
+    ref = a["ref"]
+    open_pools = [p for p in a["pools"] if p["status"] == "open" and abs(p["price"] - ref) / ref < 0.2]
     for p in sorted([p for p in open_pools if p["kind"] == "BSL"], key=lambda p: p["price"])[:2]:
         lines.append({"price": p["price"], "title": "BSL", "kind": "bsl"})
     for p in sorted([p for p in open_pools if p["kind"] == "SSL"], key=lambda p: -p["price"])[:2]:
@@ -142,31 +137,30 @@ def chart_payload(a):
 def detail_payload(a):
     fib, prof = a["fib"], a["profile"]
     return {
+        "signal": a["signal"], "plan_close": a["plan_close"], "trend": a["trend"], "weekly_trend": a["weekly_trend"],
         "trend_reasons": a["trend_reasons"], "checklist": a["checklist"], "extras": a["extras"],
-        "confluence": a["confluence"], "scenarios": a["scenarios"],
+        "confluence": a["confluence"], "scenarios": a["scenarios"], "close_day": a["close_day"],
         "zones": [{"low": z["low"], "high": z["high"], "score": z["score"],
                    "items": [{"name": i["name"], "price": i["price"]} for i in z["items"]]} for z in a["zones"][:5]],
         "fib": fib and {"low": fib["low"], "high": fib["high"], "f382": fib["38.2"], "f50": fib["50"], "f618": fib["61.8"]},
         "pullback_vol": a["pullback_vol"], "atr_pct": a["atr_pct"],
         "pools": sorted([{k: p[k] for k in ("kind", "price", "touches", "t_first", "t_last", "status")} for p in a["pools"]
-                         if abs(p["price"] - a["price"]) / a["price"] < 0.25], key=lambda p: -p["price"]),
+                         if abs(p["price"] - a["ref"]) / a["ref"] < 0.25], key=lambda p: -p["price"]),
         "profile": {"poc": prof["poc"], "vah": prof["vah"], "val": prof["val"], "lookback": prof["lookback"],
                     "hvn": prof["hvn"], "bins": [[r(b["low"]), r(b["high"]), round(b["vol"], 2)] for b in prof["bins"]]},
         "chart": chart_payload(a),
     }
 
 
-def summary_payload(a, meta, market, source, currency):
+def summary_payload(a, meta, market, source, currency, since):
     closed = a["closed"]
-    ref = closed[-2]["c"] if a["last_closed"] else closed[-1]["c"]
-    if market == "crypto":
-        ref = a["live"]["o"]  # crypto: sinds 00:00 UTC (live 24u komt via de websocket)
+    ref_price = a["live"]["o"] if market == "crypto" else (closed[-2]["c"] if a["last_closed"] else closed[-1]["c"])
     return {
         "symbol": a["symbol"], "name": meta.get("name", a["symbol"]), "base": meta.get("base", a["symbol"]),
         "market": market, "source": source, "currency": currency,
-        "price": a["price"], "ref_price": ref, "market_open": not a["last_closed"],
-        "status": a["status"], "trend": a["trend"], "rsi": round(a["rsi_now"], 1),
-        "confluence": a["confluence"], "in_zone": a["in_zone"], "dist_zone": a["dist_zone"],
+        "price": a["price"], "close": a["ref"], "ref_price": ref_price, "market_open": not a["last_closed"],
+        "signal": a["signal"], "signal_since": since, "trend": a["trend"],
+        "rsi": round(a["rsi_now"], 1), "confluence": a["confluence"], "in_zone": a["in_zone"],
         "zone1": a["zone1"] and {"low": a["zone1"]["low"], "high": a["zone1"]["high"]},
         "spark": [r(c["c"]) for c in (closed[-59:] + ([] if a["last_closed"] else [a["live"]]))],
     }
@@ -183,22 +177,26 @@ def assets_from(config):
 def run(dry_run=False):
     config = load_json(CONFIG_FILE, {})
     state = load_json(STATE_FILE, {"coins": {}, "history": []})
-    first_run = not state["coins"]
+    if state.get("version") != 2:   # new signal model: start alert memory fresh, keep history
+        state = {"version": 2, "coins": {}, "digest": {}, "history": state.get("history", [])}
+        fresh_start = True
+    else:
+        fresh_start = False
     url = site_url(config)
     now = datetime.now(timezone.utc)
     summaries, errors = [], []
-    day_summary = {"crypto": [], "stocks": []}
-    daily_close = {"crypto": False, "stocks": False}
-    new_assets = []
+    digest = {"crypto": [], "stocks": []}
+    digest_day = {}
 
     def log_event(sym, market, kind, title, message, priority, tags):
         state["history"].insert(0, {"time": now.isoformat(timespec="seconds"), "symbol": sym, "market": market,
                                     "kind": kind, "title": title, "message": message})
         del state["history"][HISTORY_MAX:]
-        send(title, message, priority, tags, url and (f"{url}#{sym}" if sym else url), dry_run)
+        send(title, message, priority, tags, url and (f"{url}#/asset/{sym}" if sym else url), dry_run)
 
     for market, meta in assets_from(config):
         sym = meta["symbol"]
+        s = state["coins"].setdefault(sym, {})
         try:
             if market == "crypto":
                 candles, source, last_closed = fetch_crypto(sym, 400)
@@ -206,7 +204,7 @@ def run(dry_run=False):
             else:
                 candles, source, last_closed, currency = fetch_stock(sym)
             a = analyse(sym, candles, config.get("pivot", 7), config.get("risk_eur", 10),
-                        config.get("capital_eur", 500), last_closed=last_closed)
+                        config.get("capital_eur", 500), last_closed=last_closed, prev_trend=s.get("trend"))
         except Exception as e:
             print(f"{sym}: {e}", file=sys.stderr)
             errors.append({"symbol": sym, "market": market, "error": str(e)[:300]})
@@ -214,61 +212,52 @@ def run(dry_run=False):
 
         name = meta.get("name", sym)
         label = name if market == "crypto" else f"{name} ({sym})"
-        is_new = sym not in state["coins"]
-        s = state["coins"].setdefault(sym, {})
-        closed_t = a["closed"][-1]["t"]
-        new_close = s.get("last_closed_t") != closed_t
-        price, zone1 = a["price"], a["zone1"]
+        sig = a["signal"]
+        new_close = s.get("day") != a["close_day"]
+        prev_sig = s.get("signal")
 
-        # 1. Na de dagslot: setup of trendbreuk
-        if new_close and s.get("last_closed_t") is not None:
-            daily_close[market] = True
-            last = a["closed"][-1]
-            if a["setup"]:
-                log_event(sym, market, "setup", f"✅ {label}: setup volgens je checklist",
-                          f"Trend {a['trend'].lower()}, prijs in zone 1, signaal: {a['pattern']}.\n"
-                          f"Bevestiging: {a['confluence']}/7 extra indicatoren.\n{plan_lines(a['plan_now'])}\n"
-                          "Controleer het zelf op de chart. Geen advies.", 5, ["white_check_mark"])
-            elif a["last_bottom"] and last["c"] < a["last_bottom"] and not s.get("broken_alerted"):
-                log_event(sym, market, "trend", f"⚠️ {label}: dagslot onder de laatste bodem",
-                          f"Slot {fmt(last['c'])} < laatste bodem {fmt(a['last_bottom'])}. "
-                          "De uptrend is in gevaar: geen koopplannen.", 4, ["warning"])
-                s["broken_alerted"] = True
-            if a["last_bottom"] and last["c"] >= a["last_bottom"]:
-                s["broken_alerted"] = False
-        s["last_closed_t"] = closed_t
-
-        # 2. Elk uur: prijs komt in de koopzone
-        near = bool(zone1 and zone1["low"] * 0.995 <= price <= zone1["high"] * 1.005)
-        alerted = s.get("zone_level")
-        if near and a["trend_ok"] and (alerted is None or zone1["high"] < alerted * 0.99):
-            if is_new and not first_run:
-                new_assets.append(f"🎯 {label} {fmt(price)} in zone")
-            else:
-                p = a["scenarios"][0]["plan"] if a["scenarios"] else None
-                log_event(sym, market, "zone", f"🎯 {label} is in de koopzone",
-                          f"Prijs {fmt(price)} in zone {fmt(zone1['low'])} – {fmt(zone1['high'])}.\n"
-                          f"Wacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\n{plan_lines(p)}",
-                          4, ["dart"])
-            s["zone_level"] = zone1["low"]
-        elif alerted is not None and price > alerted * 1.03:
-            s["zone_level"] = None
+        # Alerts only when the signal changes at a new daily close
+        if new_close and s.get("day") is not None and sig["key"] != prev_sig:
+            if sig["key"] == "buy":
+                log_event(sym, market, "buy", f"🟢 BUY SIGNAL: {label}",
+                          f"{sig['reason']}.\n{sig['plan']}\nStrength {sig['strength']}/100. Check the chart yourself.",
+                          5, ["green_circle"])
+            elif sig["key"] == "ready":
+                log_event(sym, market, "ready", f"🟡 GET READY: {label} is in its buy zone",
+                          f"{sig['reason']}.\n{sig['plan']}", 3, ["yellow_circle"])
+            elif sig["key"] == "avoid" and prev_sig in ("buy", "ready", "watch"):
+                log_event(sym, market, "avoid", f"🔴 AVOID: {label} lost its uptrend",
+                          f"{sig['reason']}.\n{sig['plan']}", 4, ["red_circle"])
+        if new_close or sig["key"] != prev_sig:
+            if sig["key"] != prev_sig:
+                s["since"] = a["close_day"]
+            s["signal"] = sig["key"]
+        s["day"] = a["close_day"]
+        s["trend"] = a["daily_trend"]
+        if new_close:
+            digest_day[market] = a["close_day"]
 
         save_json(os.path.join(DOCS, "charts", f"{sym}.json"), detail_payload(a), compact=True)
-        summaries.append(summary_payload(a, meta, market, source, currency))
-        icon = {"setup": "✅", "zone": "🎯", "wait": "⏳", "down": "❌"}[a["status"]["key"]]
-        day_summary[market].append(f"{icon} {name} {fmt(price)} · {a['status']['label']}")
-        print(f"{sym:<9} {fmt(price):>12}  {a['status']['label']:<15} trend: {a['trend']:<13} bevestiging {a['confluence']}/7")
+        summaries.append(summary_payload(a, meta, market, source, currency, s.get("since", a["close_day"])))
+        digest[market].append((sig["key"], f"{ICON[sig['key']]} {name} {fmt(a['ref'])} · {sig['label']}"))
+        print(f"{sym:<9} {fmt(a['ref']):>12}  {sig['label']:<11} {sig['strength']:>3}/100  {a['trend']}")
 
-    for market in ("crypto", "stocks"):
-        if daily_close[market] and day_summary[market]:
-            log_event(None, market, "summary", f"📊 Dagoverzicht {MARKET_LABEL[market]}",
-                      "\n".join(day_summary[market]), 2, ["bar_chart"])
-    if first_run and not dry_run:
-        send("📡 Radar is actief", "Je ontvangt vanaf nu meldingen.", 3, ["satellite"], url)
-    elif new_assets:
-        send("📡 Radar uitgebreid", f"{len(summaries)} markten worden nu gevolgd.\n" + "\n".join(new_assets),
-             3, ["satellite"], url, dry_run)
+    # One digest per market per daily close
+    order = {"buy": 0, "ready": 1, "watch": 2, "avoid": 3}
+    for market, day in digest_day.items():
+        if fresh_start or state["digest"].get(market) == day or not digest[market]:
+            state["digest"][market] = day
+            continue
+        rows = sorted(digest[market], key=lambda x: order[x[0]])
+        counts = {k: sum(1 for x in rows if x[0] == k) for k in order}
+        head = (f"{counts['buy']} buy · {counts['ready']} get ready · {counts['watch']} watch · {counts['avoid']} avoid")
+        body = "\n".join(x[1] for x in rows if x[0] in ("buy", "ready")) or "No buy zones reached today."
+        log_event(None, market, "digest", f"📊 Daily digest: {MARKET_LABEL[market]}", f"{head}\n{body}", 2, ["bar_chart"])
+        state["digest"][market] = day
+
+    if fresh_start and not dry_run:
+        send("🎯 ZoneHunter is live", f"Tracking {len(summaries)} markets. You'll get an alert when a signal changes at the daily close.",
+             3, ["dart"], url)
 
     save_json(os.path.join(DOCS, "data.json"), {
         "generated_at": now.isoformat(timespec="seconds"),
@@ -280,12 +269,12 @@ def run(dry_run=False):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Radar monitor")
-    ap.add_argument("--dry-run", action="store_true", help="Geen meldingen en state.json niet bijwerken")
-    ap.add_argument("--test", action="store_true", help="Stuur een testmelding")
+    ap = argparse.ArgumentParser(description="ZoneHunter monitor")
+    ap.add_argument("--dry-run", action="store_true", help="No alerts, state.json untouched")
+    ap.add_argument("--test", action="store_true", help="Send a test alert")
     args = ap.parse_args()
     if args.test:
-        send("🔔 Testmelding Radar", "Als je dit ziet, werken je meldingen.", 3, ["bell"],
+        send("🔔 ZoneHunter test", "If you can read this, your alerts work.", 3, ["bell"],
              site_url(load_json(CONFIG_FILE, {})))
         return
     run(args.dry_run)

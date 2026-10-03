@@ -1,13 +1,14 @@
-# Emir Isiklar · Radar
+# ZoneHunter
 
-Live technische analyse van crypto (16 coins) en aandelen (14), met meldingen op je telefoon.
+Live technische analyse van crypto (16) en aandelen (14), met meldingen op je telefoon. Website in het Engels.
 
-- **Website:** knop Crypto / Aandelen, live crypto-prijzen, grafieken met toppen/bodems, koopzones, liquiditeitszones (BSL/SSL), volume profile, RSI/MACD, 7 extra indicatoren, checklist en scenario's.
-- **Monitor:** draait elk uur gratis in de cloud (GitHub Actions) en stuurt een melding via **ntfy** als:
-  - 🎯 een coin in zijn koopzone komt (in een uptrend),
-  - ✅ na de dagslot alle punten van je checklist groen zijn,
-  - ⚠️ een dagcandle onder de laatste bodem sluit (trend in gevaar),
-  - 📊 elke dag na de slot: een kort dagoverzicht.
+- **Signalen** (volgens vaste strategie-regels, bepaald bij de dagslot zodat ze niet heen en weer springen):
+  - 🟢 **BUY SIGNAL**: uptrend (dag + week), dagslot in een koopzone, trigger (hammer, bullish engulfing of liquidity sweep), RSI < 70, risico/winst ≥ 2x
+  - 🟡 **GET READY**: in de koopzone, wacht op de trigger
+  - 🔵 **WATCH**: uptrend, wacht op een terugval naar de koopzone
+  - 🔴 **AVOID**: geen uptrend
+- **Website:** laag 1 = overzicht per markt, laag 2 = pagina per markt met signaal, plan en grafiek, laag 3 = uitklapbare details (checklist, scenario's, liquiditeit, volume profile, indicatoren).
+- **Meldingen (ntfy):** alleen als een signaal bij de dagslot verandert, plus één dagoverzicht per markt.
 
 > Educatief hulpmiddel, geen financieel advies. Controleer altijd zelf.
 
@@ -45,8 +46,8 @@ python3 -m http.server 8000 --directory docs   # website openen op http://localh
    - Secret: je kanaalnaam uit `.ntfy_topic`
 5. **Website aanzetten:** *Settings → Pages* → Source: *Deploy from a branch* → Branch: `main`, map `/docs` → *Save*.
    Na een minuut staat hij op `https://<jouw-gebruikersnaam>.github.io/crypto-radar/`.
-6. **Monitor starten:** tabblad *Actions* → *Crypto Radar* → **Run workflow**.
-   Je krijgt de melding "📡 Crypto Radar is actief". Daarna draait hij vanzelf elk uur.
+6. **Monitor starten:** tabblad *Actions* → *ZoneHunter* → **Run workflow**.
+   Je krijgt de melding "🎯 ZoneHunter is live". Daarna draait hij vanzelf elk uur.
 
 ## Aanpassen
 

@@ -1,13 +1,15 @@
 """
-Radar -- analyse-engine voor crypto en aandelen.
+ZoneHunter -- analysis engine for crypto and stocks.
 
-Voert de technische-analyse-checklist uit op dagcandles:
-  * trend (HH/HL + EMA 50), steunzones (oude toppen, Fibonacci, EMA 50, volume, liquiditeit)
-  * liquiditeitszones: equal highs (BSL) / equal lows (SSL), sweeps, volume profile (POC / value area)
-  * RSI, candle-patroon, volume, risico/winst met positiegrootte
-  * extra bevestiging: EMA 20/200, MACD, ADX, Stoch RSI, Bollinger, OBV, ATR
+Runs the pullback-to-zone strategy on daily candles. Signals are decided on the
+last CLOSED daily candle only, so they change at most once per day:
+  * trend: daily structure (HH/HL) + EMA 50, with hysteresis, filtered by the weekly trend
+  * buy zones: old tops, Fibonacci, EMA 50, volume profile and liquidity (equal lows)
+  * liquidity: equal highs (BSL) / equal lows (SSL), sweeps, volume profile (POC / value area)
+  * trigger: hammer, bullish engulfing or SSL sweep inside the zone
+  * risk/reward and position size; 7 extra confirmation indicators
 
-Educatief hulpmiddel -- geen financieel advies.
+Signals follow fixed strategy rules. Educational tool -- not financial advice.
 """
 
 import csv
@@ -16,7 +18,7 @@ import json
 import time
 import urllib.request
 
-STOP_BUF = 0.985  # stop 1,5% onder de onderkant van de zone
+STOP_BUF = 0.985  # stop 1.5% below the bottom of the zone
 
 BINANCE_URLS = [
     "https://data-api.binance.vision/api/v3/klines",
@@ -54,14 +56,14 @@ def _coinbase(symbol):
 
 
 def fetch_crypto(symbol, limit=400):
-    """Geeft (candles, bron, laatste_gesloten). De laatste crypto-candle is altijd nog open."""
+    """Returns (candles, source, last_is_closed). The last crypto candle is always still open."""
     try:
         return _binance(symbol, limit), "Binance", False
     except Exception as e:
         try:
             return _coinbase(symbol), "Coinbase", False
         except Exception as e2:
-            raise RuntimeError(f"Geen data voor {symbol} ({e}; Coinbase: {e2})")
+            raise RuntimeError(f"No data for {symbol} ({e}; Coinbase: {e2})")
 
 
 def _yahoo(ticker):
@@ -95,7 +97,7 @@ def _stooq(ticker):
     raw = _get(f"https://stooq.com/q/d/l/?s={ticker.lower()}.us&i=d", as_json=False)
     rows = list(csv.DictReader(io.StringIO(raw)))
     if not rows or "Close" not in rows[0]:
-        raise RuntimeError("Stooq: geen data")
+        raise RuntimeError("Stooq: no data")
     candles = []
     for r in rows[-500:]:
         t = int(time.mktime(time.strptime(r["Date"], "%Y-%m-%d")))
@@ -105,7 +107,7 @@ def _stooq(ticker):
 
 
 def fetch_stock(ticker):
-    """Geeft (candles, bron, laatste_gesloten, valuta)."""
+    """Returns (candles, source, last_is_closed, currency)."""
     try:
         candles, closed, cur = _yahoo(ticker)
         return candles, "Yahoo Finance", closed, cur
@@ -113,10 +115,10 @@ def fetch_stock(ticker):
         try:
             return _stooq(ticker), "Stooq", True, "USD"
         except Exception as e2:
-            raise RuntimeError(f"Geen data voor {ticker} ({e}; {e2})")
+            raise RuntimeError(f"No data for {ticker} ({e}; {e2})")
 
 
-# ================================================================ indicatoren
+# ================================================================ indicators
 
 def ema(values, n):
     out, k, prev = [], 2 / (n + 1), None
@@ -136,7 +138,7 @@ def sma(values, n):
 
 
 def rma(values, n):
-    """Wilder-gemiddelde; accepteert None aan het begin."""
+    """Wilder moving average; accepts leading None values."""
     out = [None] * len(values)
     start = next((i for i, v in enumerate(values) if v is not None), None)
     if start is None or len(values) - start < n:
@@ -234,10 +236,10 @@ def adx(candles, n=14):
     return rma(dx, n), pdi, mdi
 
 
-# ================================================================ structuur
+# ================================================================ structure
 
 def pivots(candles, length):
-    """Toppen/bodems: hoogste/laagste punt binnen `length` candles links en rechts."""
+    """Swing highs/lows: highest/lowest point within `length` candles on both sides."""
     highs, lows = [], []
     for i in range(length, len(candles) - length):
         h, l = candles[i]["h"], candles[i]["l"]
@@ -252,7 +254,7 @@ def pivots(candles, length):
 def label_pivots(candles, highs, lows):
     labels = []
     for kind, idxs, key, up, down, first in (("top", highs, "h", "HH", "LH", "Top"),
-                                             ("bodem", lows, "l", "HL", "LL", "Bodem")):
+                                             ("bottom", lows, "l", "HL", "LL", "Low")):
         prev = None
         for i in idxs:
             p = candles[i][key]
@@ -276,20 +278,20 @@ def candle_pattern(c, prev):
     if prev_real and not green and prev["c"] > prev["o"] and c["o"] >= prev["c"] and c["c"] <= prev["o"] and body > prev_body:
         return "Bearish engulfing", "bearish"
     if body <= 0.1 * rng:
-        return "Doji (besluiteloosheid)", "neutraal"
+        return "Doji (indecision)", "neutral"
     if lower >= 2 * body and upper <= 0.35 * rng:
-        return ("Hammer (groen)" if green else "Hammer (rood)"), "bullish"
+        return ("Green hammer" if green else "Red hammer"), "bullish"
     if upper >= 2 * body and lower <= 0.35 * rng:
         return "Shooting star", "bearish"
     if body >= 0.7 * rng:
-        return ("Sterke groene candle" if green else "Sterke rode candle"), ("bullish" if green else "bearish")
-    return ("Kleine groene candle" if green else "Kleine rode candle"), "neutraal"
+        return ("Strong green candle" if green else "Strong red candle"), ("bullish" if green else "bearish")
+    return ("Small green candle" if green else "Small red candle"), "neutral"
 
 
 def liquidity_pools(closed, atr_now, lookback=150, piv_len=3):
-    """Equal highs (BSL) en equal lows (SSL): plekken waar veel stop-losses liggen.
+    """Equal highs (BSL) and equal lows (SSL): places where many stop-losses sit.
 
-    status: open (nog niet geraakt), gesweept (wick erdoor, slot terug) of doorbroken (slot erdoor).
+    status: open (untouched), swept (wick through, close back) or broken (close through).
     """
     start = max(0, len(closed) - lookback)
     seg = closed[start:]
@@ -317,9 +319,9 @@ def liquidity_pools(closed, atr_now, lookback=150, piv_len=3):
                     beyond_close = c["c"] > level if kind == "BSL" else c["c"] < level
                     beyond_wick = c["h"] > level if kind == "BSL" else c["l"] < level
                     if beyond_close:
-                        return "doorbroken"
+                        return "broken"
                     swept = swept or beyond_wick
-                return "gesweept" if swept else "open"
+                return "swept" if swept else "open"
 
             after = seg[last_i + 1:]
             pools.append({
@@ -372,7 +374,7 @@ def volume_profile(closed, lookback=120, bins=40):
 
 
 def cluster_levels(levels, tol=0.015):
-    """Voeg niveaus samen die binnen `tol` (1,5%) van elkaar liggen tot zones."""
+    """Merge levels within `tol` (1.5%) of each other into zones."""
     levels = sorted(levels, key=lambda x: x["price"])
     zones = []
     for lv in levels:
@@ -386,42 +388,89 @@ def cluster_levels(levels, tol=0.015):
     return zones
 
 
-# ================================================================ formattering
+
+
+# ================================================================ formatting
 
 def fmt(x):
     if x is None:
         return "-"
-    if x >= 1000:
-        return f"{x:,.0f}".replace(",", ".")
-    if x >= 1:
-        return f"{x:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-    if x >= 0.01:
-        return f"{x:.4f}".replace(".", ",")
-    return f"{x:.8f}".rstrip("0").replace(".", ",")
+    ax = abs(x)
+    if ax >= 1000:
+        return f"{x:,.0f}"
+    if ax >= 1:
+        return f"{x:,.2f}"
+    if ax >= 0.01:
+        return f"{x:.4f}"
+    return f"{x:.8f}".rstrip("0")
 
 
 def dec(x, n=1):
-    return f"{x:.{n}f}".replace(".", ",")
+    return f"{x:.{n}f}"
 
 
 def eur(x):
-    return f"€{x:,.0f}".replace(",", ".")
+    return f"€{x:,.0f}"
 
 
-# ================================================================ analyse
+def day_key(t):
+    """Calendar date (UTC) of a candle; stable even if the data source shifts the timestamp."""
+    return time.strftime("%Y-%m-%d", time.gmtime(t))
 
-def analyse(symbol, candles, pivot_len=7, risk_eur=10, capital=500, last_closed=False):
+
+# ================================================================ weekly trend
+
+def weekly_candles(closed):
+    weeks = []
+    for c in closed:
+        key = time.strftime("%G-%V", time.gmtime(c["t"]))
+        if weeks and weeks[-1]["key"] == key:
+            wk = weeks[-1]
+            wk["h"] = max(wk["h"], c["h"]); wk["l"] = min(wk["l"], c["l"]); wk["c"] = c["c"]
+        else:
+            weeks.append({"key": key, "t": c["t"], "o": c["o"], "h": c["h"], "l": c["l"], "c": c["c"]})
+    return weeks
+
+
+def weekly_trend(closed):
+    weeks = weekly_candles(closed)
+    if len(weeks) < 25:
+        return "neutral", "Not enough weekly history"
+    wc = [w["c"] for w in weeks]
+    e20 = ema(wc, 20)
+    rising = e20[-1] > e20[-5]
+    if wc[-1] > e20[-1] and rising:
+        return "up", f"Weekly close above the rising 20-week EMA ({fmt(e20[-1])})"
+    if wc[-1] < e20[-1] and not rising:
+        return "down", f"Weekly close below the falling 20-week EMA ({fmt(e20[-1])})"
+    return "neutral", f"Weekly trend undecided around the 20-week EMA ({fmt(e20[-1])})"
+
+
+# ================================================================ analysis
+
+SIGNALS = {
+    "buy": "BUY SIGNAL",
+    "ready": "GET READY",
+    "watch": "WATCH",
+    "avoid": "AVOID",
+}
+
+
+def analyse(symbol, candles, pivot_len=7, risk_eur=10, capital=500, last_closed=False, prev_trend=None):
+    """All signal logic uses the last CLOSED daily candle. `live` is only used for display."""
     if last_closed:
         closed, live = candles, candles[-1]
     else:
         closed, live = candles[:-1], candles[-1]
     closes = [c["c"] for c in closed]
-    price = live["c"]
+    last = closed[-1]
+    ref = last["c"]            # reference price for all decisions: the last daily close
+    price = live["c"]          # live price, for display only
 
     ema20, ema50, ema200 = ema(closes, 20), ema(closes, 50), ema(closes, 200)
     rsi14 = rsi(closes, 14)
     atr14 = atr(closed, 14)
-    atr_now = atr14[-1] or (closed[-1]["h"] - closed[-1]["l"])
+    atr_now = atr14[-1] or (last["h"] - last["l"])
     m_line, m_sig, m_hist = macd(closes)
     adx14, pdi, mdi = adx(closed, 14)
     st_k, st_d = stoch_rsi(rsi14)
@@ -432,34 +481,43 @@ def analyse(symbol, candles, pivot_len=7, risk_eur=10, capital=500, last_closed=
     highs, lows = pivots(closed, pivot_len)
     labels = label_pivots(closed, highs, lows)
     tops = [x for x in labels if x["kind"] == "top"]
-    bottoms = [x for x in labels if x["kind"] == "bodem"]
+    bottoms = [x for x in labels if x["kind"] == "bottom"]
 
-    # --- 1. trend
+    # --- 1. trend: daily structure + EMA 50, with hysteresis, filtered by the weekly trend
     score, reasons = 0, []
     if len(tops) >= 2:
         hh = tops[-1]["price"] > tops[-2]["price"]
         score += 1 if hh else -1
-        reasons.append(f"Laatste top is een {'HH' if hh else 'LH'} ({fmt(tops[-1]['price'])} {'>' if hh else '<'} {fmt(tops[-2]['price'])})")
+        reasons.append(f"Last swing high is a {'higher high (HH)' if hh else 'lower high (LH)'}: {fmt(tops[-1]['price'])} vs {fmt(tops[-2]['price'])}")
     if len(bottoms) >= 2:
         hl = bottoms[-1]["price"] > bottoms[-2]["price"]
         score += 1 if hl else -1
-        reasons.append(f"Laatste bodem is een {'HL' if hl else 'LL'} ({fmt(bottoms[-1]['price'])} {'>' if hl else '<'} {fmt(bottoms[-2]['price'])})")
-    above_ema = price > ema50[-1]
+        reasons.append(f"Last swing low is a {'higher low (HL)' if hl else 'lower low (LL)'}: {fmt(bottoms[-1]['price'])} vs {fmt(bottoms[-2]['price'])}")
+    above_ema = ref > ema50[-1]
     score += 1 if above_ema else -1
-    reasons.append(f"Prijs {'boven' if above_ema else 'onder'} EMA 50 ({fmt(ema50[-1])})")
+    reasons.append(f"Daily close {'above' if above_ema else 'below'} the EMA 50 ({fmt(ema50[-1])})")
     ema_slope = ema50[-1] - ema50[-11]
     score += 1 if ema_slope > 0 else -1
-    reasons.append("EMA 50 stijgt" if ema_slope > 0 else "EMA 50 daalt")
-    if score >= 4:
-        trend, trend_ok = "Sterk omhoog", True
-    elif score >= 2:
-        trend, trend_ok = "Omhoog", True
-    elif score <= -2:
-        trend, trend_ok = "Omlaag", False
-    else:
-        trend, trend_ok = "Zijwaarts", False
+    reasons.append(f"EMA 50 is {'rising' if ema_slope > 0 else 'falling'}")
 
-    # --- Fibonacci
+    # hysteresis: a trend only flips when the evidence is clearly on the other side
+    if score >= 2 or (prev_trend == "up" and score >= 1):
+        daily = "up"
+    elif score <= -2 or (prev_trend == "down" and score <= -1):
+        daily = "down"
+    else:
+        daily = "sideways"
+    w_trend, w_reason = weekly_trend(closed)
+    reasons.append(w_reason)
+    trend_ok = daily == "up" and w_trend != "down"
+    if daily == "up":
+        trend = "Strong uptrend" if score >= 4 and w_trend == "up" else "Uptrend"
+        if w_trend == "down":
+            trend = "Daily up, weekly down"
+    else:
+        trend = "Downtrend" if daily == "down" else "Sideways"
+
+    # --- Fibonacci of the last swing
     fib = None
     if len(tops) >= 2:
         a, b = tops[-2]["i"], tops[-1]["i"]
@@ -470,81 +528,82 @@ def analyse(symbol, candles, pivot_len=7, risk_eur=10, capital=500, last_closed=
         fib = {"low": sl, "high": sh, "low_i": sl_i, "high_i": sh_i,
                "38.2": sh - 0.382 * diff, "50": sh - 0.5 * diff, "61.8": sh - 0.618 * diff}
 
-    # --- liquiditeit en volume profile
+    # --- liquidity and volume profile
     pools = liquidity_pools(closed, atr_now)
     profile = volume_profile(closed)
-    ssl_open = sorted((p for p in pools if p["kind"] == "SSL" and p["status"] == "open" and p["price"] < price),
+    ssl_open = sorted((p for p in pools if p["kind"] == "SSL" and p["status"] == "open" and p["price"] < ref),
                       key=lambda p: -p["price"])
-    bsl_open = sorted((p for p in pools if p["kind"] == "BSL" and p["status"] == "open" and p["price"] > price),
+    bsl_open = sorted((p for p in pools if p["kind"] == "BSL" and p["status"] == "open" and p["price"] > ref),
                       key=lambda p: p["price"])
-    last = closed[-1]
     sweep = next((p for p in pools if p["kind"] == "SSL" and p["formed_before_last"]
                   and p["status_before_last"] == "open" and last["l"] < p["price"] < last["c"]), None)
     sweep_bear = next((p for p in pools if p["kind"] == "BSL" and p["formed_before_last"]
                        and p["status_before_last"] == "open" and last["h"] > p["price"] > last["c"]), None)
 
-    # --- steunniveaus onder de prijs -> zones
+    # --- support levels below the last close -> buy zones
     levels = []
     for t in tops:
-        if t["price"] < price:
-            levels.append({"price": t["price"], "name": f"Oude top {t['label']}"})
+        if t["price"] < ref:
+            levels.append({"price": t["price"], "name": f"Old high {t['label']}"})
     for bt in bottoms[-4:]:
-        if bt["price"] < price:
-            levels.append({"price": bt["price"], "name": f"Bodem {bt['label']}"})
+        if bt["price"] < ref:
+            levels.append({"price": bt["price"], "name": f"Swing low {bt['label']}"})
     if fib:
         for k in ("38.2", "50", "61.8"):
-            if fib[k] < price:
-                levels.append({"price": fib[k], "name": f"Fibonacci {k.replace('.', ',')}%"})
-    if ema50[-1] < price:
+            if fib[k] < ref:
+                levels.append({"price": fib[k], "name": f"Fibonacci {k}%"})
+    if ema50[-1] < ref:
         levels.append({"price": ema50[-1], "name": "EMA 50"})
-    if profile["poc"] < price:
+    if profile["poc"] < ref:
         levels.append({"price": profile["poc"], "name": "Volume POC"})
     for z in profile["hvn"]:
         mid = (z["low"] + z["high"]) / 2
-        if mid < price and abs(mid - profile["poc"]) / price > 0.01:
-            levels.append({"price": mid, "name": "Hoog-volume zone"})
+        if mid < ref and abs(mid - profile["poc"]) / ref > 0.01:
+            levels.append({"price": mid, "name": "High-volume node"})
     for p in ssl_open[:2]:
-        levels.append({"price": p["price"], "name": f"SSL (equal lows, {p['touches']}x)"})
-    levels = [lv for lv in levels if lv["price"] > price * 0.8]
+        levels.append({"price": p["price"], "name": f"Liquidity: equal lows ({p['touches']}x)"})
+    levels = [lv for lv in levels if lv["price"] > ref * 0.8]
     zones = cluster_levels(levels)
     zones.sort(key=lambda z: -z["high"])
-    zone1 = zones[0] if zones else None
-    zone2 = max(zones[1:], key=lambda z: (z["score"], z["high"])) if len(zones) > 1 else None
+    # a buy zone needs confluence: at least 2 overlapping levels (a single line is too weak)
+    strong = [z for z in zones if z["score"] >= 2]
+    zone1 = strong[0] if strong else (zones[0] if zones else None)
+    rest = [z for z in zones if z is not zone1 and z["high"] < zone1["low"]] if zone1 else []
+    zone2 = max(rest, key=lambda z: (z["score"], z["high"])) if rest else None
 
-    # --- target: eerste obstakel boven de prijs (oude top, swing-high of open BSL)
-    above = [t["price"] for t in tops if t["price"] > price]
-    if fib and fib["high"] > price:
+    # --- target: first obstacle above (old high, swing high or open BSL)
+    above = [t["price"] for t in tops if t["price"] > ref]
+    if fib and fib["high"] > ref:
         above.append(fib["high"])
     if bsl_open:
         above.append(bsl_open[0]["price"])
     target = min(above) if above else None
     last_bottom = bottoms[-1]["price"] if bottoms else None
 
-    # --- 2. plek
-    in_zone = bool(zone1 and zone1["low"] * 0.995 <= price <= zone1["high"] * 1.005)
-    dist_zone = (price - zone1["high"]) / price * 100 if zone1 else None
+    # --- 2. location (decided on the daily close; a wick into the zone with a close just above also counts)
+    in_zone = bool(zone1 and (
+        zone1["low"] * 0.99 <= ref <= zone1["high"] * 1.01
+        or (last["l"] <= zone1["high"] * 1.005 and zone1["high"] < ref <= zone1["high"] * 1.02)))
+    dist_zone = (ref - zone1["high"]) / ref * 100 if zone1 else None
 
-    # --- 4. RSI
+    # --- 3/4. RSI and trigger candle
     r_now, r_prev = rsi14[-1], rsi14[-6]
     rsi_ok = r_now < 70
+    pattern, bias = candle_pattern(last, closed[-2])
+    trigger = bias == "bullish" or sweep is not None
+    trigger_text = pattern + (f" + liquidity sweep at {fmt(sweep['price'])}" if sweep else "")
 
-    # --- 5. candle / liquidity sweep (laatste gesloten)
-    pattern, bias = candle_pattern(closed[-1], closed[-2])
-    candle_ok = bias == "bullish" or sweep is not None
-    candle_text = pattern + (f" + SSL-sweep op {fmt(sweep['price'])}" if sweep else "")
-
-    # --- 6. volume
+    # --- volume
     vols = [c["v"] for c in closed]
     avg30 = sum(vols[-30:]) / 30
     vol_ratio = vols[-1] / avg30 if avg30 else 0
-    vol_ok = vol_ratio >= 0.8
     pullback_vol = None
     if fib:
         up_leg, pb_leg = vols[fib["low_i"]:fib["high_i"] + 1], vols[fib["high_i"] + 1:]
         if up_leg and pb_leg and sum(up_leg):
             pullback_vol = (sum(pb_leg) / len(pb_leg)) / (sum(up_leg) / len(up_leg))
 
-    # --- stop: onder de zone, en onder open liquiditeit vlak eronder (daar worden stops gejaagd)
+    # --- stop below the zone, and below open liquidity just under it (stops get hunted there)
     def stop_for(zone):
         stop = zone["low"] * STOP_BUF
         below = [p["price"] for p in ssl_open if zone["low"] * 0.97 <= p["price"] < zone["low"]]
@@ -564,103 +623,142 @@ def analyse(symbol, candles, pivot_len=7, risk_eur=10, capital=500, last_closed=
                 "position": position, "capped": position < full,
                 "loss_eur": position * stop_pct, "win_eur": position * (tgt - entry) / entry}
 
-    plan_now = plan(price, stop_for(zone1), target) if zone1 else None
+    plan_close = plan(ref, stop_for(zone1), target) if zone1 else None
     plan_z1 = plan(zone1["high"], stop_for(zone1), target) if zone1 else None
     plan_z2 = plan(zone2["high"], stop_for(zone2), target) if zone2 else None
-    rr_ok = bool(plan_now and plan_now["rr"] >= 2)
+    rr_ok = bool(plan_close and plan_close["rr"] >= 2)
 
-    # --- extra bevestiging
+    # --- extra confirmation
     pct_b = None
     if bb_up[-1] is not None and bb_up[-1] != bb_lo[-1]:
-        pct_b = (price - bb_lo[-1]) / (bb_up[-1] - bb_lo[-1])
+        pct_b = (ref - bb_lo[-1]) / (bb_up[-1] - bb_lo[-1])
     hist_up = m_hist[-1] > m_hist[-2]
+    a_now = adx14[-1] or 0
+    k_now = st_k[-1]
     extras = [
-        {"name": "EMA 200", "state": "ok" if price > ema200[-1] else "nee",
-         "text": f"Prijs {'boven' if price > ema200[-1] else 'onder'} EMA 200 ({fmt(ema200[-1])}): lange termijn {'omhoog' if price > ema200[-1] else 'omlaag'}"},
-        {"name": "EMA 20/50", "state": "ok" if ema20[-1] > ema50[-1] else "nee",
-         "text": f"EMA 20 {'boven' if ema20[-1] > ema50[-1] else 'onder'} EMA 50: korte termijn {'sterk' if ema20[-1] > ema50[-1] else 'zwak'}"},
-        {"name": "MACD", "state": "ok" if m_hist[-1] > 0 or (hist_up and m_hist[-1] > m_hist[-3]) else "nee",
-         "text": f"Histogram {'positief' if m_hist[-1] > 0 else 'negatief'} en {'stijgend' if hist_up else 'dalend'}"},
-        {"name": "ADX", "state": "ok" if adx14[-1] and adx14[-1] >= 20 and pdi[-1] > mdi[-1] else ("wacht" if adx14[-1] and adx14[-1] < 20 else "nee"),
-         "text": f"ADX {dec(adx14[-1] or 0, 0)}: {'sterke' if (adx14[-1] or 0) >= 25 else 'matige' if (adx14[-1] or 0) >= 20 else 'zwakke'} trend, "
-                 f"{'kopers (+DI)' if pdi[-1] > mdi[-1] else 'verkopers (−DI)'} sterker"},
-        {"name": "Stoch RSI", "state": "ok" if st_k[-1] is not None and st_k[-1] < 30 else ("nee" if st_k[-1] is not None and st_k[-1] > 80 else "wacht"),
-         "text": f"K {dec(st_k[-1] or 0, 0)}: " + ("oversold, ruimte voor opleving" if (st_k[-1] or 50) < 30 else "overkocht" if (st_k[-1] or 50) > 80 else "neutraal")},
-        {"name": "Bollinger", "state": "ok" if pct_b is not None and pct_b < 0.3 else ("nee" if pct_b is not None and pct_b > 0.95 else "wacht"),
-         "text": f"%B {dec(pct_b or 0, 2)}: " + ("dicht bij onderband" if (pct_b or .5) < 0.3 else "tegen bovenband" if (pct_b or .5) > 0.95 else "midden in de band")},
-        {"name": "OBV", "state": "ok" if obv_sma[-1] is not None and obv_v[-1] > obv_sma[-1] else "nee",
-         "text": "Accumulatie: OBV boven 20-daags gemiddelde" if obv_sma[-1] is not None and obv_v[-1] > obv_sma[-1] else "Distributie: OBV onder 20-daags gemiddelde"},
+        {"name": "EMA 200", "state": "ok" if ref > ema200[-1] else "no",
+         "text": f"Close {'above' if ref > ema200[-1] else 'below'} the EMA 200 ({fmt(ema200[-1])}): long-term {'up' if ref > ema200[-1] else 'down'}"},
+        {"name": "EMA 20/50", "state": "ok" if ema20[-1] > ema50[-1] else "no",
+         "text": f"EMA 20 {'above' if ema20[-1] > ema50[-1] else 'below'} EMA 50: short-term momentum {'strong' if ema20[-1] > ema50[-1] else 'weak'}"},
+        {"name": "MACD", "state": "ok" if m_hist[-1] > 0 or (hist_up and m_hist[-1] > m_hist[-3]) else "no",
+         "text": f"Histogram {'positive' if m_hist[-1] > 0 else 'negative'} and {'rising' if hist_up else 'falling'}"},
+        {"name": "ADX", "state": "ok" if a_now >= 20 and pdi[-1] > mdi[-1] else ("wait" if a_now < 20 else "no"),
+         "text": f"ADX {a_now:.0f}: {'strong' if a_now >= 25 else 'moderate' if a_now >= 20 else 'weak'} trend, "
+                 f"{'buyers (+DI)' if pdi[-1] > mdi[-1] else 'sellers (-DI)'} in control"},
+        {"name": "Stoch RSI", "state": "ok" if k_now is not None and k_now < 30 else ("no" if k_now is not None and k_now > 80 else "wait"),
+         "text": f"K {k_now or 0:.0f}: " + ("oversold, room to bounce" if (k_now or 50) < 30 else "overbought" if (k_now or 50) > 80 else "neutral")},
+        {"name": "Bollinger", "state": "ok" if pct_b is not None and pct_b < 0.3 else ("no" if pct_b is not None and pct_b > 0.95 else "wait"),
+         "text": f"%B {pct_b or 0:.2f}: " + ("near the lower band" if (pct_b or .5) < 0.3 else "at the upper band" if (pct_b or .5) > 0.95 else "mid-band")},
+        {"name": "OBV", "state": "ok" if obv_sma[-1] is not None and obv_v[-1] > obv_sma[-1] else "no",
+         "text": "Accumulation: OBV above its 20-day average" if obv_sma[-1] is not None and obv_v[-1] > obv_sma[-1] else "Distribution: OBV below its 20-day average"},
     ]
     conf = sum(1 for e in extras if e["state"] == "ok")
-    atr_pct = atr_now / price * 100
-    extras.append({"name": "ATR", "state": "info", "text": f"Gemiddelde dagbeweging ≈ {dec(atr_pct)}% ({fmt(atr_now)})"})
+    atr_pct = atr_now / ref * 100
+    extras.append({"name": "ATR", "state": "info", "text": f"Average daily move ≈ {atr_pct:.1f}% ({fmt(atr_now)})"})
 
-    # --- liquiditeit-regel voor de checklist
+    # --- liquidity check
     if sweep:
-        liq = {"state": "ok", "text": f"SSL op {fmt(sweep['price'])} gesweept en terug erboven: stops zijn opgehaald"}
+        liq = {"state": "ok", "text": f"Equal lows at {fmt(sweep['price'])} were swept and reclaimed: stops have been taken"}
     elif sweep_bear:
-        liq = {"state": "nee", "text": f"BSL op {fmt(sweep_bear['price'])} gesweept en afgewezen: let op"}
-    elif ssl_open and (price - ssl_open[0]["price"]) / price < 0.03:
-        liq = {"state": "wacht", "text": f"Open SSL op {fmt(ssl_open[0]['price'])} ({dec((price - ssl_open[0]['price']) / price * 100)}% lager): prijs kan die nog ophalen"}
+        liq = {"state": "no", "text": f"Equal highs at {fmt(sweep_bear['price'])} were swept and rejected: caution"}
+    elif ssl_open and (ref - ssl_open[0]["price"]) / ref < 0.03:
+        liq = {"state": "wait", "text": f"Untapped equal lows at {fmt(ssl_open[0]['price'])} ({(ref - ssl_open[0]['price']) / ref * 100:.1f}% lower): price may still dip there"}
     else:
-        liq = {"state": "ok", "text": "Geen open liquiditeit vlak onder de prijs"}
+        liq = {"state": "ok", "text": "No untapped liquidity just below price"}
 
     checklist = [
-        {"name": "Trend", "state": "ok" if trend_ok else "nee", "text": trend},
-        {"name": "Plek", "state": "ok" if in_zone else "wacht",
-         "text": "In zone 1" if in_zone else (f"{dec(dist_zone)}% boven zone 1" if dist_zone is not None else "Geen zone gevonden")},
-        {"name": "EMA 50", "state": "ok" if above_ema else "nee",
-         "text": f"Prijs {'boven' if above_ema else 'onder'} EMA 50 ({fmt(ema50[-1])}), {'stijgend' if ema_slope > 0 else 'dalend'}"},
-        {"name": "RSI", "state": "ok" if rsi_ok else "nee",
-         "text": f"{dec(r_now)} ({'daalt' if r_now < r_prev else 'stijgt'}, was {dec(r_prev)})"},
-        {"name": "Signaal", "state": "ok" if candle_ok else "nee", "text": candle_text},
-        {"name": "Liquiditeit", "state": liq["state"], "text": liq["text"]},
-        {"name": "Volume", "state": "ok" if vol_ok else "wacht", "text": f"{vol_ratio * 100:.0f}% van 30-daags gemiddelde"},
-        {"name": "Risico/winst", "state": "ok" if rr_ok else "nee",
-         "text": f"{dec(plan_now['rr'])}x bij instap nu" if plan_now else "Niet te berekenen"},
-        {"name": "Bevestiging", "state": "ok" if conf >= 4 else "wacht", "text": f"{conf} van 7 extra indicatoren positief"},
+        {"name": "Trend", "state": "ok" if trend_ok else "no", "text": f"{trend} (weekly: {w_trend})"},
+        {"name": "Buy zone", "state": "ok" if in_zone else "wait",
+         "text": "Daily close in buy zone 1" if in_zone else (f"{dist_zone:.1f}% above buy zone 1" if dist_zone is not None else "No zone found")},
+        {"name": "EMA 50", "state": "ok" if above_ema else "no",
+         "text": f"Close {'above' if above_ema else 'below'} EMA 50 ({fmt(ema50[-1])}), {'rising' if ema_slope > 0 else 'falling'}"},
+        {"name": "RSI", "state": "ok" if rsi_ok else "no", "text": f"{r_now:.1f} ({'falling' if r_now < r_prev else 'rising'}, was {r_prev:.1f})"},
+        {"name": "Trigger", "state": "ok" if trigger else "no", "text": trigger_text},
+        {"name": "Liquidity", "state": liq["state"], "text": liq["text"]},
+        {"name": "Volume", "state": "ok" if vol_ratio >= 0.8 else "wait", "text": f"{vol_ratio * 100:.0f}% of the 30-day average"},
+        {"name": "Risk/reward", "state": "ok" if rr_ok else "no",
+         "text": f"{plan_close['rr']:.1f}x from the close" if plan_close else "Cannot be calculated"},
+        {"name": "Confirmation", "state": "ok" if conf >= 4 else "wait", "text": f"{conf} of 7 extra indicators positive"},
     ]
 
-    setup = trend_ok and in_zone and candle_ok and rsi_ok and rr_ok
-    if setup:
-        status = {"key": "setup", "label": "Setup", "title": "Mogelijke setup volgens je checklist",
-                  "text": "Alle kernpunten zijn groen. Controleer het zelf op de chart voordat je iets doet."}
-    elif not trend_ok:
-        status = {"key": "down", "label": "Trend negatief" if score <= -2 else "Geen trend",
-                  "title": "Geen setup: trend werkt niet mee",
-                  "text": "Volgens je regels koop je alleen in een uptrend. Wachten."}
+    # --- signal (strategy rules)
+    if not trend_ok:
+        key = "avoid"
+        why = {"down": "Downtrend", "sideways": "No clear trend"}.get(daily, "Weekly trend is down")
+        if daily == "up":
+            why = "Weekly trend is down"
+        reason = f"{why}: the strategy only buys in uptrends"
+        plan_text = (f"Stay out. Re-check when price makes a higher low and closes above the EMA 50 ({fmt(ema50[-1])}).")
+    elif in_zone and trigger and rsi_ok and rr_ok:
+        key = "buy"
+        p = plan_close
+        reason = f"Uptrend, daily close in the buy zone with a trigger ({trigger_text.lower()})"
+        plan_text = (f"Buy setup at the daily close. Entry ≈ {fmt(p['entry'])}, stop {fmt(p['stop'])} (−{p['stop_pct']:.1f}%), "
+                     f"target {fmt(p['target'])} (+{p['win_pct']:.1f}%). Position {eur(p['position'])} → max loss ≈ {eur(p['loss_eur'])}.")
     elif in_zone:
-        status = {"key": "zone", "label": "In zone", "title": "In de koopzone: wacht op signaal",
-                  "text": "De prijs staat in zone 1. Wacht op een gesloten hammer, bullish engulfing of SSL-sweep."}
+        key = "ready"
+        missing = []
+        if not trigger:
+            missing.append("a trigger candle")
+        if not rsi_ok:
+            missing.append("RSI below 70")
+        if not rr_ok:
+            missing.append("a 2x risk/reward")
+        reason = "In the buy zone, waiting for " + (" and ".join(missing) if len(missing) < 3 else ", ".join(missing[:-1]) + " and " + missing[-1])
+        p = plan_z1
+        plan_text = (f"Price is in the buy zone {fmt(zone1['low'])}–{fmt(zone1['high'])}. Wait for a daily close with a hammer, "
+                     "bullish engulfing or liquidity sweep."
+                     + (f" Then: entry ≈ {fmt(p['entry'])}, stop {fmt(p['stop'])}, target {fmt(p['target'])}." if p else ""))
     else:
-        status = {"key": "wait", "label": "Wachten", "title": "Geen setup: wachten",
-                  "text": "De trend is goed, maar de prijs is nog niet op een goede plek."}
+        key = "watch"
+        if zone1:
+            reason = f"Uptrend, waiting for a pullback to {fmt(zone1['low'])}–{fmt(zone1['high'])} ({dist_zone:.1f}% lower)"
+            plan_text = (f"Don't chase. Wait for a pullback into the buy zone {fmt(zone1['low'])}–{fmt(zone1['high'])}, "
+                         f"{dist_zone:.1f}% below the last close.")
+        else:
+            reason = "Uptrend, no buy zone below price yet"
+            plan_text = "Don't chase. Wait for a pullback that forms a new higher low."
+
+    # --- signal strength 0-100
+    pts = (20 if daily == "up" else 0) + (5 if score >= 4 else 0)
+    pts += {"up": 10, "neutral": 5}.get(w_trend, 0)
+    if in_zone:
+        pts += 20
+    elif dist_zone is not None and dist_zone < 3:
+        pts += 10
+    elif dist_zone is not None and dist_zone < 6:
+        pts += 5
+    pts += (20 if trigger else 0) + (5 if rsi_ok else 0) + (10 if rr_ok else 0) + round(15 * conf / 7)
+    strength = min(100, pts) if key != "avoid" else min(30, pts)
 
     scenarios = []
     if zone1:
-        scenarios.append({"key": "A", "title": f"Terugval naar zone 1 ({fmt(zone1['low'])} – {fmt(zone1['high'])})",
-                          "text": "Wacht op een gesloten hammer, bullish engulfing of SSL-sweep in de zone.", "plan": plan_z1})
+        scenarios.append({"key": "A", "title": f"Pullback to buy zone 1 ({fmt(zone1['low'])} – {fmt(zone1['high'])})",
+                          "text": "Wait for a daily close with a hammer, bullish engulfing or liquidity sweep in the zone.", "plan": plan_z1})
     if zone2:
-        scenarios.append({"key": "B", "title": f"Diepere terugval naar zone 2 ({fmt(zone2['low'])} – {fmt(zone2['high'])})",
-                          "text": f"Sterkere zone ({zone2['score']} niveaus samen). Zelfde signaal afwachten.", "plan": plan_z2})
+        scenarios.append({"key": "B", "title": f"Deeper pullback to buy zone 2 ({fmt(zone2['low'])} – {fmt(zone2['high'])})",
+                          "text": f"Stronger zone ({zone2['score']} levels overlap). Same trigger required.", "plan": plan_z2})
     if target:
-        what = "open BSL (equal highs)" if bsl_open and target == bsl_open[0]["price"] else "weerstand"
-        scenarios.append({"key": "C", "title": f"Dagslot boven {fmt(target)} ({what})",
-                          "text": "Uitbraak: de trend gaat verder. Niet najagen, wacht op de volgende terugval.", "plan": None})
+        what = "untapped equal highs" if bsl_open and target == bsl_open[0]["price"] else "resistance"
+        scenarios.append({"key": "C", "title": f"Daily close above {fmt(target)} ({what})",
+                          "text": "Breakout: the trend continues. Don't chase, wait for the next pullback.", "plan": None})
     if last_bottom:
-        scenarios.append({"key": "D", "title": f"Dagslot onder {fmt(last_bottom)}",
-                          "text": "Laatste bodem gebroken: trend in gevaar. Geen koopplannen.", "plan": None})
+        scenarios.append({"key": "D", "title": f"Daily close below {fmt(last_bottom)}",
+                          "text": "Last swing low broken: the uptrend is in danger. No buys.", "plan": None})
 
     return {
-        "symbol": symbol, "price": price, "live": live, "closed": closed, "last_closed": last_closed,
+        "symbol": symbol, "price": price, "ref": ref, "live": live, "closed": closed, "last_closed": last_closed,
+        "close_day": day_key(last["t"]),
         "ema20": ema20, "ema50": ema50, "ema200": ema200, "rsi": rsi14,
         "macd": (m_line, m_sig, m_hist), "labels": labels,
-        "trend": trend, "trend_ok": trend_ok, "trend_score": score, "trend_reasons": reasons,
+        "trend": trend, "daily_trend": daily, "weekly_trend": w_trend, "trend_ok": trend_ok,
+        "trend_score": score, "trend_reasons": reasons,
         "fib": fib, "zones": zones, "zone1": zone1, "zone2": zone2,
         "target": target, "last_bottom": last_bottom,
         "pools": pools, "profile": profile, "sweep": sweep,
-        "in_zone": in_zone, "dist_zone": dist_zone, "setup": setup, "status": status,
-        "pattern": candle_text, "rsi_now": r_now, "vol_ratio": vol_ratio, "pullback_vol": pullback_vol,
+        "in_zone": in_zone, "dist_zone": dist_zone,
+        "signal": {"key": key, "label": SIGNALS[key], "reason": reason, "plan": plan_text, "strength": strength},
+        "pattern": trigger_text, "rsi_now": r_now, "vol_ratio": vol_ratio, "pullback_vol": pullback_vol,
         "checklist": checklist, "extras": extras, "confluence": conf,
-        "scenarios": scenarios, "plan_now": plan_now, "atr_pct": atr_pct,
+        "scenarios": scenarios, "plan_close": plan_close, "atr_pct": atr_pct,
     }

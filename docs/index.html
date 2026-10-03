@@ -1,141 +1,132 @@
 <!doctype html>
-<html lang="nl">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Emir Isiklar · Radar</title>
-  <meta name="description" content="Live technische analyse van crypto en aandelen: trend, liquiditeitszones, koopzones, checklist en meldingen.">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563eb'/%3E%3Ctext x='16' y='21.5' font-family='Arial' font-weight='700' font-size='14' fill='white' text-anchor='middle'%3EEI%3C/text%3E%3C/svg%3E">
+  <title>ZoneHunter</title>
+  <meta name="description" content="ZoneHunter tracks crypto and stocks and tells you when price reaches a buy zone in an uptrend: buy signals, liquidity zones and a full checklist.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2316a34a'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='white' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='white'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body>
   <header class="topbar">
     <div class="wrap topbar-inner">
-      <a class="brand" href="#"><span class="brand-mark">EI</span><span>Radar</span></a>
+      <a class="brand" href="#/crypto" aria-label="ZoneHunter home">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" class="b1"/><circle cx="16" cy="16" r="9" class="b2"/><circle cx="16" cy="16" r="3" class="b3"/></svg>
+        <span>ZoneHunter</span>
+      </a>
+      <nav class="nav" aria-label="Sections">
+        <a href="#/crypto" data-nav="crypto">Crypto</a>
+        <a href="#/stocks" data-nav="stocks">Stocks</a>
+        <a href="#/alerts" data-nav="alerts">Alerts</a>
+      </nav>
       <div class="top-meta">
-        <span class="live" id="live"><i></i><span>Verbinden…</span></span>
-        <span class="muted hide-sm" id="updated">–</span>
-        <button class="icon-btn" id="theme" aria-label="Wissel licht/donker thema" title="Thema">
+        <span class="live" id="live" title="Live crypto prices"><i></i><span>Connecting…</span></span>
+        <button class="icon-btn" id="theme" aria-label="Toggle light/dark theme" title="Theme">
           <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg>
         </button>
       </div>
     </div>
   </header>
 
-  <section class="hero">
+  <!-- LEVEL 1: market overview -->
+  <main id="view-home" class="view" hidden>
+    <section class="hero">
+      <div class="wrap">
+        <h1 class="hero-title">Zone<span>Hunter</span></h1>
+        <p class="hero-sub">Hunt the zone, skip the hype. ZoneHunter watches every market around the clock and tells you when price pulls back into a buy zone inside an uptrend.</p>
+      </div>
+    </section>
     <div class="wrap">
-      <h1 class="hero-title"><span class="name">EMIR ISIKLAR</span><span class="goat">DA GOAT</span></h1>
-      <p class="hero-sub">Live analyse van crypto en aandelen: trend, liquiditeitszones, koopzones en een volledige checklist. Met meldingen op je telefoon.</p>
-      <div class="switch" role="tablist" aria-label="Markt">
-        <button role="tab" data-market="crypto" id="tab-crypto"><span>Crypto</span><b id="n-crypto">0</b></button>
-        <button role="tab" data-market="stocks" id="tab-stocks"><span>Aandelen</span><b id="n-stocks">0</b></button>
+      <div class="home-head">
+        <h2 id="home-title">Crypto</h2>
+        <span class="muted" id="updated">–</span>
+      </div>
+      <div class="tiles" id="tiles"></div>
+      <div class="toolbar">
+        <span class="muted" id="market-note"></span>
+        <input class="search" id="search" type="search" placeholder="Search name or symbol" aria-label="Search">
+      </div>
+      <div class="list" id="list"></div>
+      <section class="how">
+        <h3>How it works</h3>
+        <ol>
+          <li><b>Trend first.</b> Only markets in an uptrend (daily and weekly) are considered. Everything else is <span class="sig sig-avoid">AVOID</span>.</li>
+          <li><b>Wait for the zone.</b> In an uptrend, price is <span class="sig sig-watch">WATCH</span> until it pulls back into a buy zone where several supports overlap.</li>
+          <li><b>Wait for the trigger.</b> In the zone it becomes <span class="sig sig-ready">GET READY</span>. A daily close with a hammer, bullish engulfing or liquidity sweep turns it into a <span class="sig sig-buy">BUY SIGNAL</span>, with entry, stop, target and position size.</li>
+        </ol>
+        <p class="muted">Signals are decided once a day on the daily close (crypto 00:00 UTC, stocks at the US close), so they don't flip back and forth during the day.</p>
+      </section>
+    </div>
+  </main>
+
+  <!-- LEVEL 2 + 3: asset page with expandable details -->
+  <main id="view-asset" class="view wrap" hidden>
+    <a class="back" id="back" href="#/crypto">← Back</a>
+    <div class="asset-head">
+      <div class="coin-id">
+        <span class="coin-icon lg" id="a-icon"></span>
+        <div><h1 id="a-name">–</h1><div class="muted" id="a-sub">–</div></div>
+      </div>
+      <div class="asset-price">
+        <div class="big mono" id="a-price">–</div>
+        <div class="chg" id="a-change">–</div>
       </div>
     </div>
-  </section>
 
-  <main class="wrap">
-    <section class="kpis" id="kpis"></section>
+    <section class="signal-card" id="a-signal"></section>
 
-    <section>
-      <div class="toolbar">
-        <div class="chips" id="filters"></div>
-        <input class="search" id="search" type="search" placeholder="Zoek op naam of symbool" aria-label="Zoeken">
+    <section class="panel chart-panel">
+      <div class="chart-tools">
+        <div class="toggles" id="overlays">
+          <button class="tg on" data-ov="zones">Buy zones</button>
+          <button class="tg on" data-ov="ema">Averages</button>
+          <button class="tg" data-ov="liq">Liquidity</button>
+          <button class="tg" data-ov="swings">Swing labels</button>
+        </div>
+        <div class="toggles" id="panes">
+          <button class="tg on" data-pane="rsi">RSI</button>
+          <button class="tg" data-pane="macd">MACD</button>
+        </div>
       </div>
-      <div class="market-note muted" id="market-note"></div>
-      <div class="cards" id="cards"></div>
+      <div class="chart" id="chart"></div>
+      <div class="sub-chart" id="sub"></div>
+      <div class="legend" id="legend"></div>
     </section>
 
-    <section id="detail" class="detail" hidden>
-      <div class="detail-head">
-        <div class="coin-id">
-          <span class="coin-icon lg" id="d-icon"></span>
-          <div>
-            <h2 id="d-name">–</h2>
-            <div class="muted" id="d-sub">–</div>
-          </div>
-        </div>
-        <div class="detail-price">
-          <div class="big mono" id="d-price">–</div>
-          <div id="d-change" class="chg">–</div>
-        </div>
-      </div>
+    <div class="details">
+      <details id="d-check"><summary><span>Why this signal</span><em id="s-check"></em></summary><div class="body"><ul class="checklist" id="a-checklist"></ul><p class="note">All checks use the last closed daily candle.</p></div></details>
+      <details id="d-scen"><summary><span>Scenarios &amp; trade plans</span><em id="s-scen"></em></summary><div class="body scenarios" id="a-scenarios"></div></details>
+      <details id="d-liq"><summary><span>Liquidity zones</span><em id="s-liq"></em></summary><div class="body">
+        <p class="explain">Equal highs (BSL) and equal lows (SSL) are where stop-losses cluster. Price is often drawn to them. A <b>sweep</b> (wick through, close back) takes those stops and often marks a turning point.</p>
+        <div id="a-pools"></div></div></details>
+      <details id="d-prof"><summary><span>Volume profile</span><em id="s-prof"></em></summary><div class="body">
+        <p class="explain">Where the most volume traded. The <b>POC</b> is the busiest price; the <b>value area</b> holds 70% of volume. High-volume nodes often act as support or resistance.</p>
+        <div id="a-profile"></div></div></details>
+      <details id="d-ind"><summary><span>Indicators</span><em id="s-ind"></em></summary><div class="body"><ul class="checklist" id="a-extras"></ul></div></details>
+      <details id="d-trend"><summary><span>Trend &amp; Fibonacci</span><em id="s-trend"></em></summary><div class="body"><ul class="plain" id="a-trend"></ul><div id="a-fib"></div></div></details>
+      <details id="d-zones"><summary><span>All support levels</span><em id="s-zones"></em></summary><div class="body"><ul class="zones" id="a-zones"></ul></div></details>
+    </div>
+  </main>
 
-      <div class="detail-grid">
-        <div class="panel chart-panel">
-          <div class="chart" id="chart"></div>
-          <div class="pane-tabs">
-            <button class="on" data-pane="rsi">RSI 14</button>
-            <button data-pane="macd">MACD</button>
-          </div>
-          <div class="sub-chart" id="sub"></div>
-          <div class="legend">
-            <span><i style="background:var(--ema50)"></i>EMA 50</span>
-            <span><i style="background:var(--ema200)"></i>EMA 200</span>
-            <span><i style="background:var(--zone1)"></i>Zone 1</span>
-            <span><i style="background:var(--zone2)"></i>Zone 2</span>
-            <span><i style="background:var(--bsl)"></i>BSL (equal highs)</span>
-            <span><i style="background:var(--ssl)"></i>SSL (equal lows)</span>
-            <span><i style="background:var(--poc)"></i>Volume POC</span>
-            <span><i style="background:var(--target)"></i>Target</span>
-            <span><i style="background:var(--down)"></i>Trendgrens</span>
-          </div>
-        </div>
-
-        <aside class="side">
-          <div class="verdict" id="d-verdict"></div>
-          <div class="panel">
-            <h3>Checklist</h3>
-            <ul class="checklist" id="d-checklist"></ul>
-            <p class="note">Signalen gebruiken alleen gesloten dagcandles.</p>
-          </div>
-        </aside>
-      </div>
-
-      <div class="panel">
-        <h3>Scenario's</h3>
-        <div class="scenarios" id="d-scenarios"></div>
-      </div>
-
-      <div class="grid-2">
-        <div class="panel">
-          <h3>Liquiditeitszones</h3>
-          <p class="explain">Equal highs (BSL) en equal lows (SSL) zijn plekken waar veel stop-losses liggen. De prijs wordt daar vaak naartoe getrokken. Een <b>sweep</b> (wick erdoor, slot terug) haalt die stops op en is vaak een keerpunt.</p>
-          <div id="d-pools"></div>
-        </div>
-        <div class="panel">
-          <h3>Volume profile</h3>
-          <p class="explain">Waar het meeste is gehandeld. De <b>POC</b> is de prijs met het hoogste volume; de <b>value area</b> bevat 70% van het volume. Hoog-volume zones werken vaak als steun of weerstand.</p>
-          <div id="d-profile"></div>
-        </div>
-      </div>
-
-      <div class="grid-3">
-        <div class="panel">
-          <h3>Extra indicatoren</h3>
-          <div class="score" id="d-score"></div>
-          <ul class="checklist compact" id="d-extras"></ul>
-        </div>
-        <div class="panel"><h3>Trend &amp; Fibonacci</h3><ul class="plain" id="d-trend"></ul><div id="d-fib"></div></div>
-        <div class="panel"><h3>Steunzones</h3><ul class="zones" id="d-zones"></ul></div>
-      </div>
-    </section>
-
-    <section>
-      <div class="section-head">
-        <h2>Meldingen</h2>
-        <span class="muted">Laatste meldingen die naar je telefoon zijn gestuurd</span>
-      </div>
-      <div class="panel"><ul class="history" id="history"></ul></div>
-    </section>
+  <!-- alerts -->
+  <main id="view-alerts" class="view wrap" hidden>
+    <div class="home-head"><h2>Alerts</h2><span class="muted">Everything that was sent to your phone</span></div>
+    <div class="toggles" id="alert-filter">
+      <button class="tg on" data-af="all">All</button>
+      <button class="tg" data-af="crypto">Crypto</button>
+      <button class="tg" data-af="stocks">Stocks</button>
+    </div>
+    <div class="panel"><ul class="history" id="history"></ul></div>
   </main>
 
   <footer class="wrap footer">
-    <p><b>Emir Isiklar · Radar</b> volgt automatisch de checklist: trend, zone, EMA 50, RSI, signaal, liquiditeit, volume, risico/winst en 7 extra indicatoren. Crypto live via Binance, aandelen via Yahoo Finance; analyse elk uur.</p>
-    <p class="muted">Educatief hulpmiddel, geen financieel advies. Niemand kan de koers voorspellen. Controleer altijd zelf en riskeer alleen geld dat je kunt missen.</p>
+    <p><b>ZoneHunter</b> · crypto live via Binance, stocks hourly via Yahoo Finance · analysis every hour, signals on the daily close.</p>
+    <p class="muted">Signals follow fixed strategy rules and are not financial advice. Nobody can predict prices. Always check the chart yourself and only risk money you can afford to lose.</p>
   </footer>
 
   <script src="app.js"></script>

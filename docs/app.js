@@ -1,6 +1,8 @@
-/* Emir Isiklar · Radar -- website.
- * Laadt het overzicht (data.json) en per symbool de details (charts/<SYM>.json).
- * Crypto-prijzen lopen live mee via de Binance-websocket; aandelen worden elk uur bijgewerkt. */
+/* ZoneHunter -- website.
+ * Level 1: market overview (signal per market + one-line reason).
+ * Level 2: asset page (signal card, plan, chart).
+ * Level 3: expandable details (checklist, scenarios, liquidity, volume profile, indicators, trend, levels).
+ * Crypto prices update live via the Binance websocket; stocks refresh hourly. */
 
 const COLORS = {
   BTC: '#f7931a', ETH: '#627eea', SOL: '#9945ff', XRP: '#0a7fc2', BNB: '#e0a800', DOGE: '#c2a633', ADA: '#0033ad',
@@ -8,8 +10,13 @@ const COLORS = {
   NEAR: '#00a37a', BCH: '#0ac18e',
 };
 const STOCK_COLORS = ['#2563eb', '#7c3aed', '#0891b2', '#db2777', '#059669', '#d97706', '#4f46e5', '#0f766e'];
-const STATUS_ORDER = { setup: 0, zone: 1, wait: 2, down: 3 };
-const FILTERS = [['all', 'Alle'], ['setup', 'Setup'], ['zone', 'In zone'], ['wait', 'Wachten'], ['down', 'Geen trend']];
+const ORDER = { buy: 0, ready: 1, watch: 2, avoid: 3 };
+const TILES = [
+  ['buy', 'BUY SIGNAL', 'All strategy rules met'],
+  ['ready', 'GET READY', 'In a buy zone, waiting for trigger'],
+  ['watch', 'WATCH', 'Uptrend, waiting for a pullback'],
+  ['avoid', 'AVOID', 'No uptrend, stay out'],
+];
 const WS_URL = 'wss://data-stream.binance.vision/stream?streams=';
 const REST_TICKER = 'https://data-api.binance.vision/api/v3/ticker/24hr?symbols=';
 
@@ -17,220 +24,128 @@ const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const store = {
   get(k) { try { return localStorage.getItem(k); } catch { return null; } },
-  set(k, v) { try { localStorage.setItem(k, v); } catch { /* geen opslag */ } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch { /* storage unavailable */ } },
 };
 
 let DATA = null;
-let market = store.get('radar-market') || 'crypto';
-let filter = 'all';
+let route = { view: 'home', market: 'crypto' };
+let filter = null;
 let query = '';
-let selected = null;
+let alertFilter = 'all';
 let pane = 'rsi';
-const details = new Map();   // symbool -> detail-json
-const live = {};             // symbool -> { price, change }
+const overlays = { zones: true, ema: true, liq: false, swings: false };
+const details = new Map();
+const live = {};
 let charts = null;
 let ws = null, wsRetry = 0, pollTimer = null;
 
-/* ---------- formattering ---------- */
-function decimals(p) { return p >= 1000 ? 0 : p >= 100 ? 2 : p >= 1 ? 3 : p >= 0.01 ? 4 : 7; }
+/* ---------- formatting ---------- */
+function decimals(p) { return p >= 1000 ? 0 : p >= 1 ? 2 : p >= 0.01 ? 4 : 7; }
 function fmt(p) {
   if (p == null || isNaN(p)) return '–';
   const d = decimals(Math.abs(p));
-  return new Intl.NumberFormat('nl-NL', { minimumFractionDigits: Math.min(d, 4), maximumFractionDigits: d }).format(p);
+  return new Intl.NumberFormat('en-US', { minimumFractionDigits: Math.min(d, 2), maximumFractionDigits: d }).format(p);
 }
 function pct(x, sign = true) {
   if (x == null || isNaN(x)) return '–';
-  const s = new Intl.NumberFormat('nl-NL', { minimumFractionDigits: 1, maximumFractionDigits: 2 }).format(Math.abs(x));
+  const s = new Intl.NumberFormat('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 2 }).format(Math.abs(x));
   return (sign ? (x >= 0 ? '+' : '−') : '') + s + '%';
 }
-const nf = (x, d = 1) => new Intl.NumberFormat('nl-NL', { minimumFractionDigits: d, maximumFractionDigits: d }).format(x);
-const eur = (x) => '€' + new Intl.NumberFormat('nl-NL', { maximumFractionDigits: 0 }).format(x);
+const nf = (x, d = 1) => new Intl.NumberFormat('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }).format(x);
+const eur = (x) => '€' + new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(x);
 function ago(iso) {
   const m = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
-  if (m < 1) return 'zojuist';
-  if (m < 60) return `${m} min geleden`;
+  if (m < 1) return 'just now';
+  if (m < 60) return `${m} min ago`;
   const h = Math.floor(m / 60);
-  return h < 24 ? `${h} uur geleden` : `${Math.floor(h / 24)} d geleden`;
+  return h < 24 ? `${h} h ago` : `${Math.floor(h / 24)} d ago`;
 }
-const timeNL = (iso) => new Date(iso).toLocaleString('nl-NL', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
-const dateNL = (t) => new Date(t * 1000).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' });
+const when = (iso) => new Date(iso).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+const dayLabel = (d) => d ? new Date(d + 'T12:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '–';
+const shortDate = (t) => new Date(t * 1000).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
 const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 
 /* ---------- helpers ---------- */
-function iconHtml(a, extra = '') {
+function iconHtml(a, extra = '', id = '') {
   let col = COLORS[a.base];
   if (!col) col = STOCK_COLORS[[...a.symbol].reduce((s, c) => s + c.charCodeAt(0), 0) % STOCK_COLORS.length];
-  return `<span class="coin-icon${a.market === 'stocks' ? ' sq' : ''}${extra}" style="background:${col}">${esc(a.base.slice(0, 4))}</span>`;
+  return `<span ${id ? `id="${id}" ` : ''}class="coin-icon${a.market === 'stocks' ? ' sq' : ''}${extra}" style="background:${col}">${esc(a.base.slice(0, 4))}</span>`;
 }
-const badge = (st) => `<span class="badge s-${st.key}"><i></i>${esc(st.label)}</span>`;
-const assets = () => DATA ? DATA.assets.filter((a) => a.market === market) : [];
+const sigBadge = (s) => `<span class="sig sig-${s.key}">${esc(s.label)}</span>`;
 const find = (sym) => DATA?.assets.find((a) => a.symbol === sym);
+const marketAssets = (m) => DATA ? DATA.assets.filter((a) => a.market === m) : [];
 const priceOf = (a) => live[a.symbol]?.price ?? a.price;
 function changeOf(a) {
   if (live[a.symbol]?.change != null) return live[a.symbol].change;
   return a.ref_price ? (a.price - a.ref_price) / a.ref_price * 100 : null;
 }
-function zoneText(a) {
+const sigColor = (k) => `var(--${k})`;
+function liveZoneNote(a) {
+  if (!a.zone1 || a.signal.key === 'avoid') return '';
   const p = priceOf(a);
-  if (!a.zone1) return '–';
-  if (p >= a.zone1.low * 0.995 && p <= a.zone1.high * 1.005) return 'In zone 1';
-  if (p < a.zone1.low) return 'Onder zone 1';
-  return pct((p - a.zone1.high) / p * 100, false) + ' erboven';
+  if (p >= a.zone1.low * 0.99 && p <= a.zone1.high * 1.01) return 'Live price is inside the buy zone now';
+  if (p < a.zone1.low) return 'Live price is below the buy zone';
+  return `Buy zone ${fmt(a.zone1.low)}–${fmt(a.zone1.high)} · ${pct((p - a.zone1.high) / p * 100, false)} away`;
 }
 
-function sparkline(a) {
-  const pts = a.spark.filter((v) => v != null);
-  if (live[a.symbol]) pts[pts.length - 1] = live[a.symbol].price;
-  const min = Math.min(...pts), max = Math.max(...pts), w = 300, h = 38;
-  const d = pts.map((v, i) => `${i ? 'L' : 'M'}${(i / (pts.length - 1) * w).toFixed(1)},${(h - 3 - (v - min) / (max - min || 1) * (h - 6)).toFixed(1)}`).join(' ');
-  const col = pts[pts.length - 1] >= pts[0] ? 'var(--up)' : 'var(--down)';
-  return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true">
-    <path d="${d} L${w},${h} L0,${h} Z" fill="${col}" opacity=".08"/><path d="${d}" fill="none" stroke="${col}" stroke-width="1.6" vector-effect="non-scaling-stroke"/></svg>`;
+/* ---------- routing ---------- */
+function parseHash() {
+  const h = location.hash.replace(/^#\/?/, '');
+  if (h.startsWith('asset/')) return { view: 'asset', symbol: h.slice(6) };
+  if (h === 'alerts') return { view: 'alerts' };
+  if (h === 'stocks' || h === 'crypto') return { view: 'home', market: h };
+  if (h && find(h)) return { view: 'asset', symbol: h };           // old links: #BTCUSDT
+  return { view: 'home', market: store.get('zh-market') || 'crypto' };
 }
 
-/* ---------- overzicht ---------- */
-function renderSwitch() {
-  ['crypto', 'stocks'].forEach((m) => {
-    $('tab-' + m).classList.toggle('on', m === market);
-    $('tab-' + m).setAttribute('aria-selected', m === market);
-    $('n-' + m).textContent = DATA ? DATA.assets.filter((a) => a.market === m).length : 0;
-  });
+function render() {
+  route = parseHash();
+  ['home', 'asset', 'alerts'].forEach((v) => { $('view-' + v).hidden = route.view !== v; });
+  const navKey = route.view === 'asset' ? find(route.symbol)?.market : route.view === 'alerts' ? 'alerts' : route.market;
+  document.querySelectorAll('[data-nav]').forEach((a) => a.classList.toggle('on', a.dataset.nav === navKey));
+  if (!DATA) return;
+  if (route.view === 'home') { store.set('zh-market', route.market); renderHome(); }
+  else if (route.view === 'asset') renderAsset();
+  else renderAlerts();
 }
+window.addEventListener('hashchange', () => { render(); window.scrollTo(0, 0); });
 
-function renderKpis() {
-  const list = assets();
-  const count = (k) => list.filter((a) => a.status.key === k).length;
-  const tiles = [['Setups', count('setup'), 'var(--setup)'], ['In koopzone', count('zone'), 'var(--zone)'],
-    ['Wachten', count('wait'), 'var(--wait)'], ['Geen trend', count('down'), 'var(--neg)']];
-  $('kpis').innerHTML = tiles.map(([l, v, col]) =>
-    `<div class="kpi"><div class="label"><i style="background:${col}"></i>${l}</div><div class="value">${v}</div></div>`).join('');
-}
-
-function renderFilters() {
-  $('filters').innerHTML = FILTERS.map(([k, l]) => `<button class="chip${k === filter ? ' on' : ''}" data-filter="${k}">${l}</button>`).join('');
-  $('filters').querySelectorAll('.chip').forEach((b) => b.addEventListener('click', () => { filter = b.dataset.filter; renderFilters(); renderCards(); }));
-}
-
-function renderMarketNote() {
-  if (market === 'crypto') {
-    $('market-note').textContent = 'Live koersen via Binance · analyse op de dagchart, elk uur bijgewerkt · dagslot 02:00 NL-tijd (zomertijd)';
+/* ---------- level 1: overview ---------- */
+function renderHome() {
+  const m = route.market, list = marketAssets(m);
+  $('home-title').textContent = m === 'crypto' ? `Crypto · ${list.length} markets` : `Stocks · ${list.length} markets`;
+  $('updated').textContent = `Updated ${ago(DATA.generated_at)}`;
+  $('tiles').innerHTML = TILES.map(([k, l, d]) => {
+    const n = list.filter((a) => a.signal.key === k).length;
+    return `<button class="tile${filter === k ? ' on' : ''}" data-k="${k}"><span class="sig sig-${k}">${l}</span><span class="n">${n}</span><span class="d">${d}</span></button>`;
+  }).join('');
+  $('tiles').querySelectorAll('.tile').forEach((b) => b.addEventListener('click', () => { filter = filter === b.dataset.k ? null : b.dataset.k; renderHome(); }));
+  if (m === 'crypto') {
+    $('market-note').textContent = 'Live prices · signals set at the daily close (00:00 UTC)';
   } else {
-    const open = assets().some((a) => a.market_open);
-    $('market-note').textContent = `Koersen via Yahoo Finance, elk uur bijgewerkt · Amerikaanse beurs ${open ? 'is nu open' : 'is nu gesloten'} (15:30–22:00 NL-tijd) · bedragen in USD`;
+    const open = list.some((a) => a.market_open);
+    $('market-note').textContent = `US market ${open ? 'open' : 'closed'} · prices refresh hourly · signals set at the US close`;
   }
-}
-
-function renderCards() {
   const q = query.trim().toLowerCase();
-  const list = assets()
-    .filter((a) => filter === 'all' || a.status.key === filter)
+  const rows = list
+    .filter((a) => !filter || a.signal.key === filter)
     .filter((a) => !q || a.name.toLowerCase().includes(q) || a.symbol.toLowerCase().includes(q))
-    .sort((a, b) => STATUS_ORDER[a.status.key] - STATUS_ORDER[b.status.key] || b.confluence - a.confluence);
-  $('cards').innerHTML = list.length ? list.map((a) => {
+    .sort((a, b) => ORDER[a.signal.key] - ORDER[b.signal.key] || b.signal.strength - a.signal.strength);
+  $('list').innerHTML = rows.length ? rows.map((a) => {
     const ch = changeOf(a);
-    return `<button class="card${a.symbol === selected ? ' active' : ''}" data-sym="${a.symbol}">
-      <div class="card-top">
-        <div class="coin-id">${iconHtml(a)}<div><div class="coin-name">${esc(a.name)}</div><div class="muted">${esc(a.symbol)}</div></div></div>
-        ${badge(a.status)}
-      </div>
-      <div class="card-price"><span class="p mono" data-price="${a.symbol}">${fmt(priceOf(a))}</span>
-        <span class="chg ${ch >= 0 ? 'up' : 'down'}" data-chg="${a.symbol}">${pct(ch)}</span></div>
-      ${sparkline(a)}
-      <div class="card-meta">
-        <div><div class="k">Trend</div><div class="v">${esc(a.trend)}</div></div>
-        <div><div class="k">Bevestiging</div><div class="v">${a.confluence}/7 · RSI ${nf(a.rsi, 0)}</div></div>
-        <div><div class="k">Zone 1</div><div class="v" data-zone="${a.symbol}">${esc(zoneText(a))}</div></div>
-      </div>
-    </button>`;
-  }).join('') : '<div class="panel empty empty-cards">Niets gevonden met dit filter.</div>';
-  $('cards').querySelectorAll('.card').forEach((el) => el.addEventListener('click', () => select(el.dataset.sym, true)));
+    const note = liveZoneNote(a);
+    return `<a class="row" href="#/asset/${a.symbol}">
+      <div class="name-cell coin-id">${iconHtml(a)}<div><div class="coin-name">${esc(a.name)}</div><div class="muted">${esc(a.symbol)}</div></div></div>
+      <div class="price-cell"><div class="p mono" data-price="${a.symbol}">${fmt(priceOf(a))}</div><div class="chg ${ch >= 0 ? 'up' : 'down'}" data-chg="${a.symbol}">${pct(ch)}</div></div>
+      <div class="sig-cell">${sigBadge(a.signal)}<div class="meter" title="Signal strength ${a.signal.strength}/100"><i style="width:${a.signal.strength}%;background:${sigColor(a.signal.key)}"></i></div></div>
+      <div class="reason">${esc(a.signal.reason)}${note ? `<small data-zone="${a.symbol}">${esc(note)}</small>` : ''}</div>
+      <div class="chev">›</div>
+    </a>`;
+  }).join('') : '<div class="empty">Nothing here with this filter.</div>';
 }
+$('search').addEventListener('input', (e) => { query = e.target.value; renderHome(); });
 
-function renderHistory() {
-  const h = (DATA.history || []).filter((e) => (e.market || 'crypto') === market);
-  $('history').innerHTML = h.length ? h.slice(0, 25).map((e) =>
-    `<li><div class="muted">${timeNL(e.time)}</div><div><div class="h-title">${esc(e.title)}</div><div class="h-msg">${esc(e.message)}</div></div></li>`).join('')
-    : '<li class="empty">Nog geen meldingen voor deze markt. Zodra iets in een koopzone komt of er een setup is, verschijnt het hier en op je telefoon.</li>';
-}
-
-const renderUpdated = () => DATA && ($('updated').textContent = `Analyse ${ago(DATA.generated_at)}`);
-
-function renderOverview() {
-  renderSwitch(); renderKpis(); renderFilters(); renderMarketNote(); renderCards(); renderHistory(); renderUpdated();
-}
-
-/* ---------- detail ---------- */
-function planHtml(p) {
-  if (!p) return '';
-  return `<div class="plan">
-      <div><div class="k">Entry</div><div class="v mono">${fmt(p.entry)}</div></div>
-      <div><div class="k">Stop (−${nf(p.stop_pct)}%)</div><div class="v mono">${fmt(p.stop)}</div></div>
-      <div><div class="k">Target (+${nf(p.win_pct)}%)</div><div class="v mono">${fmt(p.target)}</div></div>
-    </div>
-    <div class="plan-foot">
-      <span class="badge ${p.rr >= 2 ? 's-setup' : 's-down'}">R/R ${nf(p.rr)}x</span>
-      <span>Positie <b>${eur(p.position)}</b>${p.capped ? ' (max. kapitaal)' : ''} · verlies bij stop ≈ ${eur(p.loss_eur)} · winst bij target ≈ ${eur(p.win_eur)}</span>
-    </div>`;
-}
-
-const MARK = { ok: '✓', nee: '✕', wacht: '…', info: 'i' };
-const listItems = (items) => items.map((i) =>
-  `<li><span class="dot ${i.state}">${MARK[i.state]}</span><span class="n">${esc(i.name)}</span><span class="t">${esc(i.text)}</span></li>`).join('');
-
-function poolsHtml(a, d) {
-  if (!d.pools.length) return '<p class="muted">Geen equal highs/lows gevonden in de laatste 150 candles.</p>';
-  const price = priceOf(a);
-  let rows = '', nowDone = false;
-  for (const p of d.pools) {
-    if (!nowDone && p.price < price) {
-      rows += `<tr class="now"><td colspan="5"><b>Prijs nu ${fmt(price)}</b></td></tr>`;
-      nowDone = true;
-    }
-    rows += `<tr><td><span class="kind ${p.kind}">${p.kind}</span></td><td class="mono">${fmt(p.price)}</td>
-      <td>${pct((p.price - price) / price * 100)}</td><td>${p.touches}× · ${dateNL(p.t_last)}</td>
-      <td class="st-${p.status}">${p.status}</td></tr>`;
-  }
-  if (!nowDone) rows += `<tr class="now"><td colspan="5"><b>Prijs nu ${fmt(price)}</b></td></tr>`;
-  return `<div class="pools-wrap"><table class="pools"><thead><tr><th>Type</th><th>Niveau</th><th>Afstand</th><th>Raakt · laatst</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
-}
-
-function profileHtml(a, d) {
-  const pr = d.profile, bins = pr.bins;
-  const lo = bins[0][0], hi = bins[bins.length - 1][1], maxV = Math.max(...bins.map((b) => b[2]));
-  const W = 400, H = 300, L = 70, y = (p) => H - 8 - (p - lo) / (hi - lo) * (H - 16);
-  const price = priceOf(a);
-  let bars = '';
-  bins.forEach(([bl, bh, v]) => {
-    const inVa = bh > pr.val && bl < pr.vah, isPoc = pr.poc >= bl && pr.poc <= bh;
-    const col = isPoc ? 'var(--accent-2)' : inVa ? 'var(--accent)' : 'var(--poc)';
-    const op = isPoc ? 1 : inVa ? 0.55 : 0.3;
-    bars += `<rect x="${L}" y="${y(bh) + 0.5}" width="${(v / maxV) * (W - L - 8)}" height="${Math.max(1, y(bl) - y(bh) - 1)}" fill="${col}" opacity="${op}" rx="1.5"/>`;
-  });
-  const label = (p, txt, col) => `<line x1="${L - 4}" x2="${W}" y1="${y(p)}" y2="${y(p)}" stroke="${col}" stroke-dasharray="3 3"/>
-      <text x="${L - 8}" y="${y(p) + 4}" text-anchor="end" font-size="11" fill="${col}">${txt}</text>`;
-  const inRange = price >= lo && price <= hi;
-  return `<svg class="profile-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Volume profile">
-      ${bars}
-      <text x="${L - 8}" y="14" text-anchor="end" font-size="11" fill="var(--muted)">${fmt(hi)}</text>
-      <text x="${L - 8}" y="${H - 4}" text-anchor="end" font-size="11" fill="var(--muted)">${fmt(lo)}</text>
-      ${label(pr.poc, 'POC', 'var(--accent-2)')}
-      ${inRange ? label(price, 'Nu', 'var(--text)') : ''}
-    </svg>
-    <div class="profile-facts">
-      <span>POC <b class="mono">${fmt(pr.poc)}</b></span>
-      <span>Value area <b class="mono">${fmt(pr.val)} – ${fmt(pr.vah)}</b></span>
-      <span class="muted">laatste ${pr.lookback} dagen</span>
-    </div>`;
-}
-
-function scoreHtml(n) {
-  const r = 26, c = 2 * Math.PI * r, col = n >= 5 ? 'var(--setup)' : n >= 4 ? 'var(--zone)' : n >= 3 ? 'var(--wait)' : 'var(--neg)';
-  return `<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="${r}" fill="none" stroke="var(--surface-2)" stroke-width="7"/>
-      <circle cx="32" cy="32" r="${r}" fill="none" stroke="${col}" stroke-width="7" stroke-linecap="round"
-        stroke-dasharray="${c * n / 7} ${c}" transform="rotate(-90 32 32)"/></svg>
-    <div><b>${n} / 7</b><span class="muted">indicatoren bevestigen de koopkant</span></div>`;
-}
-
+/* ---------- level 2 + 3: asset ---------- */
 async function loadDetail(sym) {
   const key = `${sym}@${DATA.generated_at}`;
   if (details.has(key)) return details.get(key);
@@ -240,53 +155,131 @@ async function loadDetail(sym) {
   return d;
 }
 
-async function renderDetail() {
-  const a = find(selected);
-  if (!a) { $('detail').hidden = true; return; }
-  let d;
-  try { d = await loadDetail(a.symbol); } catch { $('detail').hidden = true; return; }
-  if (a.symbol !== selected) return;
-  $('detail').hidden = false;
-  $('d-icon').outerHTML = iconHtml(a, ' lg').replace('<span ', '<span id="d-icon" ');
-  $('d-name').textContent = a.name;
-  $('d-sub').textContent = `${a.symbol} · 1D · ${a.source}${a.market === 'stocks' ? (a.market_open ? ' · beurs open' : ' · beurs gesloten') : ''}`;
-  updateDetailPrice();
+function ring(v, color, size = 92) {
+  const r = 38, c = 2 * Math.PI * r;
+  return `<svg viewBox="0 0 92 92" width="${size}" height="${size}" aria-hidden="true">
+    <circle cx="46" cy="46" r="${r}" fill="none" stroke="var(--surface-2)" stroke-width="9"/>
+    <circle cx="46" cy="46" r="${r}" fill="none" stroke="${color}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${c * v / 100} ${c}" transform="rotate(-90 46 46)"/>
+    <text x="46" y="53" text-anchor="middle" font-size="22" font-weight="800" fill="var(--text)">${v}</text></svg>`;
+}
 
-  $('d-verdict').className = `verdict s-${a.status.key}`;
-  $('d-verdict').innerHTML = `<b>${esc(a.status.title)}</b><span>${esc(a.status.text)}</span>`;
-  $('d-checklist').innerHTML = listItems(d.checklist);
-  $('d-scenarios').innerHTML = d.scenarios.map((s) =>
-    `<div class="scen"><div class="scen-h"><span class="scen-k">${s.key}</span><span>${esc(s.title)}</span></div><p>${esc(s.text)}</p>${planHtml(s.plan)}</div>`).join('');
-  $('d-pools').innerHTML = poolsHtml(a, d);
-  $('d-profile').innerHTML = profileHtml(a, d);
-  $('d-score').innerHTML = scoreHtml(d.confluence);
-  $('d-extras').innerHTML = listItems(d.extras);
-  $('d-trend').innerHTML = d.trend_reasons.map((t) => `<li>${esc(t)}</li>`).join('');
-  const f = d.fib;
-  let fib = f ? `<div class="fib-title">Fibonacci van ${fmt(f.low)} → ${fmt(f.high)}</div>
-      <div class="fib-row"><span>38,2%</span><b class="mono">${fmt(f.f382)}</b></div>
-      <div class="fib-row"><span>50%</span><b class="mono">${fmt(f.f50)}</b></div>
-      <div class="fib-row"><span>61,8%</span><b class="mono">${fmt(f.f618)}</b></div>` : '';
-  if (d.pullback_vol != null) {
-    fib += `<p class="note">Volume in de terugval: <b>${Math.round(d.pullback_vol * 100)}%</b> van de stijging ervoor. ${d.pullback_vol < 1 ? 'Rustige winstneming (gezond).' : 'Verkopers zijn actief (let op).'}</p>`;
+function planGrid(p) {
+  if (!p) return '';
+  return `<div class="plan">
+    <div><div class="k">Entry</div><div class="v mono">${fmt(p.entry)}</div></div>
+    <div><div class="k">Stop (−${nf(p.stop_pct)}%)</div><div class="v mono">${fmt(p.stop)}</div></div>
+    <div><div class="k">Target (+${nf(p.win_pct)}%)</div><div class="v mono">${fmt(p.target)}</div></div>
+    <div><div class="k">Risk / reward</div><div class="v">${nf(p.rr)}x</div></div>
+    <div><div class="k">Position${p.capped ? ' (max)' : ''}</div><div class="v">${eur(p.position)} <span class="muted">risk ${eur(p.loss_eur)}</span></div></div>
+  </div>`;
+}
+
+const MARK = { ok: '✓', no: '✕', wait: '…', info: 'i' };
+const checkItems = (items) => items.map((i) =>
+  `<li><span class="dot ${i.state}">${MARK[i.state]}</span><span class="n">${esc(i.name)}</span><span class="t">${esc(i.text)}</span></li>`).join('');
+
+function poolsHtml(a, d) {
+  if (!d.pools.length) return '<p class="muted">No equal highs or lows found in the last 150 days.</p>';
+  const price = priceOf(a);
+  let rows = '', done = false;
+  const nowRow = `<tr class="now"><td colspan="5"><b>Price now ${fmt(price)}</b></td></tr>`;
+  for (const p of d.pools) {
+    if (!done && p.price < price) { rows += nowRow; done = true; }
+    rows += `<tr><td><span class="kind ${p.kind}">${p.kind}</span></td><td class="mono">${fmt(p.price)}</td>
+      <td>${pct((p.price - price) / price * 100)}</td><td>${p.touches}× · ${shortDate(p.t_last)}</td><td class="st-${p.status}">${p.status}</td></tr>`;
   }
-  $('d-fib').innerHTML = fib;
-  $('d-zones').innerHTML = d.zones.length ? d.zones.map((z) =>
-    `<li><b class="mono">${fmt(z.low)} – ${fmt(z.high)}</b> · ${z.score} niveau${z.score > 1 ? 's' : ''}<br><span class="muted">${z.items.map((i) => esc(i.name)).join(', ')}</span></li>`).join('')
-    : '<li class="muted">Geen zones onder de prijs gevonden.</li>';
+  if (!done) rows += nowRow;
+  return `<div class="pools-wrap"><table class="pools"><thead><tr><th>Type</th><th>Level</th><th>Distance</th><th>Touches · last</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+
+function profileHtml(a, d) {
+  const pr = d.profile, bins = pr.bins;
+  const lo = bins[0][0], hi = bins[bins.length - 1][1], maxV = Math.max(...bins.map((b) => b[2]));
+  const W = 420, H = 280, L = 74, y = (p) => H - 8 - (p - lo) / (hi - lo) * (H - 16);
+  const price = priceOf(a);
+  let bars = '';
+  bins.forEach(([bl, bh, v]) => {
+    const inVa = bh > pr.val && bl < pr.vah, isPoc = pr.poc >= bl && pr.poc <= bh;
+    const col = isPoc ? 'var(--accent-2)' : inVa ? 'var(--accent)' : 'var(--poc)';
+    bars += `<rect x="${L}" y="${y(bh) + 0.5}" width="${(v / maxV) * (W - L - 8)}" height="${Math.max(1, y(bl) - y(bh) - 1)}" fill="${col}" opacity="${isPoc ? 1 : inVa ? 0.55 : 0.3}" rx="1.5"/>`;
+  });
+  const mark = (p, txt, col) => `<line x1="${L - 4}" x2="${W}" y1="${y(p)}" y2="${y(p)}" stroke="${col}" stroke-dasharray="3 3"/>
+      <text x="${L - 8}" y="${y(p) + 4}" text-anchor="end" font-size="11" fill="${col}">${txt}</text>`;
+  return `<svg class="profile-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Volume profile">${bars}
+      <text x="${L - 8}" y="14" text-anchor="end" font-size="11" fill="var(--muted)">${fmt(hi)}</text>
+      <text x="${L - 8}" y="${H - 4}" text-anchor="end" font-size="11" fill="var(--muted)">${fmt(lo)}</text>
+      ${mark(pr.poc, 'POC', 'var(--accent-2)')}${price >= lo && price <= hi ? mark(price, 'Now', 'var(--text)') : ''}</svg>
+    <div class="profile-facts"><span>POC <b class="mono">${fmt(pr.poc)}</b></span><span>Value area <b class="mono">${fmt(pr.val)} – ${fmt(pr.vah)}</b></span><span class="muted">last ${pr.lookback} days</span></div>`;
+}
+
+async function renderAsset() {
+  const a = find(route.symbol);
+  if (!a) { location.hash = '#/crypto'; return; }
+  $('back').href = `#/${a.market}`;
+  $('back').textContent = `← ${a.market === 'crypto' ? 'Crypto' : 'Stocks'}`;
+  $('a-icon').outerHTML = iconHtml(a, ' lg', 'a-icon');
+  $('a-name').textContent = a.name;
+  $('a-sub').textContent = `${a.symbol} · daily chart · ${a.source}${a.market === 'stocks' ? (a.market_open ? ' · market open' : ' · market closed') : ''}`;
+  updateAssetPrice();
+
+  let d;
+  try { d = await loadDetail(a.symbol); } catch { $('a-signal').innerHTML = '<p class="muted">Could not load details.</p>'; return; }
+  if (route.view !== 'asset' || route.symbol !== a.symbol) return;
+  const s = d.signal;
+  const scenA = d.scenarios.find((x) => x.key === 'A');
+  const plan = s.key === 'buy' ? d.plan_close : s.key === 'avoid' ? null : scenA?.plan;
+  $('a-signal').className = `signal-card k-${s.key}`;
+  $('a-signal').innerHTML = `
+    <div class="top">${sigBadge(s)}<span class="since">since ${dayLabel(a.signal_since)} · based on the ${dayLabel(d.close_day)} daily close</span></div>
+    <p class="reason">${esc(s.reason)}.</p>
+    <p class="plan-text">${esc(s.plan)}</p>
+    <div class="strength">${ring(s.strength, sigColor(s.key))}<b>Signal strength</b></div>
+    ${plan ? `<div style="grid-column:1/-1" class="muted">${s.key === 'buy' ? 'Trade plan' : 'Plan if the trigger comes'} · position sized so the stop costs about ${eur(DATA.config.risk_eur)}${
+      s.key !== 'buy' && plan.rr < 2 ? ` · <b style="color:var(--avoid)">risk/reward below 2x: this zone alone would not give a buy signal</b>` : ''}</div>${planGrid(plan)}` : ''}`;
+
+  const passed = d.checklist.filter((c) => c.state === 'ok').length;
+  $('s-check').textContent = `${passed} of ${d.checklist.length} checks passed`;
+  $('a-checklist').innerHTML = checkItems(d.checklist);
+  $('s-scen').textContent = `${d.scenarios.length} scenarios`;
+  $('a-scenarios').innerHTML = d.scenarios.map((x) => `<div class="scen"><div class="scen-h"><span class="scen-k">${x.key}</span><span>${esc(x.title)}</span></div><p>${esc(x.text)}</p>${x.plan ? `<div class="mini-plan">
+      <div><div class="k">Entry</div><div class="v mono">${fmt(x.plan.entry)}</div></div>
+      <div><div class="k">Stop</div><div class="v mono">${fmt(x.plan.stop)}</div></div>
+      <div><div class="k">Target</div><div class="v mono">${fmt(x.plan.target)}</div></div></div>
+      <div class="plan-foot">R/R ${nf(x.plan.rr)}x · position ${eur(x.plan.position)} · risk ≈ ${eur(x.plan.loss_eur)}</div>` : ''}</div>`).join('');
+  const openPools = d.pools.filter((p) => p.status === 'open').length;
+  $('s-liq').textContent = `${openPools} untapped pool${openPools === 1 ? '' : 's'}`;
+  $('a-pools').innerHTML = poolsHtml(a, d);
+  $('s-prof').textContent = `POC ${fmt(d.profile.poc)}`;
+  $('a-profile').innerHTML = profileHtml(a, d);
+  $('s-ind').textContent = `${d.confluence} of 7 positive`;
+  $('a-extras').innerHTML = checkItems(d.extras);
+  $('s-trend').textContent = `${d.trend} · weekly ${d.weekly_trend}`;
+  $('a-trend').innerHTML = d.trend_reasons.map((t) => `<li>${esc(t)}</li>`).join('');
+  const f = d.fib;
+  let fib = f ? `<div class="fib-title">Fibonacci of the last swing ${fmt(f.low)} → ${fmt(f.high)}</div>
+      <div class="fib-row"><span>38.2%</span><b class="mono">${fmt(f.f382)}</b></div>
+      <div class="fib-row"><span>50%</span><b class="mono">${fmt(f.f50)}</b></div>
+      <div class="fib-row"><span>61.8%</span><b class="mono">${fmt(f.f618)}</b></div>` : '';
+  if (d.pullback_vol != null) fib += `<p class="note">Volume during the pullback is ${Math.round(d.pullback_vol * 100)}% of the rally before it: ${d.pullback_vol < 1 ? 'calm profit-taking (healthy).' : 'sellers are active (careful).'}</p>`;
+  $('a-fib').innerHTML = fib;
+  $('s-zones').textContent = `${d.zones.length} zones below price`;
+  $('a-zones').innerHTML = d.zones.length ? d.zones.map((z) =>
+    `<li><b class="mono">${fmt(z.low)} – ${fmt(z.high)}</b> · ${z.score} level${z.score > 1 ? 's' : ''}<br><span class="muted">${z.items.map((i) => esc(i.name)).join(', ')}</span></li>`).join('')
+    : '<li class="muted">No support zones below price.</li>';
   buildChart(a, d);
 }
 
-function updateDetailPrice() {
-  const a = find(selected);
+function updateAssetPrice() {
+  const a = route.view === 'asset' && find(route.symbol);
   if (!a) return;
   const ch = changeOf(a);
-  $('d-price').textContent = fmt(priceOf(a));
-  $('d-change').className = `chg ${ch >= 0 ? 'up' : 'down'}`;
-  $('d-change').textContent = `${pct(ch)} ${a.market === 'crypto' ? '(24u)' : '(vandaag)'}`;
+  $('a-price').textContent = fmt(priceOf(a));
+  $('a-change').className = `chg ${ch >= 0 ? 'up' : 'down'}`;
+  $('a-change').textContent = `${pct(ch)} ${a.market === 'crypto' ? '24h' : 'today'}`;
 }
 
-/* ---------- grafiek ---------- */
+/* ---------- chart ---------- */
+const LINE_KINDS = { zones: ['zone1', 'zone2', 'target', 'stop'], liq: ['bsl', 'ssl', 'poc'] };
 function buildChart(a, d) {
   if (typeof LightweightCharts === 'undefined') return;
   if (charts) { charts.main.remove(); charts.sub.remove(); charts = null; }
@@ -295,34 +288,45 @@ function buildChart(a, d) {
     layout: { background: { color: 'transparent' }, textColor: text, fontFamily: 'Inter, sans-serif' },
     grid: { vertLines: { color: grid }, horzLines: { color: grid } },
     rightPriceScale: { borderColor: grid, minimumWidth: 78 }, timeScale: { borderColor: grid, rightOffset: 6 },
-    crosshair: { mode: 0 }, localization: { priceFormatter: fmt, locale: 'nl-NL' },
+    crosshair: { mode: 0 }, localization: { priceFormatter: fmt, locale: 'en-US' },
   };
   const el = $('chart'), sel = $('sub'), c = d.chart;
   const main = LightweightCharts.createChart(el, { ...base, width: el.clientWidth, height: el.clientHeight });
   const candles = main.addCandlestickSeries({ upColor: up, downColor: down, borderVisible: false, wickUpColor: up, wickDownColor: down });
   candles.setData(c.candles.map((k) => ({ time: k[0], open: k[1], high: k[2], low: k[3], close: k[4] })));
   const volume = main.addHistogramSeries({ priceScaleId: 'vol', priceFormat: { type: 'volume' }, lastValueVisible: false, priceLineVisible: false });
-  main.priceScale('vol').applyOptions({ scaleMargins: { top: 0.85, bottom: 0 } });
+  main.priceScale('vol').applyOptions({ scaleMargins: { top: 0.86, bottom: 0 } });
   const vcol = (k) => (k[4] >= k[1] ? up : down) + '55';
   volume.setData(c.candles.map((k) => ({ time: k[0], value: k[5], color: vcol(k) })));
-  const line = (data, color, width) => main.addLineSeries({ color, lineWidth: width, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false })
-    .setData(data.map(([t, v]) => ({ time: t, value: v })));
-  line(c.ema50, css('--ema50'), 2);
-  if (c.ema200.length) line(c.ema200, css('--ema200'), 1);
-  candles.setMarkers(c.markers.map(([t, kind, label]) => ({
-    time: t, position: kind === 'top' ? 'aboveBar' : 'belowBar', shape: kind === 'top' ? 'arrowDown' : 'arrowUp',
-    color: ['HH', 'HL'].includes(label) ? up : ['LH', 'LL'].includes(label) ? down : text, text: label,
-  })));
-  const lc = { zone1: css('--zone1'), zone2: css('--zone2'), target: css('--target'), stop: down, bsl: css('--bsl'), ssl: css('--ssl'), poc: css('--poc') };
-  c.lines.forEach((l) => candles.createPriceLine({ price: l.price, color: lc[l.kind], lineWidth: l.kind === 'poc' ? 1 : 1,
+  const legend = [];
+  if (overlays.ema) {
+    const add = (data, color, w) => main.addLineSeries({ color, lineWidth: w, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false })
+      .setData(data.map(([t, v]) => ({ time: t, value: v })));
+    add(c.ema50, css('--ema50'), 2);
+    if (c.ema200.length) add(c.ema200, css('--ema200'), 1);
+    legend.push(['--ema50', 'EMA 50'], ['--ema200', 'EMA 200']);
+  }
+  if (overlays.swings) {
+    candles.setMarkers(c.markers.map(([t, kind, label]) => ({
+      time: t, position: kind === 'top' ? 'aboveBar' : 'belowBar', shape: kind === 'top' ? 'arrowDown' : 'arrowUp',
+      color: ['HH', 'HL'].includes(label) ? up : ['LH', 'LL'].includes(label) ? down : text, text: label,
+    })));
+  }
+  const col = { zone1: css('--zone1'), zone2: css('--zone2'), target: css('--target'), stop: down, bsl: css('--bsl'), ssl: css('--ssl'), poc: css('--poc') };
+  const shown = [...(overlays.zones ? LINE_KINDS.zones : []), ...(overlays.liq ? LINE_KINDS.liq : [])];
+  c.lines.filter((l) => shown.includes(l.kind)).forEach((l) => candles.createPriceLine({
+    price: l.price, color: col[l.kind], lineWidth: l.kind.startsWith('zone') ? 2 : 1,
     lineStyle: l.kind === 'poc' ? 1 : l.kind === 'bsl' || l.kind === 'ssl' ? 3 : 2, axisLabelVisible: true, title: l.title }));
+  if (overlays.zones) legend.push(['--zone1', 'Buy zone 1'], ['--zone2', 'Buy zone 2'], ['--target', 'Target'], ['--down', 'Trend line']);
+  if (overlays.liq) legend.push(['--bsl', 'BSL (equal highs)'], ['--ssl', 'SSL (equal lows)'], ['--poc', 'Volume POC']);
+  $('legend').innerHTML = legend.map(([v, l]) => `<span><i style="background:var(${v})"></i>${l}</span>`).join('');
 
   const sub = LightweightCharts.createChart(sel, { ...base, width: sel.clientWidth, height: sel.clientHeight,
-    localization: { locale: 'nl-NL' }, timeScale: { ...base.timeScale, visible: false } });
+    localization: { locale: 'en-US' }, timeScale: { ...base.timeScale, visible: false } });
   if (pane === 'rsi') {
     const rs = sub.addLineSeries({ color: css('--rsi'), lineWidth: 2, priceLineVisible: false });
     rs.setData(c.rsi.map(([t, v]) => ({ time: t, value: v })));
-    [70, 50, 30].forEach((v) => rs.createPriceLine({ price: v, color: text, lineWidth: 1, lineStyle: 2, axisLabelVisible: v !== 50, title: '' }));
+    [70, 30].forEach((v) => rs.createPriceLine({ price: v, color: text, lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: '' }));
   } else {
     sub.addHistogramSeries({ priceLineVisible: false, lastValueVisible: false })
       .setData(c.macd.map(([t, , , h], i, arr) => ({ time: t, value: h,
@@ -332,56 +336,49 @@ function buildChart(a, d) {
   }
   main.timeScale().subscribeVisibleLogicalRangeChange((r) => r && sub.timeScale().setVisibleLogicalRange(r));
   const n = c.candles.length;
-  main.timeScale().setVisibleLogicalRange({ from: Math.max(0, n - 160), to: n + 5 });
-  charts = { main, sub, candles, volume, vcol, symbol: a.symbol };
+  main.timeScale().setVisibleLogicalRange({ from: Math.max(0, n - 140), to: n + 5 });
+  charts = { main, sub, candles, volume, vcol, symbol: a.symbol, data: d };
 }
 
+function rebuild() {
+  const a = route.view === 'asset' && find(route.symbol);
+  if (a && charts?.data) buildChart(a, charts.data);
+}
+$('overlays').querySelectorAll('.tg').forEach((b) => b.addEventListener('click', () => {
+  overlays[b.dataset.ov] = !overlays[b.dataset.ov];
+  b.classList.toggle('on', overlays[b.dataset.ov]);
+  rebuild();
+}));
+$('panes').querySelectorAll('.tg').forEach((b) => b.addEventListener('click', () => {
+  pane = b.dataset.pane;
+  $('panes').querySelectorAll('.tg').forEach((x) => x.classList.toggle('on', x === b));
+  rebuild();
+}));
 new ResizeObserver(() => {
   if (!charts) return;
   charts.main.applyOptions({ width: $('chart').clientWidth });
   charts.sub.applyOptions({ width: $('sub').clientWidth });
 }).observe(document.body);
 
-document.querySelectorAll('.pane-tabs button').forEach((b) => b.addEventListener('click', () => {
-  pane = b.dataset.pane;
-  document.querySelectorAll('.pane-tabs button').forEach((x) => x.classList.toggle('on', x === b));
-  const a = find(selected), d = a && details.get(`${a.symbol}@${DATA.generated_at}`);
-  if (a && d) buildChart(a, d);
+/* ---------- alerts ---------- */
+function renderAlerts() {
+  const h = (DATA.history || []).filter((e) => alertFilter === 'all' || (e.market || 'crypto') === alertFilter);
+  $('history').innerHTML = h.length ? h.map((e) => {
+    const title = e.symbol && find(e.symbol) ? `<a href="#/asset/${e.symbol}">${esc(e.title)} ›</a>` : esc(e.title);
+    return `<li><div class="muted">${when(e.time)}</div><div><div class="h-title">${title}</div><div class="h-msg">${esc(e.message)}</div></div></li>`;
+  }).join('') : '<li class="muted">No alerts yet.</li>';
+}
+$('alert-filter').querySelectorAll('.tg').forEach((b) => b.addEventListener('click', () => {
+  alertFilter = b.dataset.af;
+  $('alert-filter').querySelectorAll('.tg').forEach((x) => x.classList.toggle('on', x === b));
+  renderAlerts();
 }));
 
-/* ---------- navigatie ---------- */
-function setMarket(m, keepSelection) {
-  market = m;
-  store.set('radar-market', m);
-  if (!keepSelection || find(selected)?.market !== m) {
-    const first = [...assets()].sort((a, b) => STATUS_ORDER[a.status.key] - STATUS_ORDER[b.status.key])[0];
-    selected = first?.symbol || null;
-    if (selected) history.replaceState(null, '', '#' + selected);
-  }
-  renderOverview();
-  renderDetail();
-}
-['crypto', 'stocks'].forEach((m) => $('tab-' + m).addEventListener('click', () => m !== market && setMarket(m)));
-$('search').addEventListener('input', (e) => { query = e.target.value; renderCards(); });
-
-function select(sym, scroll) {
-  const a = find(sym);
-  if (!a) return;
-  selected = sym;
-  if (location.hash !== '#' + sym) history.replaceState(null, '', '#' + sym);
-  if (a.market !== market) { setMarket(a.market, true); } else {
-    document.querySelectorAll('.card').forEach((el) => el.classList.toggle('active', el.dataset.sym === sym));
-    renderDetail();
-  }
-  if (scroll) setTimeout(() => $('detail').scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
-}
-
-/* ---------- live crypto-prijzen ---------- */
+/* ---------- live crypto prices ---------- */
 function applyTick(sym, price, change) {
   const prev = live[sym]?.price;
   live[sym] = { price, change };
-  const p = document.querySelector(`[data-price="${sym}"]`);
-  if (p) {
+  document.querySelectorAll(`[data-price="${sym}"]`).forEach((p) => {
     p.textContent = fmt(price);
     if (prev != null && price !== prev) {
       p.classList.remove('flash-up', 'flash-down');
@@ -389,21 +386,19 @@ function applyTick(sym, price, change) {
       p.classList.add(price > prev ? 'flash-up' : 'flash-down');
       setTimeout(() => p.classList.remove('flash-up', 'flash-down'), 700);
     }
-  }
+  });
   const ch = document.querySelector(`[data-chg="${sym}"]`);
   if (ch && change != null) { ch.textContent = pct(change); ch.className = `chg ${change >= 0 ? 'up' : 'down'}`; }
   const a = find(sym), z = document.querySelector(`[data-zone="${sym}"]`);
-  if (a && z) z.textContent = zoneText(a);
-  if (sym === selected) updateDetailPrice();
+  if (a && z) z.textContent = liveZoneNote(a);
+  if (route.view === 'asset' && route.symbol === sym) updateAssetPrice();
 }
-
 function setLive(on, label) {
   $('live').className = 'live' + (on ? ' on' : '');
   $('live').querySelector('span').textContent = label;
 }
-
 function connect() {
-  const cryptos = DATA?.assets.filter((a) => a.market === 'crypto') || [];
+  const cryptos = marketAssets('crypto');
   if (!cryptos.length || ws) return;
   const streams = cryptos.flatMap((a) => [`${a.symbol.toLowerCase()}@miniTicker`, `${a.symbol.toLowerCase()}@kline_1d`]).join('/');
   try { ws = new WebSocket(WS_URL + streams); } catch { return startPolling(); }
@@ -413,23 +408,23 @@ function connect() {
     if (data.e === '24hrMiniTicker') {
       const price = +data.c, open = +data.o;
       applyTick(data.s, price, (price - open) / open * 100);
-    } else if (data.e === 'kline' && charts && data.s === charts.symbol) {
+    } else if (data.e === 'kline' && charts && data.s === charts.symbol && route.view === 'asset') {
       const k = data.k, t = Math.floor(k.t / 1000), row = [t, +k.o, +k.h, +k.l, +k.c, +k.v];
       try {
         charts.candles.update({ time: t, open: row[1], high: row[2], low: row[3], close: row[4] });
         charts.volume.update({ time: t, value: row[5], color: charts.vcol(row) });
-      } catch { /* oudere candle: negeren */ }
+      } catch { /* older candle: ignore */ }
     }
   };
   ws.onclose = () => {
-    ws = null; setLive(false, 'Opnieuw verbinden…'); startPolling();
+    ws = null; setLive(false, 'Reconnecting…'); startPolling();
     setTimeout(connect, Math.min(30000, 2000 * 2 ** wsRetry++));
   };
   ws.onerror = () => ws && ws.close();
 }
 async function pollOnce() {
   try {
-    const syms = JSON.stringify(DATA.assets.filter((a) => a.market === 'crypto').map((a) => a.symbol));
+    const syms = JSON.stringify(marketAssets('crypto').map((a) => a.symbol));
     const r = await fetch(REST_TICKER + encodeURIComponent(syms));
     (await r.json()).forEach((t) => applyTick(t.symbol, +t.lastPrice, +t.priceChangePercent));
     if (!ws) setLive(true, 'Live (30s)');
@@ -438,50 +433,43 @@ async function pollOnce() {
 function startPolling() { if (!pollTimer) { pollOnce(); pollTimer = setInterval(pollOnce, 30000); } }
 function stopPolling() { clearInterval(pollTimer); pollTimer = null; }
 
-/* ---------- data laden ---------- */
+/* ---------- data ---------- */
 async function load() {
   try {
     const r = await fetch('data.json?t=' + Date.now(), { cache: 'no-store' });
     const fresh = await r.json();
-    if (!fresh.assets) throw new Error('oud formaat');
-    if (DATA && fresh.generated_at === DATA.generated_at) return renderUpdated();
+    if (!fresh.assets || !fresh.assets[0]?.signal) throw new Error('old format');
+    if (DATA && fresh.generated_at === DATA.generated_at) {
+      if (route.view === 'home') $('updated').textContent = `Updated ${ago(DATA.generated_at)}`;
+      return;
+    }
     DATA = fresh;
   } catch {
-    $('cards').innerHTML = '<div class="panel empty empty-cards">Kon de data niet laden. De eerstvolgende analyse-run vult dit automatisch.</div>';
+    $('view-home').hidden = false;
+    $('list').innerHTML = '<div class="empty">Data is being prepared. The next analysis run fills this in automatically.</div>';
     return;
   }
-  const hashed = find(location.hash.slice(1));
-  if (hashed) { market = hashed.market; selected = hashed.symbol; }
-  if (!find(selected) || find(selected).market !== market) {
-    const first = [...assets()].sort((a, b) => STATUS_ORDER[a.status.key] - STATUS_ORDER[b.status.key])[0];
-    selected = first?.symbol || null;
-  }
-  renderOverview();
-  await renderDetail();
+  render();
   Object.entries(live).forEach(([s, v]) => applyTick(s, v.price, v.change));
   connect();
 }
 
-/* ---------- thema ---------- */
+/* ---------- theme ---------- */
 function applyTheme(t) {
   if (t) document.documentElement.dataset.theme = t; else delete document.documentElement.dataset.theme;
-  if (DATA) renderDetail();
+  rebuild();
 }
-applyTheme(store.get('radar-theme'));
+applyTheme(store.get('zh-theme'));
 $('theme').addEventListener('click', () => {
   const dark = document.documentElement.dataset.theme
     ? document.documentElement.dataset.theme === 'dark'
     : matchMedia('(prefers-color-scheme: dark)').matches;
   const next = dark ? 'light' : 'dark';
-  store.set('radar-theme', next);
+  store.set('zh-theme', next);
   applyTheme(next);
 });
-matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => DATA && renderDetail());
-window.addEventListener('hashchange', () => {
-  const s = location.hash.slice(1);
-  if (find(s) && s !== selected) select(s, true);
-});
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', rebuild);
 
+render();
 load();
 setInterval(load, 5 * 60 * 1000);
-setInterval(renderUpdated, 30 * 1000);
