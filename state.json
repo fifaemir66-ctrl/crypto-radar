@@ -1,138 +1,190 @@
 {
+  "version": 2,
   "coins": {
     "BTCUSDT": {
-      "last_closed_t": 1790899200,
-      "zone_level": null,
-      "broken_alerted": false
+      "since": "2026-10-02",
+      "signal": "watch",
+      "day": "2026-10-02",
+      "trend": "up"
     },
     "ETHUSDT": {
-      "last_closed_t": 1790899200,
-      "zone_level": 2636.02828,
-      "broken_alerted": false
+      "since": "2026-10-02",
+      "signal": "ready",
+      "day": "2026-10-02",
+      "trend": "up"
     },
     "SOLUSDT": {
-      "last_closed_t": 1790899200,
-      "broken_alerted": false
+      "since": "2026-10-02",
+      "signal": "watch",
+      "day": "2026-10-02",
+      "trend": "up"
     },
     "XRPUSDT": {
-      "last_closed_t": 1790899200,
-      "broken_alerted": false,
-      "zone_level": 1.4835
+      "since": "2026-10-02",
+      "signal": "watch",
+      "day": "2026-10-02",
+      "trend": "up"
     },
     "BNBUSDT": {
-      "last_closed_t": 1790899200,
-      "zone_level": 767.81166,
-      "broken_alerted": false
+      "since": "2026-10-02",
+      "signal": "watch",
+      "day": "2026-10-02",
+      "trend": "up"
     },
     "DOGEUSDT": {
-      "last_closed_t": 1790899200,
-      "broken_alerted": false,
-      "zone_level": 0.0921
+      "since": "2026-10-02",
+      "signal": "ready",
+      "day": "2026-10-02",
+      "trend": "up"
     },
     "ADAUSDT": {
-      "last_closed_t": 1790899200,
-      "broken_alerted": false
+      "since": "2026-10-02",
+      "signal": "watch",
+      "day": "2026-10-02",
+      "trend": "up"
     },
     "AVAXUSDT": {
-      "last_closed_t": 1790899200,
-      "broken_alerted": false,
-      "zone_level": 10.8216875
+      "since": "2026-10-02",
+      "signal": "watch",
+      "day": "2026-10-02",
+      "trend": "up"
     },
     "LINKUSDT": {
-      "last_closed_t": 1790899200,
-      "broken_alerted": false,
-      "zone_level": 13.685
+      "since": "2026-10-02",
+      "signal": "watch",
+      "day": "2026-10-02",
+      "trend": "up"
     },
     "DOTUSDT": {
-      "last_closed_t": 1790899200,
-      "broken_alerted": false
+      "since": "2026-10-02",
+      "signal": "watch",
+      "day": "2026-10-02",
+      "trend": "up"
     },
     "LTCUSDT": {
-      "last_closed_t": 1790899200,
-      "broken_alerted": false
+      "since": "2026-10-02",
+      "signal": "watch",
+      "day": "2026-10-02",
+      "trend": "up"
     },
     "TRXUSDT": {
-      "last_closed_t": 1790899200,
-      "broken_alerted": false,
-      "zone_level": 0.3336
+      "since": "2026-10-02",
+      "signal": "ready",
+      "day": "2026-10-02",
+      "trend": "up"
     },
     "TONUSDT": {
-      "last_closed_t": 1782691200
+      "since": "2026-06-29",
+      "signal": "avoid",
+      "day": "2026-06-29",
+      "trend": "down"
     },
     "SUIUSDT": {
-      "last_closed_t": 1790899200,
-      "broken_alerted": false
+      "since": "2026-10-02",
+      "signal": "avoid",
+      "day": "2026-10-02",
+      "trend": "sideways"
     },
     "NEARUSDT": {
-      "last_closed_t": 1790899200,
-      "broken_alerted": false
+      "since": "2026-10-02",
+      "signal": "watch",
+      "day": "2026-10-02",
+      "trend": "up"
     },
     "BCHUSDT": {
-      "last_closed_t": 1790899200,
-      "broken_alerted": false,
-      "zone_level": 305.6
+      "since": "2026-10-02",
+      "signal": "buy",
+      "day": "2026-10-02",
+      "trend": "up"
     },
     "SPY": {
-      "last_closed_t": 1790947800,
-      "broken_alerted": false
+      "since": "2026-10-02",
+      "signal": "avoid",
+      "day": "2026-10-02",
+      "trend": "sideways"
     },
     "QQQ": {
-      "last_closed_t": 1790947800,
-      "broken_alerted": false,
-      "zone_level": 745.4500122070312
+      "since": "2026-10-02",
+      "signal": "ready",
+      "day": "2026-10-02",
+      "trend": "up"
     },
     "AAPL": {
-      "last_closed_t": 1790947800,
-      "broken_alerted": false
+      "since": "2026-10-02",
+      "signal": "watch",
+      "day": "2026-10-02",
+      "trend": "up"
     },
     "MSFT": {
-      "last_closed_t": 1790947800,
-      "broken_alerted": false,
-      "zone_level": 513.72998046875
+      "since": "2026-10-02",
+      "signal": "watch",
+      "day": "2026-10-02",
+      "trend": "up"
     },
     "NVDA": {
-      "last_closed_t": 1790947800,
-      "zone_level": 232.27999877929688,
-      "broken_alerted": false
+      "since": "2026-10-02",
+      "signal": "watch",
+      "day": "2026-10-02",
+      "trend": "up"
     },
     "AMZN": {
-      "last_closed_t": 1790947800,
-      "broken_alerted": false
+      "since": "2026-10-02",
+      "signal": "avoid",
+      "day": "2026-10-02",
+      "trend": "down"
     },
     "GOOGL": {
-      "last_closed_t": 1790947800,
-      "broken_alerted": false
+      "since": "2026-10-02",
+      "signal": "avoid",
+      "day": "2026-10-02",
+      "trend": "sideways"
     },
     "META": {
-      "last_closed_t": 1790947800,
-      "broken_alerted": false
+      "since": "2026-10-02",
+      "signal": "watch",
+      "day": "2026-10-02",
+      "trend": "up"
     },
     "TSLA": {
-      "last_closed_t": 1790947800,
-      "broken_alerted": false
+      "since": "2026-10-02",
+      "signal": "avoid",
+      "day": "2026-10-02",
+      "trend": "sideways"
     },
     "AMD": {
-      "last_closed_t": 1790947800,
-      "broken_alerted": false
+      "since": "2026-10-02",
+      "signal": "avoid",
+      "day": "2026-10-02",
+      "trend": "sideways"
     },
     "NFLX": {
-      "last_closed_t": 1790947800,
-      "broken_alerted": false
+      "since": "2026-10-02",
+      "signal": "avoid",
+      "day": "2026-10-02",
+      "trend": "down"
     },
     "LLY": {
-      "last_closed_t": 1790947800,
-      "zone_level": 1133.949951171875,
-      "broken_alerted": false
+      "since": "2026-10-02",
+      "signal": "ready",
+      "day": "2026-10-02",
+      "trend": "up"
     },
     "ASML": {
-      "last_closed_t": 1790947800,
-      "broken_alerted": false
+      "since": "2026-10-02",
+      "signal": "watch",
+      "day": "2026-10-02",
+      "trend": "up"
     },
     "PLTR": {
-      "last_closed_t": 1790947800,
-      "broken_alerted": false,
-      "zone_level": 188.1999969482422
+      "since": "2026-10-02",
+      "signal": "ready",
+      "day": "2026-10-02",
+      "trend": "up"
     }
+  },
+  "digest": {
+    "crypto": "2026-10-02",
+    "stocks": "2026-10-02"
   },
   "history": [
     {
