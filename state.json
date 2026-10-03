@@ -36,7 +36,7 @@
     "AVAXUSDT": {
       "last_closed_t": 1790899200,
       "broken_alerted": false,
-      "zone_level": null
+      "zone_level": 10.8216875
     },
     "LINKUSDT": {
       "last_closed_t": 1790899200,
@@ -135,6 +135,14 @@
     }
   },
   "history": [
+    {
+      "time": "2026-10-03T04:22:22+00:00",
+      "symbol": "AVAXUSDT",
+      "market": "crypto",
+      "kind": "zone",
+      "title": "🎯 Avalanche is in de koopzone",
+      "message": "Prijs 10,86 in zone 10,82 – 10,82.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 10,82 · Stop 10,66 (−1,5%) · Target 11,80 · R/R 6,0x\nPositie €500 (max. kapitaal) → verlies bij stop ≈ €8"
+    },
     {
       "time": "2026-10-03T02:22:46+00:00",
       "symbol": null,
