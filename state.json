@@ -4,74 +4,74 @@
     "BTCUSDT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-02",
+      "day": "2026-10-03",
       "trend": "up"
     },
     "ETHUSDT": {
       "since": "2026-10-02",
       "signal": "ready",
-      "day": "2026-10-02",
+      "day": "2026-10-03",
       "trend": "up"
     },
     "SOLUSDT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-02",
+      "day": "2026-10-03",
       "trend": "up"
     },
     "XRPUSDT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-02",
+      "day": "2026-10-03",
       "trend": "up"
     },
     "BNBUSDT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-02",
+      "day": "2026-10-03",
       "trend": "up"
     },
     "DOGEUSDT": {
       "since": "2026-10-02",
       "signal": "ready",
-      "day": "2026-10-02",
+      "day": "2026-10-03",
       "trend": "up"
     },
     "ADAUSDT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-02",
+      "day": "2026-10-03",
       "trend": "up"
     },
     "AVAXUSDT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-02",
+      "day": "2026-10-03",
       "trend": "up"
     },
     "LINKUSDT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-02",
+      "day": "2026-10-03",
       "trend": "up"
     },
     "DOTUSDT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-02",
+      "day": "2026-10-03",
       "trend": "up"
     },
     "LTCUSDT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-02",
+      "day": "2026-10-03",
       "trend": "up"
     },
     "TRXUSDT": {
-      "since": "2026-10-02",
-      "signal": "ready",
-      "day": "2026-10-02",
-      "trend": "up"
+      "since": "2026-10-03",
+      "signal": "avoid",
+      "day": "2026-10-03",
+      "trend": "sideways"
     },
     "TONUSDT": {
       "since": "2026-06-29",
@@ -82,19 +82,19 @@
     "SUIUSDT": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-02",
+      "day": "2026-10-03",
       "trend": "sideways"
     },
     "NEARUSDT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-02",
+      "day": "2026-10-03",
       "trend": "up"
     },
     "BCHUSDT": {
-      "since": "2026-10-02",
-      "signal": "buy",
-      "day": "2026-10-02",
+      "since": "2026-10-03",
+      "signal": "watch",
+      "day": "2026-10-03",
       "trend": "up"
     },
     "SPY": {
@@ -183,10 +183,26 @@
     }
   },
   "digest": {
-    "crypto": "2026-10-02",
+    "crypto": "2026-10-03",
     "stocks": "2026-10-02"
   },
   "history": [
+    {
+      "time": "2026-10-04T02:32:55+00:00",
+      "symbol": null,
+      "market": "crypto",
+      "kind": "digest",
+      "title": "📊 Daily digest: Crypto",
+      "message": "0 buy · 2 get ready · 11 watch · 3 avoid\n🟡 Ethereum 2,687 · GET READY\n🟡 Dogecoin 0.0928 · GET READY"
+    },
+    {
+      "time": "2026-10-04T02:32:55+00:00",
+      "symbol": "TRXUSDT",
+      "market": "crypto",
+      "kind": "avoid",
+      "title": "🔴 AVOID: TRON lost its uptrend",
+      "message": "No clear trend: the strategy only buys in uptrends.\nStay out. Re-check when price makes a higher low and closes above the EMA 50 (0.3358)."
+    },
     {
       "time": "2026-10-03T04:22:22+00:00",
       "symbol": "AVAXUSDT",
