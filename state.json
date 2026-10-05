@@ -4,73 +4,73 @@
     "BTCUSDT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-03",
+      "day": "2026-10-04",
       "trend": "up"
     },
     "ETHUSDT": {
-      "since": "2026-10-02",
-      "signal": "ready",
-      "day": "2026-10-03",
+      "since": "2026-10-04",
+      "signal": "watch",
+      "day": "2026-10-04",
       "trend": "up"
     },
     "SOLUSDT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-03",
+      "day": "2026-10-04",
       "trend": "up"
     },
     "XRPUSDT": {
-      "since": "2026-10-02",
-      "signal": "watch",
-      "day": "2026-10-03",
+      "since": "2026-10-04",
+      "signal": "ready",
+      "day": "2026-10-04",
       "trend": "up"
     },
     "BNBUSDT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-03",
+      "day": "2026-10-04",
       "trend": "up"
     },
     "DOGEUSDT": {
       "since": "2026-10-02",
       "signal": "ready",
-      "day": "2026-10-03",
+      "day": "2026-10-04",
       "trend": "up"
     },
     "ADAUSDT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-03",
+      "day": "2026-10-04",
       "trend": "up"
     },
     "AVAXUSDT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-03",
+      "day": "2026-10-04",
       "trend": "up"
     },
     "LINKUSDT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-03",
+      "day": "2026-10-04",
       "trend": "up"
     },
     "DOTUSDT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-03",
+      "day": "2026-10-04",
       "trend": "up"
     },
     "LTCUSDT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-03",
+      "day": "2026-10-04",
       "trend": "up"
     },
     "TRXUSDT": {
       "since": "2026-10-03",
       "signal": "avoid",
-      "day": "2026-10-03",
+      "day": "2026-10-04",
       "trend": "sideways"
     },
     "TONUSDT": {
@@ -80,21 +80,21 @@
       "trend": "down"
     },
     "SUIUSDT": {
-      "since": "2026-10-02",
-      "signal": "avoid",
-      "day": "2026-10-03",
-      "trend": "sideways"
+      "since": "2026-10-04",
+      "signal": "watch",
+      "day": "2026-10-04",
+      "trend": "up"
     },
     "NEARUSDT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-03",
+      "day": "2026-10-04",
       "trend": "up"
     },
     "BCHUSDT": {
       "since": "2026-10-03",
       "signal": "watch",
-      "day": "2026-10-03",
+      "day": "2026-10-04",
       "trend": "up"
     },
     "SPY": {
@@ -183,10 +183,26 @@
     }
   },
   "digest": {
-    "crypto": "2026-10-03",
+    "crypto": "2026-10-04",
     "stocks": "2026-10-02"
   },
   "history": [
+    {
+      "time": "2026-10-05T00:32:01+00:00",
+      "symbol": null,
+      "market": "crypto",
+      "kind": "digest",
+      "title": "📊 Daily digest: Crypto",
+      "message": "0 buy · 2 get ready · 12 watch · 2 avoid\n🟡 XRP 1.52 · GET READY\n🟡 Dogecoin 0.0959 · GET READY"
+    },
+    {
+      "time": "2026-10-05T00:32:01+00:00",
+      "symbol": "XRPUSDT",
+      "market": "crypto",
+      "kind": "ready",
+      "title": "🟡 GET READY: XRP is in its buy zone",
+      "message": "In the buy zone, waiting for a 2x risk/reward.\nPrice is in the buy zone 1.48–1.50. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 1.50, stop 1.46, target 1.55."
+    },
     {
       "time": "2026-10-04T02:32:55+00:00",
       "symbol": null,
