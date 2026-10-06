@@ -100,93 +100,109 @@
     "SPY": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-05",
+      "day": "2026-10-06",
       "trend": "sideways"
     },
     "QQQ": {
-      "since": "2026-10-02",
-      "signal": "ready",
-      "day": "2026-10-05",
+      "since": "2026-10-06",
+      "signal": "watch",
+      "day": "2026-10-06",
       "trend": "up"
     },
     "AAPL": {
-      "since": "2026-10-02",
-      "signal": "watch",
-      "day": "2026-10-05",
+      "since": "2026-10-06",
+      "signal": "ready",
+      "day": "2026-10-06",
       "trend": "up"
     },
     "MSFT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-05",
+      "day": "2026-10-06",
       "trend": "up"
     },
     "NVDA": {
-      "since": "2026-10-05",
-      "signal": "ready",
-      "day": "2026-10-05",
+      "since": "2026-10-06",
+      "signal": "watch",
+      "day": "2026-10-06",
       "trend": "up"
     },
     "AMZN": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-05",
-      "trend": "down"
+      "day": "2026-10-06",
+      "trend": "sideways"
     },
     "GOOGL": {
       "since": "2026-10-05",
       "signal": "ready",
-      "day": "2026-10-05",
+      "day": "2026-10-06",
       "trend": "up"
     },
     "META": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-05",
+      "day": "2026-10-06",
       "trend": "up"
     },
     "TSLA": {
-      "since": "2026-10-02",
-      "signal": "avoid",
-      "day": "2026-10-05",
-      "trend": "sideways"
+      "since": "2026-10-06",
+      "signal": "watch",
+      "day": "2026-10-06",
+      "trend": "up"
     },
     "AMD": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-05",
+      "day": "2026-10-06",
       "trend": "sideways"
     },
     "NFLX": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-05",
+      "day": "2026-10-06",
       "trend": "down"
     },
     "LLY": {
-      "since": "2026-10-02",
-      "signal": "ready",
-      "day": "2026-10-05",
+      "since": "2026-10-06",
+      "signal": "watch",
+      "day": "2026-10-06",
       "trend": "up"
     },
     "ASML": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-05",
+      "day": "2026-10-06",
       "trend": "up"
     },
     "PLTR": {
       "since": "2026-10-02",
       "signal": "ready",
-      "day": "2026-10-05",
+      "day": "2026-10-06",
       "trend": "up"
     }
   },
   "digest": {
     "crypto": "2026-10-05",
-    "stocks": "2026-10-05"
+    "stocks": "2026-10-06"
   },
   "history": [
+    {
+      "time": "2026-10-06T20:23:10+00:00",
+      "symbol": null,
+      "market": "stocks",
+      "kind": "digest",
+      "title": "📊 Daily digest: Stocks",
+      "message": "0 buy · 3 get ready · 7 watch · 4 avoid\n🟡 Apple 333.63 · GET READY\n🟡 Alphabet 347.68 · GET READY\n🟡 Palantir 192.07 · GET READY"
+    },
+    {
+      "time": "2026-10-06T20:23:10+00:00",
+      "symbol": "AAPL",
+      "market": "stocks",
+      "kind": "ready",
+      "title": "🟡 GET READY: Apple (AAPL) is in its buy zone",
+      "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 328.02–332.73. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 332.73, stop 323.10, target 344.57."
+    },
     {
       "time": "2026-10-06T02:21:56+00:00",
       "symbol": null,
