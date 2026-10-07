@@ -142,7 +142,7 @@
     "META": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-05",
+      "day": "2026-10-06",
       "trend": "up"
     },
     "TSLA": {
@@ -178,15 +178,23 @@
     "PLTR": {
       "since": "2026-10-02",
       "signal": "ready",
-      "day": "2026-10-05",
+      "day": "2026-10-06",
       "trend": "up"
     }
   },
   "digest": {
     "crypto": "2026-10-06",
-    "stocks": "2026-10-05"
+    "stocks": "2026-10-06"
   },
   "history": [
+    {
+      "time": "2026-10-07T02:22:38+00:00",
+      "symbol": null,
+      "market": "stocks",
+      "kind": "digest",
+      "title": "📊 Daily digest: Stocks",
+      "message": "0 buy · 3 get ready · 7 watch · 4 avoid\n🟡 Apple 333.63 · GET READY\n🟡 Alphabet 347.68 · GET READY\n🟡 Palantir 192.07 · GET READY"
+    },
     {
       "time": "2026-10-07T00:33:16+00:00",
       "symbol": null,
@@ -658,14 +666,6 @@
       "kind": "zone",
       "title": "🎯 TRON is in de koopzone",
       "message": "Prijs 0,3345 in zone 0,3336 – 0,3342.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 0,3342 · Stop 0,3286 (−1,7%) · Target 0,3366 · R/R 0,4x\nPositie €500 (max. kapitaal) → verlies bij stop ≈ €8"
-    },
-    {
-      "time": "2026-09-29T20:23:04+00:00",
-      "symbol": null,
-      "market": "stocks",
-      "kind": "summary",
-      "title": "📊 Dagoverzicht Aandelen",
-      "message": "❌ S&P 500 ETF 764,20 · Geen trend\n❌ Nasdaq 100 ETF 737,93 · Geen trend\n⏳ Apple 329,40 · Wachten\n⏳ Microsoft 508,96 · Wachten\n⏳ Nvidia 227,21 · Wachten\n❌ Amazon 246,67 · Trend negatief\n❌ Alphabet 340,92 · Trend negatief\n⏳ Meta 738,79 · Wachten\n❌ Tesla 352,84 · Trend negatief\n❌ AMD 607,57 · Geen trend\n❌ Netflix 70,30 · Trend negatief\n🎯 Eli Lilly 1.185 · In zone\n⏳ ASML 1.834 · Wachten\n⏳ Palantir 186,97 · Wachten"
     }
   ]
 }
