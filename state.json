@@ -100,93 +100,125 @@
     "SPY": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-07",
+      "day": "2026-10-08",
       "trend": "sideways"
     },
     "QQQ": {
       "since": "2026-10-07",
       "signal": "ready",
-      "day": "2026-10-07",
+      "day": "2026-10-08",
       "trend": "up"
     },
     "AAPL": {
       "since": "2026-10-07",
       "signal": "watch",
-      "day": "2026-10-07",
+      "day": "2026-10-08",
       "trend": "up"
     },
     "MSFT": {
-      "since": "2026-10-02",
-      "signal": "watch",
-      "day": "2026-10-07",
+      "since": "2026-10-08",
+      "signal": "ready",
+      "day": "2026-10-08",
       "trend": "up"
     },
     "NVDA": {
-      "since": "2026-10-07",
-      "signal": "ready",
-      "day": "2026-10-07",
+      "since": "2026-10-08",
+      "signal": "watch",
+      "day": "2026-10-08",
       "trend": "up"
     },
     "AMZN": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-07",
+      "day": "2026-10-08",
       "trend": "sideways"
     },
     "GOOGL": {
       "since": "2026-10-05",
       "signal": "ready",
-      "day": "2026-10-07",
+      "day": "2026-10-08",
       "trend": "up"
     },
     "META": {
-      "since": "2026-10-02",
-      "signal": "watch",
-      "day": "2026-10-07",
+      "since": "2026-10-08",
+      "signal": "ready",
+      "day": "2026-10-08",
       "trend": "up"
     },
     "TSLA": {
-      "since": "2026-10-06",
-      "signal": "watch",
-      "day": "2026-10-07",
+      "since": "2026-10-08",
+      "signal": "ready",
+      "day": "2026-10-08",
       "trend": "up"
     },
     "AMD": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-07",
+      "day": "2026-10-08",
       "trend": "sideways"
     },
     "NFLX": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-07",
+      "day": "2026-10-08",
       "trend": "down"
     },
     "LLY": {
       "since": "2026-10-07",
       "signal": "ready",
-      "day": "2026-10-07",
+      "day": "2026-10-08",
       "trend": "up"
     },
     "ASML": {
-      "since": "2026-10-07",
-      "signal": "ready",
-      "day": "2026-10-07",
+      "since": "2026-10-08",
+      "signal": "watch",
+      "day": "2026-10-08",
       "trend": "up"
     },
     "PLTR": {
       "since": "2026-10-07",
       "signal": "watch",
-      "day": "2026-10-07",
+      "day": "2026-10-08",
       "trend": "up"
     }
   },
   "digest": {
     "crypto": "2026-10-07",
-    "stocks": "2026-10-07"
+    "stocks": "2026-10-08"
   },
   "history": [
+    {
+      "time": "2026-10-08T20:24:55+00:00",
+      "symbol": null,
+      "market": "stocks",
+      "kind": "digest",
+      "title": "📊 Daily digest: Stocks",
+      "message": "0 buy · 6 get ready · 4 watch · 4 avoid\n🟡 Nasdaq 100 ETF 747.58 · GET READY\n🟡 Microsoft 522.61 · GET READY\n🟡 Alphabet 348.29 · GET READY\n🟡 Meta 720.89 · GET READY\n🟡 Tesla 375.00 · GET READY\n🟡 Eli Lilly 1,170 · GET READY"
+    },
+    {
+      "time": "2026-10-08T20:24:55+00:00",
+      "symbol": "TSLA",
+      "market": "stocks",
+      "kind": "ready",
+      "title": "🟡 GET READY: Tesla (TSLA) is in its buy zone",
+      "message": "In the buy zone, waiting for a 2x risk/reward.\nPrice is in the buy zone 364.26–369.07. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 369.07, stop 358.80, target 384.04."
+    },
+    {
+      "time": "2026-10-08T20:24:55+00:00",
+      "symbol": "META",
+      "market": "stocks",
+      "kind": "ready",
+      "title": "🟡 GET READY: Meta (META) is in its buy zone",
+      "message": "In the buy zone, waiting for a 2x risk/reward.\nPrice is in the buy zone 708.87–711.00. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 711.00, stop 698.24, target 740.91."
+    },
+    {
+      "time": "2026-10-08T20:24:55+00:00",
+      "symbol": "MSFT",
+      "market": "stocks",
+      "kind": "ready",
+      "title": "🟡 GET READY: Microsoft (MSFT) is in its buy zone",
+      "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 517.78–519.30. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 519.30, stop 510.01, target 531.03."
+    },
     {
       "time": "2026-10-08T02:21:32+00:00",
       "symbol": null,
@@ -634,38 +666,6 @@
       "kind": "zone",
       "title": "🎯 Nvidia (NVDA) is in de koopzone",
       "message": "Prijs 234,84 in zone 232,28 – 234,76.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 234,76 · Stop 228,80 (−2,5%) · Target 236,54 · R/R 0,3x\nPositie €394 → verlies bij stop ≈ €10"
-    },
-    {
-      "time": "2026-10-02T16:23:05+00:00",
-      "symbol": "LLY",
-      "market": "stocks",
-      "kind": "zone",
-      "title": "🎯 Eli Lilly (LLY) is in de koopzone",
-      "message": "Prijs 1.139 in zone 1.134 – 1.134.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 1.134 · Stop 1.104 (−2,7%) · Target 1.183 · R/R 1,6x\nPositie €368 → verlies bij stop ≈ €10"
-    },
-    {
-      "time": "2026-10-02T16:23:05+00:00",
-      "symbol": "XRPUSDT",
-      "market": "crypto",
-      "kind": "zone",
-      "title": "🎯 XRP is in de koopzone",
-      "message": "Prijs 1,51 in zone 1,48 – 1,50.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 1,50 · Stop 1,46 (−2,6%) · Target 1,51 · R/R 0,2x\nPositie €378 → verlies bij stop ≈ €10"
-    },
-    {
-      "time": "2026-10-02T15:24:23+00:00",
-      "symbol": "QQQ",
-      "market": "stocks",
-      "kind": "zone",
-      "title": "🎯 Nasdaq 100 ETF (QQQ) is in de koopzone",
-      "message": "Prijs 748,27 in zone 745,45 – 745,45.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 745,45 · Stop 734,27 (−1,5%) · Target 748,35 · R/R 0,3x\nPositie €500 (max. kapitaal) → verlies bij stop ≈ €7"
-    },
-    {
-      "time": "2026-10-02T14:24:50+00:00",
-      "symbol": "BNBUSDT",
-      "market": "crypto",
-      "kind": "zone",
-      "title": "🎯 BNB is in de koopzone",
-      "message": "Prijs 781,35 in zone 780,64 – 780,64.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 780,64 · Stop 768,93 (−1,5%) · Target 807,49 · R/R 2,3x\nPositie €500 (max. kapitaal) → verlies bij stop ≈ €8"
     }
   ]
 }
