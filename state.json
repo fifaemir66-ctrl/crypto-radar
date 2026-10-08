@@ -100,93 +100,133 @@
     "SPY": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-06",
+      "day": "2026-10-07",
       "trend": "sideways"
     },
     "QQQ": {
-      "since": "2026-10-06",
-      "signal": "watch",
-      "day": "2026-10-06",
+      "since": "2026-10-07",
+      "signal": "ready",
+      "day": "2026-10-07",
       "trend": "up"
     },
     "AAPL": {
-      "since": "2026-10-06",
-      "signal": "ready",
-      "day": "2026-10-06",
+      "since": "2026-10-07",
+      "signal": "watch",
+      "day": "2026-10-07",
       "trend": "up"
     },
     "MSFT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-06",
+      "day": "2026-10-07",
       "trend": "up"
     },
     "NVDA": {
-      "since": "2026-10-06",
-      "signal": "watch",
-      "day": "2026-10-06",
+      "since": "2026-10-07",
+      "signal": "ready",
+      "day": "2026-10-07",
       "trend": "up"
     },
     "AMZN": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-06",
+      "day": "2026-10-07",
       "trend": "sideways"
     },
     "GOOGL": {
       "since": "2026-10-05",
       "signal": "ready",
-      "day": "2026-10-06",
+      "day": "2026-10-07",
       "trend": "up"
     },
     "META": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-06",
+      "day": "2026-10-07",
       "trend": "up"
     },
     "TSLA": {
       "since": "2026-10-06",
       "signal": "watch",
-      "day": "2026-10-06",
+      "day": "2026-10-07",
       "trend": "up"
     },
     "AMD": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-06",
+      "day": "2026-10-07",
       "trend": "sideways"
     },
     "NFLX": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-06",
+      "day": "2026-10-07",
       "trend": "down"
     },
     "LLY": {
-      "since": "2026-10-06",
-      "signal": "watch",
-      "day": "2026-10-06",
+      "since": "2026-10-07",
+      "signal": "ready",
+      "day": "2026-10-07",
       "trend": "up"
     },
     "ASML": {
-      "since": "2026-10-06",
-      "signal": "watch",
-      "day": "2026-10-06",
+      "since": "2026-10-07",
+      "signal": "ready",
+      "day": "2026-10-07",
       "trend": "up"
     },
     "PLTR": {
-      "since": "2026-10-06",
-      "signal": "ready",
-      "day": "2026-10-06",
+      "since": "2026-10-07",
+      "signal": "watch",
+      "day": "2026-10-07",
       "trend": "up"
     }
   },
   "digest": {
     "crypto": "2026-10-07",
-    "stocks": "2026-10-06"
+    "stocks": "2026-10-07"
   },
   "history": [
+    {
+      "time": "2026-10-08T02:21:32+00:00",
+      "symbol": null,
+      "market": "stocks",
+      "kind": "digest",
+      "title": "📊 Daily digest: Stocks",
+      "message": "0 buy · 5 get ready · 5 watch · 4 avoid\n🟡 Nasdaq 100 ETF 757.73 · GET READY\n🟡 Nvidia 237.47 · GET READY\n🟡 Alphabet 350.50 · GET READY\n🟡 Eli Lilly 1,189 · GET READY\n🟡 ASML 1,805 · GET READY"
+    },
+    {
+      "time": "2026-10-08T02:21:32+00:00",
+      "symbol": "ASML",
+      "market": "stocks",
+      "kind": "ready",
+      "title": "🟡 GET READY: ASML (ASML) is in its buy zone",
+      "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 1,776–1,790. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 1,790, stop 1,750, target 1,874."
+    },
+    {
+      "time": "2026-10-08T02:21:32+00:00",
+      "symbol": "LLY",
+      "market": "stocks",
+      "kind": "ready",
+      "title": "🟡 GET READY: Eli Lilly (LLY) is in its buy zone",
+      "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 1,179–1,183. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 1,183, stop 1,162, target 1,232."
+    },
+    {
+      "time": "2026-10-08T02:21:32+00:00",
+      "symbol": "NVDA",
+      "market": "stocks",
+      "kind": "ready",
+      "title": "🟡 GET READY: Nvidia (NVDA) is in its buy zone",
+      "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 234.76–236.54. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 236.54, stop 231.24, target 243.37."
+    },
+    {
+      "time": "2026-10-08T02:21:32+00:00",
+      "symbol": "QQQ",
+      "market": "stocks",
+      "kind": "ready",
+      "title": "🟡 GET READY: Nasdaq 100 ETF (QQQ) is in its buy zone",
+      "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 745.45–748.65. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 748.65, stop 734.27, target 762.86."
+    },
     {
       "time": "2026-10-08T00:32:07+00:00",
       "symbol": null,
@@ -626,46 +666,6 @@
       "kind": "zone",
       "title": "🎯 BNB is in de koopzone",
       "message": "Prijs 781,35 in zone 780,64 – 780,64.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 780,64 · Stop 768,93 (−1,5%) · Target 807,49 · R/R 2,3x\nPositie €500 (max. kapitaal) → verlies bij stop ≈ €8"
-    },
-    {
-      "time": "2026-10-02T02:21:03+00:00",
-      "symbol": null,
-      "market": "stocks",
-      "kind": "summary",
-      "title": "📊 Dagoverzicht Aandelen",
-      "message": "❌ S&P 500 ETF 763,99 · Geen trend\n⏳ Nasdaq 100 ETF 742,03 · Wachten\n⏳ Apple 330,32 · Wachten\n⏳ Microsoft 512,80 · Wachten\n⏳ Nvidia 230,86 · Wachten\n❌ Amazon 248,23 · Trend negatief\n❌ Alphabet 338,24 · Geen trend\n⏳ Meta 725,93 · Wachten\n❌ Tesla 354,11 · Trend negatief\n❌ AMD 615,73 · Geen trend\n❌ Netflix 67,85 · Trend negatief\n⏳ Eli Lilly 1.150 · Wachten\n⏳ ASML 1.808 · Wachten\n🎯 Palantir 190,04 · In zone"
-    },
-    {
-      "time": "2026-10-02T00:30:08+00:00",
-      "symbol": null,
-      "market": "stocks",
-      "kind": "summary",
-      "title": "📊 Dagoverzicht Aandelen",
-      "message": "❌ S&P 500 ETF 762,63 · Geen trend\n❌ Nasdaq 100 ETF 739,77 · Geen trend\n⏳ Apple 333,02 · Wachten\n⏳ Microsoft 512,90 · Wachten\n🎯 Nvidia 228,38 · In zone\n❌ Amazon 249,15 · Trend negatief\n❌ Alphabet 344,08 · Trend negatief\n⏳ Meta 725,18 · Wachten\n❌ Tesla 354,81 · Trend negatief\n❌ AMD 611,76 · Geen trend\n❌ Netflix 69,58 · Trend negatief\n🎯 Eli Lilly 1.157 · In zone\n⏳ ASML 1.812 · Wachten\n⏳ Palantir 187,05 · Wachten"
-    },
-    {
-      "time": "2026-10-02T00:30:08+00:00",
-      "symbol": null,
-      "market": "crypto",
-      "kind": "summary",
-      "title": "📊 Dagoverzicht Crypto",
-      "message": "⏳ Bitcoin 84.793 · Wachten\n⏳ Ethereum 2.705 · Wachten\n⏳ Solana 118,72 · Wachten\n⏳ XRP 1,50 · Wachten\n⏳ BNB 771,76 · Wachten\n⏳ Dogecoin 0,0943 · Wachten\n⏳ Cardano 0,2458 · Wachten\n⏳ Avalanche 10,98 · Wachten\n🎯 Chainlink 14,29 · In zone\n⏳ Polkadot 1,18 · Wachten\n⏳ Litecoin 68,73 · Wachten\n🎯 TRON 0,3343 · In zone\n❌ Toncoin 1,60 · Trend negatief\n❌ Sui 1,18 · Geen trend\n⏳ NEAR 4,82 · Wachten\n🎯 Bitcoin Cash 305,70 · In zone"
-    },
-    {
-      "time": "2026-10-01T20:22:56+00:00",
-      "symbol": null,
-      "market": "stocks",
-      "kind": "summary",
-      "title": "📊 Dagoverzicht Aandelen",
-      "message": "❌ S&P 500 ETF 763,99 · Geen trend\n⏳ Nasdaq 100 ETF 742,03 · Wachten\n⏳ Apple 330,32 · Wachten\n⏳ Microsoft 512,80 · Wachten\n⏳ Nvidia 230,86 · Wachten\n❌ Amazon 248,23 · Trend negatief\n❌ Alphabet 338,24 · Geen trend\n⏳ Meta 725,93 · Wachten\n❌ Tesla 354,11 · Trend negatief\n❌ AMD 615,73 · Geen trend\n❌ Netflix 67,85 · Trend negatief\n⏳ Eli Lilly 1.150 · Wachten\n⏳ ASML 1.808 · Wachten\n🎯 Palantir 190,04 · In zone"
-    },
-    {
-      "time": "2026-10-01T02:21:49+00:00",
-      "symbol": null,
-      "market": "stocks",
-      "kind": "summary",
-      "title": "📊 Dagoverzicht Aandelen",
-      "message": "❌ S&P 500 ETF 762,63 · Geen trend\n❌ Nasdaq 100 ETF 739,77 · Geen trend\n⏳ Apple 333,02 · Wachten\n⏳ Microsoft 512,90 · Wachten\n🎯 Nvidia 228,38 · In zone\n❌ Amazon 249,15 · Trend negatief\n❌ Alphabet 344,08 · Trend negatief\n⏳ Meta 725,18 · Wachten\n❌ Tesla 354,81 · Trend negatief\n❌ AMD 611,76 · Geen trend\n❌ Netflix 69,58 · Trend negatief\n🎯 Eli Lilly 1.157 · In zone\n⏳ ASML 1.812 · Wachten\n⏳ Palantir 187,05 · Wachten"
     }
   ]
 }
