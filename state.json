@@ -2,75 +2,75 @@
   "version": 2,
   "coins": {
     "BTCUSDT": {
-      "since": "2026-10-07",
-      "signal": "ready",
-      "day": "2026-10-07",
+      "since": "2026-10-08",
+      "signal": "watch",
+      "day": "2026-10-08",
       "trend": "up"
     },
     "ETHUSDT": {
       "since": "2026-10-07",
       "signal": "ready",
-      "day": "2026-10-07",
+      "day": "2026-10-08",
       "trend": "up"
     },
     "SOLUSDT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-07",
+      "day": "2026-10-08",
       "trend": "up"
     },
     "XRPUSDT": {
-      "since": "2026-10-07",
-      "signal": "ready",
-      "day": "2026-10-07",
-      "trend": "up"
+      "since": "2026-10-08",
+      "signal": "avoid",
+      "day": "2026-10-08",
+      "trend": "sideways"
     },
     "BNBUSDT": {
       "since": "2026-10-07",
       "signal": "ready",
-      "day": "2026-10-07",
+      "day": "2026-10-08",
       "trend": "up"
     },
     "DOGEUSDT": {
-      "since": "2026-10-07",
-      "signal": "ready",
-      "day": "2026-10-07",
-      "trend": "up"
+      "since": "2026-10-08",
+      "signal": "avoid",
+      "day": "2026-10-08",
+      "trend": "sideways"
     },
     "ADAUSDT": {
       "since": "2026-10-07",
       "signal": "watch",
-      "day": "2026-10-07",
+      "day": "2026-10-08",
       "trend": "up"
     },
     "AVAXUSDT": {
-      "since": "2026-10-07",
-      "signal": "ready",
-      "day": "2026-10-07",
+      "since": "2026-10-08",
+      "signal": "watch",
+      "day": "2026-10-08",
       "trend": "up"
     },
     "LINKUSDT": {
-      "since": "2026-10-07",
-      "signal": "watch",
-      "day": "2026-10-07",
+      "since": "2026-10-08",
+      "signal": "ready",
+      "day": "2026-10-08",
       "trend": "up"
     },
     "DOTUSDT": {
-      "since": "2026-10-02",
-      "signal": "watch",
-      "day": "2026-10-07",
+      "since": "2026-10-08",
+      "signal": "buy",
+      "day": "2026-10-08",
       "trend": "up"
     },
     "LTCUSDT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-07",
+      "day": "2026-10-08",
       "trend": "up"
     },
     "TRXUSDT": {
       "since": "2026-10-06",
       "signal": "avoid",
-      "day": "2026-10-07",
+      "day": "2026-10-08",
       "trend": "sideways"
     },
     "TONUSDT": {
@@ -82,111 +82,183 @@
     "SUIUSDT": {
       "since": "2026-10-04",
       "signal": "watch",
-      "day": "2026-10-07",
+      "day": "2026-10-08",
       "trend": "up"
     },
     "NEARUSDT": {
       "since": "2026-10-02",
       "signal": "watch",
-      "day": "2026-10-07",
+      "day": "2026-10-08",
       "trend": "up"
     },
     "BCHUSDT": {
-      "since": "2026-10-07",
-      "signal": "watch",
-      "day": "2026-10-07",
-      "trend": "up"
+      "since": "2026-10-08",
+      "signal": "avoid",
+      "day": "2026-10-08",
+      "trend": "sideways"
     },
     "SPY": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-08",
+      "day": "2026-10-07",
       "trend": "sideways"
     },
     "QQQ": {
       "since": "2026-10-07",
       "signal": "ready",
-      "day": "2026-10-08",
+      "day": "2026-10-07",
       "trend": "up"
     },
     "AAPL": {
       "since": "2026-10-07",
       "signal": "watch",
-      "day": "2026-10-08",
+      "day": "2026-10-07",
       "trend": "up"
     },
     "MSFT": {
-      "since": "2026-10-08",
-      "signal": "ready",
-      "day": "2026-10-08",
+      "since": "2026-10-07",
+      "signal": "watch",
+      "day": "2026-10-07",
       "trend": "up"
     },
     "NVDA": {
-      "since": "2026-10-08",
-      "signal": "watch",
-      "day": "2026-10-08",
+      "since": "2026-10-07",
+      "signal": "ready",
+      "day": "2026-10-07",
       "trend": "up"
     },
     "AMZN": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-08",
+      "day": "2026-10-07",
       "trend": "sideways"
     },
     "GOOGL": {
       "since": "2026-10-05",
       "signal": "ready",
-      "day": "2026-10-08",
+      "day": "2026-10-07",
       "trend": "up"
     },
     "META": {
-      "since": "2026-10-08",
-      "signal": "ready",
-      "day": "2026-10-08",
+      "since": "2026-10-07",
+      "signal": "watch",
+      "day": "2026-10-07",
       "trend": "up"
     },
     "TSLA": {
-      "since": "2026-10-08",
-      "signal": "ready",
-      "day": "2026-10-08",
+      "since": "2026-10-07",
+      "signal": "watch",
+      "day": "2026-10-07",
       "trend": "up"
     },
     "AMD": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-08",
+      "day": "2026-10-07",
       "trend": "sideways"
     },
     "NFLX": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-08",
+      "day": "2026-10-07",
       "trend": "down"
     },
     "LLY": {
       "since": "2026-10-07",
       "signal": "ready",
-      "day": "2026-10-08",
+      "day": "2026-10-07",
       "trend": "up"
     },
     "ASML": {
-      "since": "2026-10-08",
-      "signal": "watch",
-      "day": "2026-10-08",
+      "since": "2026-10-07",
+      "signal": "ready",
+      "day": "2026-10-07",
       "trend": "up"
     },
     "PLTR": {
       "since": "2026-10-07",
       "signal": "watch",
-      "day": "2026-10-08",
+      "day": "2026-10-07",
       "trend": "up"
     }
   },
   "digest": {
-    "crypto": "2026-10-07",
-    "stocks": "2026-10-08"
+    "crypto": "2026-10-08",
+    "stocks": "2026-10-07"
   },
   "history": [
+    {
+      "time": "2026-10-09T00:35:21+00:00",
+      "symbol": null,
+      "market": "stocks",
+      "kind": "digest",
+      "title": "📊 Daily digest: Stocks",
+      "message": "0 buy · 5 get ready · 5 watch · 4 avoid\n🟡 Nasdaq 100 ETF 757.73 · GET READY\n🟡 Nvidia 237.47 · GET READY\n🟡 Alphabet 350.50 · GET READY\n🟡 Eli Lilly 1,189 · GET READY\n🟡 ASML 1,805 · GET READY"
+    },
+    {
+      "time": "2026-10-09T00:35:21+00:00",
+      "symbol": null,
+      "market": "crypto",
+      "kind": "digest",
+      "title": "📊 Daily digest: Crypto",
+      "message": "1 buy · 3 get ready · 7 watch · 5 avoid\n🟢 Polkadot 1.09 · BUY SIGNAL\n🟡 Ethereum 2,475 · GET READY\n🟡 BNB 736.08 · GET READY\n🟡 Chainlink 12.71 · GET READY"
+    },
+    {
+      "time": "2026-10-09T00:35:21+00:00",
+      "symbol": "ASML",
+      "market": "stocks",
+      "kind": "ready",
+      "title": "🟡 GET READY: ASML (ASML) is in its buy zone",
+      "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 1,776–1,790. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 1,790, stop 1,750, target 1,874."
+    },
+    {
+      "time": "2026-10-09T00:35:21+00:00",
+      "symbol": "NVDA",
+      "market": "stocks",
+      "kind": "ready",
+      "title": "🟡 GET READY: Nvidia (NVDA) is in its buy zone",
+      "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 234.76–236.54. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 236.54, stop 231.24, target 243.37."
+    },
+    {
+      "time": "2026-10-09T00:35:21+00:00",
+      "symbol": "BCHUSDT",
+      "market": "crypto",
+      "kind": "avoid",
+      "title": "🔴 AVOID: Bitcoin Cash lost its uptrend",
+      "message": "No clear trend: the strategy only buys in uptrends.\nStay out. Re-check when price makes a higher low and closes above the EMA 50 (277.29)."
+    },
+    {
+      "time": "2026-10-09T00:35:21+00:00",
+      "symbol": "DOTUSDT",
+      "market": "crypto",
+      "kind": "buy",
+      "title": "🟢 BUY SIGNAL: Polkadot",
+      "message": "Uptrend, daily close in the buy zone with a trigger (red hammer).\nBuy setup at the daily close. Entry ≈ 1.09, stop 1.05 (−3.2%), target 1.28 (+17.8%). Position €309 → max loss ≈ €10.\nStrength 96/100. Check the chart yourself."
+    },
+    {
+      "time": "2026-10-09T00:35:21+00:00",
+      "symbol": "LINKUSDT",
+      "market": "crypto",
+      "kind": "ready",
+      "title": "🟡 GET READY: Chainlink is in its buy zone",
+      "message": "In the buy zone, waiting for a trigger candle.\nPrice is in the buy zone 12.59–12.62. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 12.62, stop 12.40, target 13.69."
+    },
+    {
+      "time": "2026-10-09T00:35:21+00:00",
+      "symbol": "DOGEUSDT",
+      "market": "crypto",
+      "kind": "avoid",
+      "title": "🔴 AVOID: Dogecoin lost its uptrend",
+      "message": "No clear trend: the strategy only buys in uptrends.\nStay out. Re-check when price makes a higher low and closes above the EMA 50 (0.0883)."
+    },
+    {
+      "time": "2026-10-09T00:35:21+00:00",
+      "symbol": "XRPUSDT",
+      "market": "crypto",
+      "kind": "avoid",
+      "title": "🔴 AVOID: XRP lost its uptrend",
+      "message": "No clear trend: the strategy only buys in uptrends.\nStay out. Re-check when price makes a higher low and closes above the EMA 50 (1.40)."
+    },
     {
       "time": "2026-10-08T20:24:55+00:00",
       "symbol": null,
@@ -594,78 +666,6 @@
       "kind": "summary",
       "title": "📊 Dagoverzicht Aandelen",
       "message": "❌ S&P 500 ETF 763,99 · Geen trend\n⏳ Nasdaq 100 ETF 742,03 · Wachten\n⏳ Apple 330,32 · Wachten\n⏳ Microsoft 512,80 · Wachten\n⏳ Nvidia 230,86 · Wachten\n❌ Amazon 248,23 · Trend negatief\n❌ Alphabet 338,24 · Geen trend\n⏳ Meta 725,93 · Wachten\n❌ Tesla 354,11 · Trend negatief\n❌ AMD 615,73 · Geen trend\n❌ Netflix 67,85 · Trend negatief\n⏳ Eli Lilly 1.150 · Wachten\n⏳ ASML 1.808 · Wachten\n🎯 Palantir 190,04 · In zone"
-    },
-    {
-      "time": "2026-10-03T00:27:53+00:00",
-      "symbol": null,
-      "market": "crypto",
-      "kind": "summary",
-      "title": "📊 Dagoverzicht Crypto",
-      "message": "⏳ Bitcoin 84.538 · Wachten\n🎯 Ethereum 2.672 · In zone\n⏳ Solana 118,98 · Wachten\n🎯 XRP 1,49 · In zone\n🎯 BNB 768,70 · In zone\n⏳ Dogecoin 0,0934 · Wachten\n⏳ Cardano 0,2466 · Wachten\n⏳ Avalanche 10,88 · Wachten\n⏳ Chainlink 13,89 · Wachten\n⏳ Polkadot 1,17 · Wachten\n⏳ Litecoin 70,86 · Wachten\n🎯 TRON 0,3344 · In zone\n❌ Toncoin 1,60 · Trend negatief\n❌ Sui 1,18 · Geen trend\n⏳ NEAR 4,72 · Wachten\n⏳ Bitcoin Cash 313,20 · Wachten"
-    },
-    {
-      "time": "2026-10-02T23:18:23+00:00",
-      "symbol": "LINKUSDT",
-      "market": "crypto",
-      "kind": "zone",
-      "title": "🎯 Chainlink is in de koopzone",
-      "message": "Prijs 13,74 in zone 13,69 – 13,69.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 13,69 · Stop 13,48 (−1,5%) · Target 14,24 · R/R 2,7x\nPositie €500 (max. kapitaal) → verlies bij stop ≈ €8"
-    },
-    {
-      "time": "2026-10-02T23:18:23+00:00",
-      "symbol": "DOGEUSDT",
-      "market": "crypto",
-      "kind": "zone",
-      "title": "🎯 Dogecoin is in de koopzone",
-      "message": "Prijs 0,0926 in zone 0,0921 – 0,0925.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 0,0925 · Stop 0,0907 (−1,9%) · Target 0,0951 · R/R 1,5x\nPositie €500 (max. kapitaal) → verlies bij stop ≈ €9"
-    },
-    {
-      "time": "2026-10-02T20:21:06+00:00",
-      "symbol": null,
-      "market": "stocks",
-      "kind": "summary",
-      "title": "📊 Dagoverzicht Aandelen",
-      "message": "❌ S&P 500 ETF 769,64 · Geen trend\n🎯 Nasdaq 100 ETF 749,58 · In zone\n⏳ Apple 333,69 · Wachten\n⏳ Microsoft 517,53 · Wachten\n⏳ Nvidia 233,95 · Wachten\n❌ Amazon 251,52 · Trend negatief\n❌ Alphabet 343,50 · Geen trend\n⏳ Meta 728,08 · Wachten\n❌ Tesla 370,59 · Geen trend\n❌ AMD 633,91 · Geen trend\n❌ Netflix 67,06 · Trend negatief\n⏳ Eli Lilly 1.143 · Wachten\n⏳ ASML 1.867 · Wachten\n🎯 Palantir 188,75 · In zone"
-    },
-    {
-      "time": "2026-10-02T20:21:06+00:00",
-      "symbol": "AVAXUSDT",
-      "market": "crypto",
-      "kind": "zone",
-      "title": "🎯 Avalanche is in de koopzone",
-      "message": "Prijs 10,57 in zone 10,49 – 10,55.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 10,55 · Stop 10,33 (−2,1%) · Target 11,80 · R/R 5,7x\nPositie €485 → verlies bij stop ≈ €10"
-    },
-    {
-      "time": "2026-10-02T18:26:07+00:00",
-      "symbol": "BCHUSDT",
-      "market": "crypto",
-      "kind": "zone",
-      "title": "🎯 Bitcoin Cash is in de koopzone",
-      "message": "Prijs 306,20 in zone 305,60 – 305,60.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 305,60 · Stop 301,02 (−1,5%) · Target 366,40 · R/R 13,3x\nPositie €500 (max. kapitaal) → verlies bij stop ≈ €8"
-    },
-    {
-      "time": "2026-10-02T18:26:07+00:00",
-      "symbol": "BNBUSDT",
-      "market": "crypto",
-      "kind": "zone",
-      "title": "🎯 BNB is in de koopzone",
-      "message": "Prijs 770,17 in zone 767,81 – 767,81.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 767,81 · Stop 756,29 (−1,5%) · Target 780,64 · R/R 1,1x\nPositie €500 (max. kapitaal) → verlies bij stop ≈ €7"
-    },
-    {
-      "time": "2026-10-02T18:26:07+00:00",
-      "symbol": "ETHUSDT",
-      "market": "crypto",
-      "kind": "zone",
-      "title": "🎯 Ethereum is in de koopzone",
-      "message": "Prijs 2.679 in zone 2.636 – 2.666.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 2.666 · Stop 2.596 (−2,6%) · Target 2.807 · R/R 2,0x\nPositie €384 → verlies bij stop ≈ €10"
-    },
-    {
-      "time": "2026-10-02T17:22:36+00:00",
-      "symbol": "NVDA",
-      "market": "stocks",
-      "kind": "zone",
-      "title": "🎯 Nvidia (NVDA) is in de koopzone",
-      "message": "Prijs 234,84 in zone 232,28 – 234,76.\nWacht op de dagslot en kijk of er een hammer, bullish engulfing of SSL-sweep komt.\nEntry 234,76 · Stop 228,80 (−2,5%) · Target 236,54 · R/R 0,3x\nPositie €394 → verlies bij stop ≈ €10"
     }
   ]
 }
