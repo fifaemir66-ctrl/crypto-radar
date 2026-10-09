@@ -100,93 +100,109 @@
     "SPY": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-08",
+      "day": "2026-10-09",
       "trend": "sideways"
     },
     "QQQ": {
       "since": "2026-10-07",
       "signal": "ready",
-      "day": "2026-10-08",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "AAPL": {
       "since": "2026-10-07",
       "signal": "watch",
-      "day": "2026-10-08",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "MSFT": {
-      "since": "2026-10-08",
-      "signal": "ready",
-      "day": "2026-10-08",
+      "since": "2026-10-09",
+      "signal": "watch",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "NVDA": {
-      "since": "2026-10-08",
-      "signal": "watch",
-      "day": "2026-10-08",
+      "since": "2026-10-09",
+      "signal": "ready",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "AMZN": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-08",
+      "day": "2026-10-09",
       "trend": "sideways"
     },
     "GOOGL": {
       "since": "2026-10-05",
       "signal": "ready",
-      "day": "2026-10-08",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "META": {
-      "since": "2026-10-08",
-      "signal": "ready",
-      "day": "2026-10-08",
+      "since": "2026-10-09",
+      "signal": "watch",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "TSLA": {
-      "since": "2026-10-08",
-      "signal": "ready",
-      "day": "2026-10-08",
+      "since": "2026-10-09",
+      "signal": "watch",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "AMD": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-08",
+      "day": "2026-10-09",
       "trend": "sideways"
     },
     "NFLX": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-08",
+      "day": "2026-10-09",
       "trend": "down"
     },
     "LLY": {
       "since": "2026-10-07",
       "signal": "ready",
-      "day": "2026-10-08",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "ASML": {
       "since": "2026-10-08",
       "signal": "watch",
-      "day": "2026-10-08",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "PLTR": {
       "since": "2026-10-07",
       "signal": "watch",
-      "day": "2026-10-08",
+      "day": "2026-10-09",
       "trend": "up"
     }
   },
   "digest": {
     "crypto": "2026-10-08",
-    "stocks": "2026-10-08"
+    "stocks": "2026-10-09"
   },
   "history": [
+    {
+      "time": "2026-10-09T20:21:31+00:00",
+      "symbol": null,
+      "market": "stocks",
+      "kind": "digest",
+      "title": "📊 Daily digest: Stocks",
+      "message": "0 buy · 4 get ready · 6 watch · 4 avoid\n🟡 Nasdaq 100 ETF 751.27 · GET READY\n🟡 Nvidia 229.28 · GET READY\n🟡 Alphabet 351.66 · GET READY\n🟡 Eli Lilly 1,179 · GET READY"
+    },
+    {
+      "time": "2026-10-09T20:21:31+00:00",
+      "symbol": "NVDA",
+      "market": "stocks",
+      "kind": "ready",
+      "title": "🟡 GET READY: Nvidia (NVDA) is in its buy zone",
+      "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 225.31–227.92. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 227.92, stop 221.93, target 232.28."
+    },
     {
       "time": "2026-10-09T01:23:54+00:00",
       "symbol": null,
@@ -650,22 +666,6 @@
       "kind": "digest",
       "title": "📊 Daily digest: Crypto",
       "message": "0 buy · 2 get ready · 12 watch · 2 avoid\n🟡 XRP 1.52 · GET READY\n🟡 Dogecoin 0.0959 · GET READY"
-    },
-    {
-      "time": "2026-10-05T00:32:01+00:00",
-      "symbol": "XRPUSDT",
-      "market": "crypto",
-      "kind": "ready",
-      "title": "🟡 GET READY: XRP is in its buy zone",
-      "message": "In the buy zone, waiting for a 2x risk/reward.\nPrice is in the buy zone 1.48–1.50. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 1.50, stop 1.46, target 1.55."
-    },
-    {
-      "time": "2026-10-04T02:32:55+00:00",
-      "symbol": null,
-      "market": "crypto",
-      "kind": "digest",
-      "title": "📊 Daily digest: Crypto",
-      "message": "0 buy · 2 get ready · 11 watch · 3 avoid\n🟡 Ethereum 2,687 · GET READY\n🟡 Dogecoin 0.0928 · GET READY"
     }
   ]
 }
