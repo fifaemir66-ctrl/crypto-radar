@@ -100,93 +100,109 @@
     "SPY": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-08",
+      "day": "2026-10-09",
       "trend": "sideways"
     },
     "QQQ": {
       "since": "2026-10-07",
       "signal": "ready",
-      "day": "2026-10-08",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "AAPL": {
       "since": "2026-10-07",
       "signal": "watch",
-      "day": "2026-10-08",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "MSFT": {
-      "since": "2026-10-08",
-      "signal": "ready",
-      "day": "2026-10-08",
+      "since": "2026-10-09",
+      "signal": "watch",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "NVDA": {
-      "since": "2026-10-08",
-      "signal": "watch",
-      "day": "2026-10-08",
+      "since": "2026-10-09",
+      "signal": "ready",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "AMZN": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-08",
+      "day": "2026-10-09",
       "trend": "sideways"
     },
     "GOOGL": {
       "since": "2026-10-05",
       "signal": "ready",
-      "day": "2026-10-08",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "META": {
-      "since": "2026-10-08",
-      "signal": "ready",
-      "day": "2026-10-08",
+      "since": "2026-10-09",
+      "signal": "watch",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "TSLA": {
-      "since": "2026-10-08",
-      "signal": "ready",
-      "day": "2026-10-08",
+      "since": "2026-10-09",
+      "signal": "watch",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "AMD": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-08",
+      "day": "2026-10-09",
       "trend": "sideways"
     },
     "NFLX": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-08",
+      "day": "2026-10-09",
       "trend": "down"
     },
     "LLY": {
       "since": "2026-10-07",
       "signal": "ready",
-      "day": "2026-10-08",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "ASML": {
       "since": "2026-10-08",
       "signal": "watch",
-      "day": "2026-10-08",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "PLTR": {
       "since": "2026-10-07",
       "signal": "watch",
-      "day": "2026-10-08",
+      "day": "2026-10-09",
       "trend": "up"
     }
   },
   "digest": {
     "crypto": "2026-10-09",
-    "stocks": "2026-10-08"
+    "stocks": "2026-10-09"
   },
   "history": [
+    {
+      "time": "2026-10-10T02:22:01+00:00",
+      "symbol": null,
+      "market": "stocks",
+      "kind": "digest",
+      "title": "📊 Daily digest: Stocks",
+      "message": "0 buy · 4 get ready · 6 watch · 4 avoid\n🟡 Nasdaq 100 ETF 751.27 · GET READY\n🟡 Nvidia 229.28 · GET READY\n🟡 Alphabet 351.66 · GET READY\n🟡 Eli Lilly 1,179 · GET READY"
+    },
+    {
+      "time": "2026-10-10T02:22:01+00:00",
+      "symbol": "NVDA",
+      "market": "stocks",
+      "kind": "ready",
+      "title": "🟡 GET READY: Nvidia (NVDA) is in its buy zone",
+      "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 225.31–227.92. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 227.92, stop 221.93, target 232.28."
+    },
     {
       "time": "2026-10-10T00:33:21+00:00",
       "symbol": null,
@@ -650,22 +666,6 @@
       "kind": "ready",
       "title": "🟡 GET READY: Alphabet (GOOGL) is in its buy zone",
       "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 340.49–345.35. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 345.35, stop 335.38, target 349.00."
-    },
-    {
-      "time": "2026-10-06T02:21:56+00:00",
-      "symbol": "NVDA",
-      "market": "stocks",
-      "kind": "ready",
-      "title": "🟡 GET READY: Nvidia (NVDA) is in its buy zone",
-      "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 232.28–234.76. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 234.76, stop 228.80, target 240.10."
-    },
-    {
-      "time": "2026-10-06T00:32:33+00:00",
-      "symbol": null,
-      "market": "stocks",
-      "kind": "digest",
-      "title": "📊 Daily digest: Stocks",
-      "message": "0 buy · 3 get ready · 5 watch · 6 avoid\n🟡 Nasdaq 100 ETF 749.58 · GET READY\n🟡 Eli Lilly 1,143 · GET READY\n🟡 Palantir 188.75 · GET READY"
     }
   ]
 }
