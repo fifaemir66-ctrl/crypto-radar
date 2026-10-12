@@ -98,95 +98,135 @@
       "trend": "up"
     },
     "SPY": {
-      "since": "2026-10-02",
-      "signal": "avoid",
-      "day": "2026-10-09",
-      "trend": "sideways"
+      "since": "2026-10-12",
+      "signal": "ready",
+      "day": "2026-10-12",
+      "trend": "up"
     },
     "QQQ": {
       "since": "2026-10-07",
       "signal": "ready",
-      "day": "2026-10-09",
+      "day": "2026-10-12",
       "trend": "up"
     },
     "AAPL": {
       "since": "2026-10-07",
       "signal": "watch",
-      "day": "2026-10-09",
+      "day": "2026-10-12",
       "trend": "up"
     },
     "MSFT": {
       "since": "2026-10-09",
       "signal": "watch",
-      "day": "2026-10-09",
+      "day": "2026-10-12",
       "trend": "up"
     },
     "NVDA": {
       "since": "2026-10-09",
       "signal": "ready",
-      "day": "2026-10-09",
+      "day": "2026-10-12",
       "trend": "up"
     },
     "AMZN": {
-      "since": "2026-10-02",
-      "signal": "avoid",
-      "day": "2026-10-09",
-      "trend": "sideways"
+      "since": "2026-10-12",
+      "signal": "ready",
+      "day": "2026-10-12",
+      "trend": "up"
     },
     "GOOGL": {
       "since": "2026-10-05",
       "signal": "ready",
-      "day": "2026-10-09",
+      "day": "2026-10-12",
       "trend": "up"
     },
     "META": {
       "since": "2026-10-09",
       "signal": "watch",
-      "day": "2026-10-09",
+      "day": "2026-10-12",
       "trend": "up"
     },
     "TSLA": {
-      "since": "2026-10-09",
-      "signal": "watch",
-      "day": "2026-10-09",
+      "since": "2026-10-12",
+      "signal": "ready",
+      "day": "2026-10-12",
       "trend": "up"
     },
     "AMD": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-09",
+      "day": "2026-10-12",
       "trend": "sideways"
     },
     "NFLX": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-09",
+      "day": "2026-10-12",
       "trend": "down"
     },
     "LLY": {
-      "since": "2026-10-07",
-      "signal": "ready",
-      "day": "2026-10-09",
+      "since": "2026-10-12",
+      "signal": "watch",
+      "day": "2026-10-12",
       "trend": "up"
     },
     "ASML": {
-      "since": "2026-10-08",
-      "signal": "watch",
-      "day": "2026-10-09",
+      "since": "2026-10-12",
+      "signal": "ready",
+      "day": "2026-10-12",
       "trend": "up"
     },
     "PLTR": {
       "since": "2026-10-07",
       "signal": "watch",
-      "day": "2026-10-09",
+      "day": "2026-10-12",
       "trend": "up"
     }
   },
   "digest": {
     "crypto": "2026-10-11",
-    "stocks": "2026-10-09"
+    "stocks": "2026-10-12"
   },
   "history": [
+    {
+      "time": "2026-10-12T20:24:30+00:00",
+      "symbol": null,
+      "market": "stocks",
+      "kind": "digest",
+      "title": "📊 Daily digest: Stocks",
+      "message": "0 buy · 7 get ready · 5 watch · 2 avoid\n🟡 S&P 500 ETF 778.10 · GET READY\n🟡 Nasdaq 100 ETF 746.04 · GET READY\n🟡 Nvidia 226.32 · GET READY\n🟡 Amazon 259.53 · GET READY\n🟡 Alphabet 352.72 · GET READY\n🟡 Tesla 378.03 · GET READY\n🟡 ASML 1,750 · GET READY"
+    },
+    {
+      "time": "2026-10-12T20:24:30+00:00",
+      "symbol": "ASML",
+      "market": "stocks",
+      "kind": "ready",
+      "title": "🟡 GET READY: ASML (ASML) is in its buy zone",
+      "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 1,744–1,746. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 1,746, stop 1,718, target 1,790."
+    },
+    {
+      "time": "2026-10-12T20:24:30+00:00",
+      "symbol": "TSLA",
+      "market": "stocks",
+      "kind": "ready",
+      "title": "🟡 GET READY: Tesla (TSLA) is in its buy zone",
+      "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 374.33–377.34. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 377.34, stop 368.72, target 384.04."
+    },
+    {
+      "time": "2026-10-12T20:24:30+00:00",
+      "symbol": "AMZN",
+      "market": "stocks",
+      "kind": "ready",
+      "title": "🟡 GET READY: Amazon (AMZN) is in its buy zone",
+      "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 256.29–259.49. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 259.49, stop 252.44, target 263.70."
+    },
+    {
+      "time": "2026-10-12T20:24:30+00:00",
+      "symbol": "SPY",
+      "market": "stocks",
+      "kind": "ready",
+      "title": "🟡 GET READY: S&P 500 ETF (SPY) is in its buy zone",
+      "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 775.14–775.30. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 775.30, stop 755.00, target 779.37."
+    },
     {
       "time": "2026-10-12T00:34:42+00:00",
       "symbol": null,
@@ -626,46 +666,6 @@
       "kind": "ready",
       "title": "🟡 GET READY: Eli Lilly (LLY) is in its buy zone",
       "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 1,179–1,183. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 1,183, stop 1,162, target 1,232."
-    },
-    {
-      "time": "2026-10-07T20:23:39+00:00",
-      "symbol": "NVDA",
-      "market": "stocks",
-      "kind": "ready",
-      "title": "🟡 GET READY: Nvidia (NVDA) is in its buy zone",
-      "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 234.76–236.54. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 236.54, stop 231.24, target 243.37."
-    },
-    {
-      "time": "2026-10-07T20:23:39+00:00",
-      "symbol": "QQQ",
-      "market": "stocks",
-      "kind": "ready",
-      "title": "🟡 GET READY: Nasdaq 100 ETF (QQQ) is in its buy zone",
-      "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 745.45–748.65. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 748.65, stop 734.27, target 762.86."
-    },
-    {
-      "time": "2026-10-07T02:22:38+00:00",
-      "symbol": null,
-      "market": "stocks",
-      "kind": "digest",
-      "title": "📊 Daily digest: Stocks",
-      "message": "0 buy · 3 get ready · 7 watch · 4 avoid\n🟡 Apple 333.63 · GET READY\n🟡 Alphabet 347.68 · GET READY\n🟡 Palantir 192.07 · GET READY"
-    },
-    {
-      "time": "2026-10-07T00:33:16+00:00",
-      "symbol": null,
-      "market": "stocks",
-      "kind": "digest",
-      "title": "📊 Daily digest: Stocks",
-      "message": "0 buy · 3 get ready · 7 watch · 4 avoid\n🟡 Apple 333.63 · GET READY\n🟡 Alphabet 347.68 · GET READY\n🟡 Palantir 189.40 · GET READY"
-    },
-    {
-      "time": "2026-10-07T00:33:16+00:00",
-      "symbol": null,
-      "market": "crypto",
-      "kind": "digest",
-      "title": "📊 Daily digest: Crypto",
-      "message": "0 buy · 3 get ready · 11 watch · 2 avoid\n🟡 Cardano 0.2674 · GET READY\n🟡 Chainlink 13.96 · GET READY\n🟡 Bitcoin Cash 311.80 · GET READY"
     }
   ]
 }
