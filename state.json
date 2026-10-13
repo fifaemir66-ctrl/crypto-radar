@@ -142,7 +142,7 @@
     "META": {
       "since": "2026-10-09",
       "signal": "watch",
-      "day": "2026-10-09",
+      "day": "2026-10-12",
       "trend": "up"
     },
     "TSLA": {
@@ -178,15 +178,23 @@
     "PLTR": {
       "since": "2026-10-07",
       "signal": "watch",
-      "day": "2026-10-09",
+      "day": "2026-10-12",
       "trend": "up"
     }
   },
   "digest": {
     "crypto": "2026-10-12",
-    "stocks": "2026-10-09"
+    "stocks": "2026-10-12"
   },
   "history": [
+    {
+      "time": "2026-10-13T02:23:55+00:00",
+      "symbol": null,
+      "market": "stocks",
+      "kind": "digest",
+      "title": "📊 Daily digest: Stocks",
+      "message": "0 buy · 7 get ready · 5 watch · 2 avoid\n🟡 S&P 500 ETF 778.10 · GET READY\n🟡 Nasdaq 100 ETF 746.04 · GET READY\n🟡 Nvidia 226.32 · GET READY\n🟡 Amazon 259.53 · GET READY\n🟡 Alphabet 352.72 · GET READY\n🟡 Tesla 378.03 · GET READY\n🟡 ASML 1,750 · GET READY"
+    },
     {
       "time": "2026-10-13T00:36:13+00:00",
       "symbol": null,
@@ -658,14 +666,6 @@
       "kind": "ready",
       "title": "🟡 GET READY: Avalanche is in its buy zone",
       "message": "In the buy zone, waiting for a trigger candle.\nPrice is in the buy zone 10.99–11.06. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 11.06, stop 10.82, target 11.80."
-    },
-    {
-      "time": "2026-10-08T00:32:07+00:00",
-      "symbol": "DOGEUSDT",
-      "market": "crypto",
-      "kind": "ready",
-      "title": "🟡 GET READY: Dogecoin is in its buy zone",
-      "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 0.0882–0.0888. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 0.0888, stop 0.0869, target 0.0925."
     }
   ]
 }
