@@ -100,93 +100,109 @@
     "SPY": {
       "since": "2026-10-12",
       "signal": "ready",
-      "day": "2026-10-13",
+      "day": "2026-10-14",
       "trend": "up"
     },
     "QQQ": {
       "since": "2026-10-07",
       "signal": "ready",
-      "day": "2026-10-13",
+      "day": "2026-10-14",
       "trend": "up"
     },
     "AAPL": {
       "since": "2026-10-07",
       "signal": "watch",
-      "day": "2026-10-13",
+      "day": "2026-10-14",
       "trend": "up"
     },
     "MSFT": {
       "since": "2026-10-09",
       "signal": "watch",
-      "day": "2026-10-13",
+      "day": "2026-10-14",
       "trend": "up"
     },
     "NVDA": {
       "since": "2026-10-09",
       "signal": "ready",
-      "day": "2026-10-13",
+      "day": "2026-10-14",
       "trend": "up"
     },
     "AMZN": {
-      "since": "2026-10-12",
-      "signal": "ready",
-      "day": "2026-10-13",
-      "trend": "up"
+      "since": "2026-10-14",
+      "signal": "avoid",
+      "day": "2026-10-14",
+      "trend": "sideways"
     },
     "GOOGL": {
       "since": "2026-10-05",
       "signal": "ready",
-      "day": "2026-10-13",
+      "day": "2026-10-14",
       "trend": "up"
     },
     "META": {
-      "since": "2026-10-13",
-      "signal": "ready",
-      "day": "2026-10-13",
+      "since": "2026-10-14",
+      "signal": "watch",
+      "day": "2026-10-14",
       "trend": "up"
     },
     "TSLA": {
       "since": "2026-10-12",
       "signal": "ready",
-      "day": "2026-10-13",
+      "day": "2026-10-14",
       "trend": "up"
     },
     "AMD": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-13",
+      "day": "2026-10-14",
       "trend": "sideways"
     },
     "NFLX": {
       "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-13",
-      "trend": "down"
+      "day": "2026-10-14",
+      "trend": "sideways"
     },
     "LLY": {
-      "since": "2026-10-13",
-      "signal": "ready",
-      "day": "2026-10-13",
+      "since": "2026-10-14",
+      "signal": "watch",
+      "day": "2026-10-14",
       "trend": "up"
     },
     "ASML": {
       "since": "2026-10-13",
       "signal": "watch",
-      "day": "2026-10-13",
+      "day": "2026-10-14",
       "trend": "up"
     },
     "PLTR": {
       "since": "2026-10-07",
       "signal": "watch",
-      "day": "2026-10-13",
+      "day": "2026-10-14",
       "trend": "up"
     }
   },
   "digest": {
     "crypto": "2026-10-13",
-    "stocks": "2026-10-13"
+    "stocks": "2026-10-14"
   },
   "history": [
+    {
+      "time": "2026-10-14T20:31:41+00:00",
+      "symbol": null,
+      "market": "stocks",
+      "kind": "digest",
+      "title": "📊 Daily digest: Stocks",
+      "message": "0 buy · 5 get ready · 6 watch · 3 avoid\n🟡 S&P 500 ETF 769.60 · GET READY\n🟡 Nasdaq 100 ETF 728.95 · GET READY\n🟡 Nvidia 221.30 · GET READY\n🟡 Alphabet 347.64 · GET READY\n🟡 Tesla 367.16 · GET READY"
+    },
+    {
+      "time": "2026-10-14T20:31:41+00:00",
+      "symbol": "AMZN",
+      "market": "stocks",
+      "kind": "avoid",
+      "title": "🔴 AVOID: Amazon (AMZN) lost its uptrend",
+      "message": "No clear trend: the strategy only buys in uptrends.\nStay out. Re-check when price makes a higher low and closes above the EMA 50 (254.42)."
+    },
     {
       "time": "2026-10-14T01:33:53+00:00",
       "symbol": null,
@@ -650,22 +666,6 @@
       "kind": "ready",
       "title": "🟡 GET READY: Tesla (TSLA) is in its buy zone",
       "message": "In the buy zone, waiting for a 2x risk/reward.\nPrice is in the buy zone 364.26–369.07. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 369.07, stop 358.80, target 384.04."
-    },
-    {
-      "time": "2026-10-08T20:24:55+00:00",
-      "symbol": "META",
-      "market": "stocks",
-      "kind": "ready",
-      "title": "🟡 GET READY: Meta (META) is in its buy zone",
-      "message": "In the buy zone, waiting for a 2x risk/reward.\nPrice is in the buy zone 708.87–711.00. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 711.00, stop 698.24, target 740.91."
-    },
-    {
-      "time": "2026-10-08T20:24:55+00:00",
-      "symbol": "MSFT",
-      "market": "stocks",
-      "kind": "ready",
-      "title": "🟡 GET READY: Microsoft (MSFT) is in its buy zone",
-      "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 517.78–519.30. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 519.30, stop 510.01, target 531.03."
     }
   ]
 }
