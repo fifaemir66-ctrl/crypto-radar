@@ -140,9 +140,9 @@
       "trend": "up"
     },
     "META": {
-      "since": "2026-10-13",
-      "signal": "ready",
-      "day": "2026-10-13",
+      "since": "2026-10-14",
+      "signal": "watch",
+      "day": "2026-10-14",
       "trend": "up"
     },
     "TSLA": {
@@ -178,15 +178,23 @@
     "PLTR": {
       "since": "2026-10-07",
       "signal": "watch",
-      "day": "2026-10-13",
+      "day": "2026-10-14",
       "trend": "up"
     }
   },
   "digest": {
     "crypto": "2026-10-14",
-    "stocks": "2026-10-13"
+    "stocks": "2026-10-14"
   },
   "history": [
+    {
+      "time": "2026-10-15T01:33:55+00:00",
+      "symbol": null,
+      "market": "stocks",
+      "kind": "digest",
+      "title": "📊 Daily digest: Stocks",
+      "message": "0 buy · 5 get ready · 6 watch · 3 avoid\n🟡 S&P 500 ETF 769.60 · GET READY\n🟡 Nasdaq 100 ETF 728.95 · GET READY\n🟡 Nvidia 221.30 · GET READY\n🟡 Alphabet 347.64 · GET READY\n🟡 Tesla 367.16 · GET READY"
+    },
     {
       "time": "2026-10-15T00:42:01+00:00",
       "symbol": null,
@@ -658,14 +666,6 @@
       "kind": "avoid",
       "title": "🔴 AVOID: Bitcoin Cash lost its uptrend",
       "message": "No clear trend: the strategy only buys in uptrends.\nStay out. Re-check when price makes a higher low and closes above the EMA 50 (277.29)."
-    },
-    {
-      "time": "2026-10-09T00:35:21+00:00",
-      "symbol": "DOTUSDT",
-      "market": "crypto",
-      "kind": "buy",
-      "title": "🟢 BUY SIGNAL: Polkadot",
-      "message": "Uptrend, daily close in the buy zone with a trigger (red hammer).\nBuy setup at the daily close. Entry ≈ 1.09, stop 1.05 (−3.2%), target 1.28 (+17.8%). Position €309 → max loss ≈ €10.\nStrength 96/100. Check the chart yourself."
     }
   ]
 }
