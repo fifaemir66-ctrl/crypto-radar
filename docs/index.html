@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ZoneHunter</title>
-  <meta name="description" content="ZoneHunter tracks crypto and stocks and tells you when price reaches a buy zone in an uptrend: buy signals, liquidity zones and a full checklist.">
+  <meta name="description" content="ZoneHunter tracks crypto and stocks with a long-term view: it tells you when a market in a long-term uptrend pulls back into its value zone.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2316a34a'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='white' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='white'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,11 +55,12 @@
       <section class="how">
         <h3>How it works</h3>
         <ol>
-          <li><b>Trend first.</b> Only markets in an uptrend (daily and weekly) are considered. Everything else is <span class="sig sig-avoid">AVOID</span>.</li>
-          <li><b>Wait for the zone.</b> In an uptrend, price is <span class="sig sig-watch">WATCH</span> until it pulls back into a buy zone where several supports overlap.</li>
-          <li><b>Wait for the trigger.</b> In the zone it becomes <span class="sig sig-ready">GET READY</span>. A daily close with a hammer, bullish engulfing or liquidity sweep turns it into a <span class="sig sig-buy">BUY SIGNAL</span>, with entry, stop, target and position size.</li>
+          <li><b>Long-term trend first.</b> Only markets above a rising 40-week average with positive 12-month momentum count as <span class="sig sig-watch">UPTREND</span>. Everything else is <span class="sig sig-avoid">NO UPTREND</span>: no new money by these rules, which is not a sell signal.</li>
+          <li><b>Pullbacks.</b> When an uptrend pulls back to the value zone (20-week / 40-week average) it shows <span class="sig sig-ready">IN VALUE ZONE</span>. After a real pullback, a week that closes higher shows <span class="sig sig-buy">PULLBACK + UP WEEK</span>.</li>
+          <li><b>Be honest about it.</b> In a backtest over ~8 years this pullback timing did <i>not</i> beat buying on a fixed date (on crypto it did worse). The trend status mainly helped to limit deep drawdowns, at the cost of some return.</li>
         </ol>
-        <p class="muted">Signals are decided once a day on the daily close (crypto 00:00 UTC, stocks at the US close), so they don't flip back and forth during the day.</p>
+        <p class="muted">Regular monthly investing works without timing. Use these signals only to choose <i>where</i> part of new money goes, not <i>whether</i> to invest. Money for a planned home purchase within a few years usually isn't kept in volatile assets.</p>
+        <p class="muted">Long-term signals are decided once a week on the weekly close, so they change at most once a week. You get an update on Monday and Thursday, and an extra alert only for a new buy signal. The daily analysis is still shown as short-term timing.</p>
       </section>
     </div>
   </main>
@@ -99,7 +100,7 @@
     </section>
 
     <div class="details">
-      <details id="d-check"><summary><span>Why this signal</span><em id="s-check"></em></summary><div class="body"><ul class="checklist" id="a-checklist"></ul><p class="note">All checks use the last closed daily candle.</p></div></details>
+      <details id="d-check"><summary><span>Why this signal</span><em id="s-check"></em></summary><div class="body"><ul class="checklist" id="a-checklist"></ul><p class="note">All checks use the last completed weekly candle.</p></div></details>
       <details id="d-scen"><summary><span>Scenarios &amp; trade plans</span><em id="s-scen"></em></summary><div class="body scenarios" id="a-scenarios"></div></details>
       <details id="d-liq"><summary><span>Liquidity zones</span><em id="s-liq"></em></summary><div class="body">
         <p class="explain">Equal highs (BSL) and equal lows (SSL) are where stop-losses cluster. Price is often drawn to them. A <b>sweep</b> (wick through, close back) takes those stops and often marks a turning point.</p>
@@ -125,7 +126,7 @@
   </main>
 
   <footer class="wrap footer">
-    <p><b>ZoneHunter</b> · crypto live via Binance, stocks hourly via Yahoo Finance · analysis every hour, signals on the daily close.</p>
+    <p><b>ZoneHunter</b> · crypto live via Binance, stocks hourly via Yahoo Finance · analysis every hour, long-term signals on the weekly close.</p>
     <p class="muted">Signals follow fixed strategy rules and are not financial advice. Nobody can predict prices. Always check the chart yourself and only risk money you can afford to lose.</p>
   </footer>
 

@@ -3,6 +3,8 @@
   "capital_eur": 500,
   "pivot": 7,
   "site_url": "",
+  "digest_days": ["mon", "thu"],
+  "digest_hour_utc": 6,
   "crypto": [
     { "symbol": "BTCUSDT", "name": "Bitcoin", "base": "BTC" },
     { "symbol": "ETHUSDT", "name": "Ethereum", "base": "ETH" },
@@ -16,14 +18,13 @@
     { "symbol": "DOTUSDT", "name": "Polkadot", "base": "DOT" },
     { "symbol": "LTCUSDT", "name": "Litecoin", "base": "LTC" },
     { "symbol": "TRXUSDT", "name": "TRON", "base": "TRX" },
-    { "symbol": "TONUSDT", "name": "Toncoin", "base": "TON" },
     { "symbol": "SUIUSDT", "name": "Sui", "base": "SUI" },
     { "symbol": "NEARUSDT", "name": "NEAR", "base": "NEAR" },
     { "symbol": "BCHUSDT", "name": "Bitcoin Cash", "base": "BCH" }
   ],
   "stocks": [
-    { "symbol": "SPY", "name": "S&P 500 ETF", "base": "SPY" },
-    { "symbol": "QQQ", "name": "Nasdaq 100 ETF", "base": "QQQ" },
+    { "symbol": "SPY", "name": "S&P 500 ETF (EU: CSPX/VUSA)", "base": "SPY" },
+    { "symbol": "QQQ", "name": "Nasdaq 100 ETF (EU: CNDX/EQQQ)", "base": "QQQ" },
     { "symbol": "AAPL", "name": "Apple", "base": "AAPL" },
     { "symbol": "MSFT", "name": "Microsoft", "base": "MSFT" },
     { "symbol": "NVDA", "name": "Nvidia", "base": "NVDA" },
@@ -35,6 +36,12 @@
     { "symbol": "NFLX", "name": "Netflix", "base": "NFLX" },
     { "symbol": "LLY", "name": "Eli Lilly", "base": "LLY" },
     { "symbol": "ASML", "name": "ASML", "base": "ASML" },
-    { "symbol": "PLTR", "name": "Palantir", "base": "PLTR" }
+    { "symbol": "PLTR", "name": "Palantir", "base": "PLTR" },
+    { "symbol": "ADYEN.AS", "name": "Adyen", "base": "ADYEN" },
+    { "symbol": "MU", "name": "Micron", "base": "MU" },
+    { "symbol": "MPWR", "name": "Monolithic Power", "base": "MPWR" },
+    { "symbol": "AVGO", "name": "Broadcom", "base": "AVGO" },
+    { "symbol": "TSM", "name": "TSMC", "base": "TSM" },
+    { "symbol": "VWRL.AS", "name": "FTSE All-World ETF", "base": "VWRL" }
   ]
 }

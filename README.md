@@ -1,14 +1,16 @@
 # ZoneHunter
 
-Live technische analyse van crypto (16) en aandelen (14), met meldingen op je telefoon. Website in het Engels.
+Technische analyse van crypto (15) en aandelen (20) met een **langetermijnvisie**, en meldingen op je telefoon. Website in het Engels.
 
-- **Signalen** (volgens vaste strategie-regels, bepaald bij de dagslot zodat ze niet heen en weer springen):
-  - 🟢 **BUY SIGNAL**: uptrend (dag + week), dagslot in een koopzone, trigger (hammer, bullish engulfing of liquidity sweep), RSI < 70, risico/winst ≥ 2x
-  - 🟡 **GET READY**: in de koopzone, wacht op de trigger
-  - 🔵 **WATCH**: uptrend, wacht op een terugval naar de koopzone
-  - 🔴 **AVOID**: geen uptrend
-- **Website:** laag 1 = overzicht per markt, laag 2 = pagina per markt met signaal, plan en grafiek, laag 3 = uitklapbare details (checklist, scenario's, liquiditeit, volume profile, indicatoren).
-- **Meldingen (ntfy):** alleen als een signaal bij de dagslot verandert, plus één dagoverzicht per markt.
+- **Langetermijnsignaal** (hoofdsignaal, bepaald bij de **weekslot**, verandert dus hooguit 1x per week):
+  - 🟢 **PULLBACK + UP WEEK**: langetermijn-uptrend (boven een stijgende 40-weeks gemiddelde, positief 12-maands rendement), echte terugval (week-RSI ≤ 50 in de laatste 6 weken) naar de waardezone (20/40-weeks gemiddelde) en een week die hoger sluit
+  - 🟡 **IN VALUE ZONE**: uptrend, teruggevallen in de waardezone
+  - 🔵 **UPTREND**: vasthouden, nog geen terugval
+  - 🔴 **NO UPTREND**: volgens deze regels geen nieuw geld (geen verkoopsignaal)
+- **Eerlijk:** in de backtest (~8 jaar, 35 markten) was het terugval-moment **niet beter** dan op een vaste dag kopen (bij crypto slechter). De trendstatus beperkte vooral diepe dalingen, ten koste van wat rendement.
+- **Kortetermijntiming:** de oude dagelijkse analyse (zones, liquiditeit, candles) blijft zichtbaar op de site als extra informatie.
+- **Meldingen (ntfy):** een update op **maandag en donderdag** (na 06:00 UTC) met alle wijzigingen, plus een **extra bericht alleen bij een nieuwe "pullback + up week"** (gebundeld, nooit 's nachts, max. 1x per 8 weken per markt).
+- **Betrouwbaarheid:** data-aanvragen worden herhaald bij storingen, er zijn reservebronnen (Coinbase, Stooq), een markt zonder verse data blijft tot 7 dagen zichtbaar als "stale", en de GitHub-workflow draait eerst de tests.
 
 > Educatief hulpmiddel, geen financieel advies. Controleer altijd zelf.
 
@@ -16,9 +18,12 @@ Live technische analyse van crypto (16) en aandelen (14), met meldingen op je te
 
 | Bestand | Wat |
 |---|---|
-| `analysis.py` | De analyse: trend, zones, Fibonacci, liquiditeit (equal highs/lows, sweeps), volume profile, RSI, MACD, ADX, Stoch RSI, Bollinger, OBV, ATR, risico/winst |
+| `longterm.py` | Het langetermijnsignaal op weekcandles |
+| `backtest.py` | Test het langetermijnsignaal op jaren historie (`python3 backtest.py`) |
+| `tests/` | Automatische tests (`python3 -m unittest discover tests`) |
+| `analysis.py` | Data ophalen en de dagelijkse (kortetermijn)analyse: trend, zones, Fibonacci, liquiditeit (equal highs/lows, sweeps), volume profile, RSI, MACD, ADX, Stoch RSI, Bollinger, OBV, ATR, risico/winst |
 | `monitor.py` | Draait de analyse, stuurt meldingen, schrijft `docs/data.json` en `docs/charts/*.json` |
-| `config.json` | Je coins (`crypto`) en aandelen (`stocks`), risico per trade (€10) en kapitaal (€500) |
+| `config.json` | Je coins (`crypto`) en aandelen (`stocks`), risico per trade (€10), kapitaal (€500) en de update-dagen (`digest_days`, `digest_hour_utc`) |
 | `docs/` | De website (GitHub Pages) |
 | `.github/workflows/radar.yml` | De planning: elk uur |
 | `.ntfy_topic` | Je geheime meldingskanaal (wordt niet geüpload) |
@@ -29,6 +34,8 @@ Live technische analyse van crypto (16) en aandelen (14), met meldingen op je te
 cd ~/Documents/crypto-radar
 python3 monitor.py --test       # stuur een testmelding naar je telefoon
 python3 monitor.py --dry-run    # analyse draaien zonder meldingen
+python3 -m unittest discover tests   # automatische tests
+python3 backtest.py             # langetermijnsignaal testen op jaren historie
 python3 -m http.server 8000 --directory docs   # website openen op http://localhost:8000
 ```
 
@@ -58,7 +65,8 @@ python3 -m http.server 8000 --directory docs   # website openen op http://localh
 
 ## Goed om te weten
 
-- Signalen gebruiken alleen **gesloten dagcandles** (crypto: 00:00 UTC = 02:00 NL-zomertijd; aandelen: beurssluiting 22:00 NL-tijd).
+- Het langetermijnsignaal gebruikt alleen **afgesloten weken** (een week telt vanaf maandag 00:00 UTC).
+- Aandelen buiten de VS gebruik je met hun Yahoo-ticker, bijvoorbeeld `ADYEN.AS` (Amsterdam).
 - Aandelenkoersen komen elk uur van Yahoo Finance (niet realtime); crypto loopt live mee op de website.
 - GitHub start geplande taken soms een paar minuten later dan gepland.
 - De repository is openbaar: je code en analyses zijn zichtbaar, je kanaalnaam niet (die staat als geheim opgeslagen).

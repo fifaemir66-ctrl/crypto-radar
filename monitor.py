@@ -4,10 +4,12 @@ ZoneHunter -- monitor for crypto and stocks.
 
 Runs every hour (GitHub Actions or locally):
   * analyses every market in config.json
+  * the headline signal is LONG-TERM and decided on the weekly close (longterm.py), so it
+    changes at most once a week; the daily analysis is shown as short-term timing
   * writes docs/data.json (overview) and docs/charts/<SYMBOL>.json (details) for the website
-  * signals are decided on the daily close, so they change at most once per day
-  * sends an ntfy alert only when a signal changes at the close (BUY SIGNAL, GET READY, AVOID),
-    plus one daily digest per market
+  * ntfy alerts: an immediate alert only for a new long-term BUY SIGNAL, plus one update on
+    the digest days (default Monday and Thursday) with everything that changed
+  * if a market cannot be fetched, its last known result stays on the site (marked stale)
   * remembers in state.json what was already sent (no duplicates)
 
 Usage:
@@ -22,10 +24,12 @@ import argparse
 import json
 import os
 import sys
+import time
 import urllib.request
 from datetime import datetime, timezone
 
 from analysis import analyse, eur, fetch_crypto, fetch_stock, fmt
+from longterm import analyse_long
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 CONFIG_FILE = os.path.join(ROOT, "config.json")
@@ -33,10 +37,23 @@ STATE_FILE = os.path.join(ROOT, "state.json")
 DOCS = os.path.join(ROOT, "docs")
 TOPIC_FILE = os.path.join(ROOT, ".ntfy_topic")
 
+STATE_VERSION = 3
 CHART_CANDLES = 260
 HISTORY_MAX = 60
+STALE_MAX_DAYS = 7          # keep showing a market's last result this long when its data fails
+NTFY_MAX = 3800             # ntfy messages are limited to 4096 bytes
 MARKET_LABEL = {"crypto": "Crypto", "stocks": "Stocks"}
 ICON = {"buy": "🟢", "ready": "🟡", "watch": "🔵", "avoid": "🔴"}
+ORDER = {"buy": 0, "ready": 1, "watch": 2, "avoid": 3}
+WEEKDAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+BUY_COOLDOWN_DAYS = 56      # same rule as backtest.py: one buy alert per market per 8 weeks
+
+
+def days_between(a, b):
+    """Days from date string a to date string b; a missing a counts as 'long ago'."""
+    if not a:
+        return 10 ** 6
+    return (datetime.fromisoformat(b) - datetime.fromisoformat(a)).days
 
 
 def load_json(path, default):
@@ -48,12 +65,15 @@ def load_json(path, default):
 
 
 def save_json(path, data, compact=False):
+    """Write to a temp file and rename, so a crash never leaves half a JSON file behind."""
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f:
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
         if compact:
             json.dump(data, f, ensure_ascii=False, separators=(",", ":"))
         else:
             json.dump(data, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, path)
 
 
 def site_url(config):
@@ -77,19 +97,25 @@ def send(title, message, priority=3, tags=None, click=None, dry_run=False):
     print(f"\n[alert p{priority}] {title}\n{message}")
     topic = ntfy_topic()
     if dry_run:
-        return
+        return True
     if not topic:
         print("  (no NTFY_TOPIC set, alert not sent)")
-        return
+        return False
+    if len(message.encode()) > NTFY_MAX:
+        message = message.encode()[:NTFY_MAX].decode(errors="ignore").rsplit("\n", 1)[0] + "\n…"
     body = {"topic": topic, "title": title, "message": message, "priority": priority, "tags": tags or []}
     if click:
         body["click"] = click
     req = urllib.request.Request("https://ntfy.sh/", data=json.dumps(body).encode(),
                                  headers={"Content-Type": "application/json"}, method="POST")
-    try:
-        urllib.request.urlopen(req, timeout=15).read()
-    except Exception as e:
-        print(f"  ntfy error: {e}")
+    for i in range(3):
+        try:
+            urllib.request.urlopen(req, timeout=15).read()
+            return True
+        except Exception as e:
+            print(f"  ntfy error (attempt {i + 1}): {e}")
+            time.sleep(3 * (i + 1))
+    return False
 
 
 # ---------------------------------------------------------------- website output
@@ -98,24 +124,25 @@ def r(x):
     return None if x is None else float(f"{x:.8g}")
 
 
-def chart_payload(a):
+def chart_payload(a, lt):
     closed = a["closed"]
     n = min(len(closed), CHART_CANDLES)
     off = len(closed) - n
-    cs = closed[off:] + ([] if a["last_closed"] else [a["live"]])
+    cs = closed[off:]  # closed candles only; the site adds the live crypto candle itself
     rng = range(off, len(closed))
     m_line, m_sig, m_hist = a["macd"]
     lines = []
+    if lt["zone"]:
+        lines += [{"price": lt["zone"]["high"], "title": "Value zone", "kind": "zone1"},
+                  {"price": lt["zone"]["low"], "title": "", "kind": "zone1"}]
     if a["zone1"]:
-        lines += [{"price": a["zone1"]["high"], "title": "Buy zone 1", "kind": "zone1"},
-                  {"price": a["zone1"]["low"], "title": "", "kind": "zone1"}]
-    if a["zone2"]:
-        lines += [{"price": a["zone2"]["high"], "title": "Buy zone 2", "kind": "zone2"},
-                  {"price": a["zone2"]["low"], "title": "", "kind": "zone2"}]
-    if a["target"]:
-        lines.append({"price": a["target"], "title": "Target", "kind": "target"})
-    if a["last_bottom"]:
-        lines.append({"price": a["last_bottom"], "title": "Trend line", "kind": "stop"})
+        lines += [{"price": a["zone1"]["high"], "title": "Short-term zone", "kind": "zone2"},
+                  {"price": a["zone1"]["low"], "title": "", "kind": "zone2"}]
+    plan = lt["plan"]
+    if plan and plan["target"]:
+        lines.append({"price": plan["target"], "title": "52-week high", "kind": "target"})
+    if plan:
+        lines.append({"price": plan["stop"], "title": "Invalidation", "kind": "stop"})
     ref = a["ref"]
     open_pools = [p for p in a["pools"] if p["status"] == "open" and abs(p["price"] - ref) / ref < 0.2]
     for p in sorted([p for p in open_pools if p["kind"] == "BSL"], key=lambda p: p["price"])[:2]:
@@ -134,12 +161,17 @@ def chart_payload(a):
     }
 
 
-def detail_payload(a):
+def detail_payload(a, lt):
     fib, prof = a["fib"], a["profile"]
     return {
-        "signal": a["signal"], "plan_close": a["plan_close"], "trend": a["trend"], "weekly_trend": a["weekly_trend"],
-        "trend_reasons": a["trend_reasons"], "checklist": a["checklist"], "extras": a["extras"],
-        "confluence": a["confluence"], "scenarios": a["scenarios"], "close_day": a["close_day"],
+        # long-term (headline)
+        "signal": lt["signal"], "plan_close": lt["plan"], "trend": lt["trend"], "trend_reasons": lt["trend_reasons"],
+        "checklist": lt["checklist"], "scenarios": lt["scenarios"], "close_day": lt["close_day"],
+        # short-term timing (daily)
+        "short": {"signal": a["signal"], "trend": a["trend"], "weekly_trend": a["weekly_trend"],
+                  "checklist": a["checklist"], "trend_reasons": a["trend_reasons"], "close_day": a["close_day"],
+                  "plan_close": a["plan_close"]},
+        "weekly_trend": a["weekly_trend"], "extras": a["extras"], "confluence": a["confluence"],
         "zones": [{"low": z["low"], "high": z["high"], "score": z["score"],
                    "items": [{"name": i["name"], "price": i["price"]} for i in z["items"]]} for z in a["zones"][:5]],
         "fib": fib and {"low": fib["low"], "high": fib["high"], "f382": fib["38.2"], "f50": fib["50"], "f618": fib["61.8"]},
@@ -148,22 +180,81 @@ def detail_payload(a):
                          if abs(p["price"] - a["ref"]) / a["ref"] < 0.25], key=lambda p: -p["price"]),
         "profile": {"poc": prof["poc"], "vah": prof["vah"], "val": prof["val"], "lookback": prof["lookback"],
                     "hvn": prof["hvn"], "bins": [[r(b["low"]), r(b["high"]), round(b["vol"], 2)] for b in prof["bins"]]},
-        "chart": chart_payload(a),
+        "chart": chart_payload(a, lt),
     }
 
 
-def summary_payload(a, meta, market, source, currency, since):
+def summary_payload(a, lt, meta, market, source, currency, since):
     closed = a["closed"]
     ref_price = a["live"]["o"] if market == "crypto" else (closed[-2]["c"] if a["last_closed"] else closed[-1]["c"])
     return {
         "symbol": a["symbol"], "name": meta.get("name", a["symbol"]), "base": meta.get("base", a["symbol"]),
         "market": market, "source": source, "currency": currency,
         "price": a["price"], "close": a["ref"], "ref_price": ref_price, "market_open": not a["last_closed"],
-        "signal": a["signal"], "signal_since": since, "trend": a["trend"],
-        "rsi": round(a["rsi_now"], 1), "confluence": a["confluence"], "in_zone": a["in_zone"],
-        "zone1": a["zone1"] and {"low": a["zone1"]["low"], "high": a["zone1"]["high"]},
+        "signal": lt["signal"], "signal_since": since, "trend": lt["trend"],
+        "short": {"key": a["signal"]["key"], "label": a["signal"]["label"], "reason": a["signal"]["reason"]},
+        "rsi": round(a["rsi_now"], 1), "confluence": a["confluence"], "in_zone": lt["in_zone"],
+        "zone1": lt["zone"] and {"low": lt["zone"]["low"], "high": lt["zone"]["high"]},
         "spark": [r(c["c"]) for c in (closed[-59:] + ([] if a["last_closed"] else [a["live"]]))],
+        "stale": False, "updated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
     }
+
+
+# ---------------------------------------------------------------- digest
+
+SHORT = {"buy": "pullback + up week", "ready": "in value zone", "watch": "uptrend", "avoid": "no uptrend"}
+DIGEST_ROWS = 8
+FOOTER = "Your monthly plan continues regardless of these signals. Educational, not advice."
+
+
+def digest_due(config, state, now):
+    """True on a digest day (default Monday and Thursday) after the digest hour, once per day."""
+    days = [d.lower()[:3] for d in config.get("digest_days", ["mon", "thu"])]
+    hour = config.get("digest_hour_utc", 6)
+    today = now.strftime("%Y-%m-%d")
+    return WEEKDAYS[now.weekday()] in days and now.hour >= hour and state.get("last_digest") != today
+
+
+def row_name(x):
+    return ("Speculative · " if x["market"] == "crypto" else "") + x["name"]
+
+
+def digest_message(summaries, changes, errors, now):
+    lines = []
+    if errors:   # first, so a long message never cuts it off
+        lines += ["⚠️ No fresh data for: " + ", ".join(e["symbol"] for e in errors), ""]
+    fresh = [x for x in summaries if not x.get("stale")]
+    for market in ("crypto", "stocks"):
+        rows = [x for x in fresh if x["market"] == market]
+        if rows:
+            c = {k: sum(1 for x in rows if x["signal"]["key"] == k) for k in ORDER}
+            lines.append(f"{MARKET_LABEL[market]}: {c['buy']} up week · {c['ready']} value zone · {c['watch']} uptrend · {c['avoid']} no uptrend")
+    lines.append("")
+    if changes:
+        lines.append("Changed since the last update:")
+        for ch in changes[:DIGEST_ROWS]:
+            lines.append(f"{ICON[ch['to']]} {ch['name']}: {SHORT.get(ch['from'], '?')} → {SHORT[ch['to']]}")
+        if len(changes) > DIGEST_ROWS:
+            lines.append(f"+{len(changes) - DIGEST_ROWS} more on the site")
+    else:
+        lines.append("No signal changes since the last update.")
+    hot = sorted((x for x in fresh if x["signal"]["key"] in ("buy", "ready")),
+                 key=lambda x: (ORDER[x["signal"]["key"]], x["market"] == "crypto", -x["signal"]["strength"]))
+    if hot:
+        lines += ["", "Pullbacks now:"]
+        for x in hot[:DIGEST_ROWS]:
+            lines.append(f"{ICON[x['signal']['key']]} {row_name(x)} {fmt(x['close'])} · {SHORT[x['signal']['key']]}")
+        if len(hot) > DIGEST_ROWS:
+            lines.append(f"+{len(hot) - DIGEST_ROWS} more on the site")
+    lines += ["", FOOTER]
+    return "\n".join(lines)
+
+
+def buys_message(buys):
+    lines = [f"{ICON['buy']} {row_name(x)} {fmt(x['close'])}: {x['signal']['reason']}." for x in buys]
+    lines += ["", "If you already planned to own these, this is a calmer moment to add part of your monthly amount. "
+              "Historically this did not beat buying on a fixed date. Check the chart yourself."]
+    return "\n".join(lines)
 
 
 # ---------------------------------------------------------------- run
@@ -174,98 +265,140 @@ def assets_from(config):
     return out
 
 
-def run(dry_run=False):
+def seed_history(sym, closed, ts, weeks=40):
+    """For a new market or after a model change: replay the last weeks so 'since' and the trend memory are right."""
+    prev_trend, key, since = None, None, None
+    for k in range(weeks, -1, -1):
+        lt = analyse_long(sym, closed, prev_trend, ts - k * 7 * 86400)
+        if lt["weeks"] < 45:
+            continue
+        if lt["signal"]["key"] != key:
+            key, since = lt["signal"]["key"], lt["close_day"]
+        prev_trend = lt["trend_dir"]
+    return {"signal": key, "since": since, "lt_trend": prev_trend}
+
+
+def run(dry_run=False, now=None):
     config = load_json(CONFIG_FILE, {})
     state = load_json(STATE_FILE, {"coins": {}, "history": []})
-    if state.get("version") != 2:   # new signal model: start alert memory fresh, keep history
-        state = {"version": 2, "coins": {}, "digest": {}, "history": state.get("history", [])}
-        fresh_start = True
-    else:
-        fresh_start = False
+    fresh_start = state.get("version") != STATE_VERSION
+    if fresh_start:   # new signal model: start the alert memory fresh, keep the history
+        state = {"version": STATE_VERSION, "coins": {}, "changes": [], "history": state.get("history", [])}
+    state.setdefault("changes", [])
+    state.setdefault("pending_buys", [])
+    previous = {x["symbol"]: x for x in load_json(os.path.join(DOCS, "data.json"), {}).get("assets", [])}
     url = site_url(config)
-    now = datetime.now(timezone.utc)
+    now = now or datetime.now(timezone.utc)
+    ts = now.timestamp()
+    hour = config.get("digest_hour_utc", 6)
     summaries, errors = [], []
-    digest = {"crypto": [], "stocks": []}
-    digest_day = {}
 
     def log_event(sym, market, kind, title, message, priority, tags):
-        state["history"].insert(0, {"time": now.isoformat(timespec="seconds"), "symbol": sym, "market": market,
-                                    "kind": kind, "title": title, "message": message})
-        del state["history"][HISTORY_MAX:]
-        send(title, message, priority, tags, url and (f"{url}#/asset/{sym}" if sym else url), dry_run)
+        """Send, and only record in the history what was really sent."""
+        ok = send(title, message, priority, tags, url and (f"{url}#/asset/{sym}" if sym else url), dry_run)
+        if ok:
+            state["history"].insert(0, {"time": now.isoformat(timespec="seconds"), "symbol": sym, "market": market,
+                                        "kind": kind, "title": title, "message": message})
+            del state["history"][HISTORY_MAX:]
+        return ok
 
     for market, meta in assets_from(config):
         sym = meta["symbol"]
-        s = state["coins"].setdefault(sym, {})
+        name = meta.get("name", sym)
+        s = dict(state["coins"].get(sym, {}))   # work on a copy: only committed when everything for this market worked
         try:
             if market == "crypto":
-                candles, source, last_closed = fetch_crypto(sym, 400)
-                currency = "USDT"
+                candles, source, last_closed = fetch_crypto(sym)
+                currency = "USDT" if source == "Binance" else "USD"
             else:
                 candles, source, last_closed, currency = fetch_stock(sym)
             a = analyse(sym, candles, config.get("pivot", 7), config.get("risk_eur", 10),
                         config.get("capital_eur", 500), last_closed=last_closed, prev_trend=s.get("trend"))
+            if "lt_trend" not in s:
+                seed = seed_history(sym, a["closed"], ts)
+                s.update({"signal": seed["signal"], "since": seed["since"], "lt_trend": seed["lt_trend"]})
+            lt = analyse_long(sym, a["closed"], s.get("lt_trend"), ts,
+                              config.get("risk_eur", 10), config.get("capital_eur", 500))
+            sig = lt["signal"]
+            day, prev_day, prev_sig = lt["close_day"], s.get("day"), s.get("signal")
+
+            if day is None or (prev_day is not None and day <= prev_day):
+                # same weekly close as stored (a source switch can move the numbers a little) or an older close:
+                # never record a change, alert or rewind the state
+                pass
+            else:
+                if prev_day is not None and sig["key"] != prev_sig:
+                    state["changes"].append({"symbol": sym, "name": name, "market": market, "day": day,
+                                             "from": prev_sig, "to": sig["key"]})
+                    if sig["key"] == "buy" and days_between(s.get("buy_alert_day"), day) >= BUY_COOLDOWN_DAYS:
+                        state["pending_buys"] = [x for x in state["pending_buys"] if x["symbol"] != sym]
+                        state["pending_buys"].append({"symbol": sym, "day": day})
+                if sig["key"] != prev_sig:
+                    s["since"] = day
+                s["signal"], s["day"], s["lt_trend"] = sig["key"], day, lt["trend_dir"]
+            s["trend"] = a["daily_trend"]
+
+            detail = detail_payload(a, lt)
+            summary = summary_payload(a, lt, meta, market, source, currency, s.get("since") or day)
         except Exception as e:
             print(f"{sym}: {e}", file=sys.stderr)
             errors.append({"symbol": sym, "market": market, "error": str(e)[:300]})
+            old = previous.get(sym)
+            age = (ts - datetime.fromisoformat(old["updated_at"]).timestamp()) / 86400 if old and old.get("updated_at") else None
+            if old and age is not None and age <= STALE_MAX_DAYS:
+                summaries.append({**old, "stale": True})   # keep the last known result on the site
             continue
 
-        name = meta.get("name", sym)
-        label = name if market == "crypto" else f"{name} ({sym})"
-        sig = a["signal"]
-        new_close = s.get("day") != a["close_day"]
-        prev_sig = s.get("signal")
+        state["coins"][sym] = s
+        save_json(os.path.join(DOCS, "charts", f"{sym}.json"), detail, compact=True)
+        summaries.append(summary)
+        print(f"{sym:<9} {fmt(a['ref']):>12}  {sig['label']:<18} {sig['strength']:>3}/100  {lt['trend']}  "
+              f"| short-term {a['signal']['label']}")
 
-        # Alerts only when the signal changes at a new daily close
-        if new_close and s.get("day") is not None and sig["key"] != prev_sig:
-            if sig["key"] == "buy":
-                log_event(sym, market, "buy", f"🟢 BUY SIGNAL: {label}",
-                          f"{sig['reason']}.\n{sig['plan']}\nStrength {sig['strength']}/100. Check the chart yourself.",
-                          5, ["green_circle"])
-            elif sig["key"] == "ready":
-                log_event(sym, market, "ready", f"🟡 GET READY: {label} is in its buy zone",
-                          f"{sig['reason']}.\n{sig['plan']}", 3, ["yellow_circle"])
-            elif sig["key"] == "avoid" and prev_sig in ("buy", "ready", "watch"):
-                log_event(sym, market, "avoid", f"🔴 AVOID: {label} lost its uptrend",
-                          f"{sig['reason']}.\n{sig['plan']}", 4, ["red_circle"])
-        if new_close or sig["key"] != prev_sig:
-            if sig["key"] != prev_sig:
-                s["since"] = a["close_day"]
-            s["signal"] = sig["key"]
-        s["day"] = a["close_day"]
-        s["trend"] = a["daily_trend"]
-        if new_close:
-            digest_day[market] = a["close_day"]
+    # drop changes that were reverted before the digest (e.g. uptrend → value zone → uptrend)
+    net = {}
+    for ch in state["changes"]:
+        first = net.get(ch["symbol"], ch)
+        net[ch["symbol"]] = {**ch, "from": first["from"]}
+    state["changes"] = [ch for ch in net.values() if ch["from"] != ch["to"]]
 
-        save_json(os.path.join(DOCS, "charts", f"{sym}.json"), detail_payload(a), compact=True)
-        summaries.append(summary_payload(a, meta, market, source, currency, s.get("since", a["close_day"])))
-        digest[market].append((sig["key"], f"{ICON[sig['key']]} {name} {fmt(a['ref'])} · {sig['label']}"))
-        print(f"{sym:<9} {fmt(a['ref']):>12}  {sig['label']:<11} {sig['strength']:>3}/100  {a['trend']}")
+    # new buy signals: one bundled message, never at night (crypto weeks close at 00:00 UTC)
+    by_sym = {x["symbol"]: x for x in summaries if not x.get("stale")}
+    pending = [p for p in state["pending_buys"] if p["symbol"] in by_sym and by_sym[p["symbol"]]["signal"]["key"] == "buy"]
+    state["pending_buys"] = pending
+    if fresh_start:
+        state["pending_buys"] = []
+        state["last_digest"] = now.strftime("%Y-%m-%d")
+        if not dry_run:
+            send("🎯 ZoneHunter: long-term mode", f"Tracking {len(summaries)} markets on the weekly close. "
+                 "You'll get an update on Monday and Thursday, and an extra message only when a market in a "
+                 "long-term uptrend pulls back and closes a week higher.", 3, ["dart"], url)
+    elif pending and now.hour >= hour:
+        buys = [by_sym[p["symbol"]] for p in pending]
+        stocks_only = all(x["market"] == "stocks" for x in buys)
+        title = (f"🟢 Pullback + up week: {buys[0]['name']}" if len(buys) == 1
+                 else f"🟢 {len(buys)} markets pulled back and closed a week higher")
+        if log_event(buys[0]["symbol"] if len(buys) == 1 else None, "all", "buy", title, buys_message(buys),
+                     4 if stocks_only else 3, ["green_circle"]):
+            for p in pending:
+                state["coins"].setdefault(p["symbol"], {})["buy_alert_day"] = p["day"]
+            state["pending_buys"] = []
 
-    # One digest per market per daily close
-    order = {"buy": 0, "ready": 1, "watch": 2, "avoid": 3}
-    for market, day in digest_day.items():
-        if fresh_start or state["digest"].get(market) == day or not digest[market]:
-            state["digest"][market] = day
-            continue
-        rows = sorted(digest[market], key=lambda x: order[x[0]])
-        counts = {k: sum(1 for x in rows if x[0] == k) for k in order}
-        head = (f"{counts['buy']} buy · {counts['ready']} get ready · {counts['watch']} watch · {counts['avoid']} avoid")
-        body = "\n".join(x[1] for x in rows if x[0] in ("buy", "ready")) or "No buy zones reached today."
-        log_event(None, market, "digest", f"📊 Daily digest: {MARKET_LABEL[market]}", f"{head}\n{body}", 2, ["bar_chart"])
-        state["digest"][market] = day
-
-    if fresh_start and not dry_run:
-        send("🎯 ZoneHunter is live", f"Tracking {len(summaries)} markets. You'll get an alert when a signal changes at the daily close.",
-             3, ["dart"], url)
+    if not fresh_start and digest_due(config, state, now) and summaries:
+        title = f"📊 ZoneHunter update · {now.strftime('%a %d %b')}"
+        if log_event(None, "all", "digest", title, digest_message(summaries, state["changes"], errors, now), 3, ["bar_chart"]):
+            state["changes"] = []
+            state["last_digest"] = now.strftime("%Y-%m-%d")
 
     save_json(os.path.join(DOCS, "data.json"), {
         "generated_at": now.isoformat(timespec="seconds"),
-        "config": {"risk_eur": config.get("risk_eur", 10), "capital_eur": config.get("capital_eur", 500)},
+        "config": {"risk_eur": config.get("risk_eur", 10), "capital_eur": config.get("capital_eur", 500),
+                   "digest_days": config.get("digest_days", ["mon", "thu"])},
         "assets": summaries, "errors": errors, "history": state["history"],
     }, compact=True)
     if not dry_run:
         save_json(STATE_FILE, state)
+    return summaries, errors, state
 
 
 def main():
