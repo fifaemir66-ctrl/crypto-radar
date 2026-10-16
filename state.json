@@ -1,191 +1,253 @@
 {
-  "version": 2,
+  "version": 3,
   "coins": {
     "BTCUSDT": {
-      "since": "2026-10-09",
       "signal": "avoid",
-      "day": "2026-10-15",
+      "since": "2026-01-04",
+      "lt_trend": "down",
+      "day": "2026-10-11",
       "trend": "sideways"
     },
     "ETHUSDT": {
-      "since": "2026-10-12",
       "signal": "avoid",
-      "day": "2026-10-15",
+      "since": "2026-01-04",
+      "lt_trend": "down",
+      "day": "2026-10-11",
       "trend": "sideways"
     },
     "SOLUSDT": {
-      "since": "2026-10-12",
-      "signal": "watch",
-      "day": "2026-10-15",
+      "signal": "avoid",
+      "since": "2026-01-04",
+      "lt_trend": "down",
+      "day": "2026-10-11",
       "trend": "up"
     },
     "XRPUSDT": {
-      "since": "2026-10-12",
       "signal": "avoid",
-      "day": "2026-10-15",
+      "since": "2026-01-04",
+      "lt_trend": "down",
+      "day": "2026-10-11",
       "trend": "down"
     },
     "BNBUSDT": {
-      "since": "2026-10-13",
-      "signal": "ready",
-      "day": "2026-10-15",
+      "signal": "avoid",
+      "since": "2026-02-15",
+      "lt_trend": "down",
+      "day": "2026-10-11",
       "trend": "up"
     },
     "DOGEUSDT": {
-      "since": "2026-10-08",
       "signal": "avoid",
-      "day": "2026-10-15",
+      "since": "2026-01-04",
+      "lt_trend": "down",
+      "day": "2026-10-11",
       "trend": "down"
     },
     "ADAUSDT": {
-      "since": "2026-10-14",
-      "signal": "watch",
-      "day": "2026-10-15",
+      "signal": "avoid",
+      "since": "2026-01-04",
+      "lt_trend": "down",
+      "day": "2026-10-11",
       "trend": "up"
     },
     "AVAXUSDT": {
-      "since": "2026-10-15",
-      "signal": "watch",
-      "day": "2026-10-15",
+      "signal": "avoid",
+      "since": "2026-01-04",
+      "lt_trend": "down",
+      "day": "2026-10-11",
       "trend": "up"
     },
     "LINKUSDT": {
-      "since": "2026-10-14",
-      "signal": "avoid",
-      "day": "2026-10-15",
+      "signal": "watch",
+      "since": "2026-10-04",
+      "lt_trend": "up",
+      "day": "2026-10-11",
       "trend": "sideways"
     },
     "DOTUSDT": {
-      "since": "2026-10-09",
-      "signal": "watch",
-      "day": "2026-10-15",
+      "signal": "avoid",
+      "since": "2026-01-04",
+      "lt_trend": "down",
+      "day": "2026-10-11",
       "trend": "up"
     },
     "LTCUSDT": {
-      "since": "2026-10-12",
-      "signal": "ready",
-      "day": "2026-10-15",
+      "signal": "avoid",
+      "since": "2026-01-04",
+      "lt_trend": "down",
+      "day": "2026-10-11",
       "trend": "up"
     },
     "TRXUSDT": {
-      "since": "2026-10-06",
-      "signal": "avoid",
-      "day": "2026-10-15",
+      "signal": "ready",
+      "since": "2026-06-07",
+      "lt_trend": "up",
+      "day": "2026-10-11",
       "trend": "sideways"
     },
-    "TONUSDT": {
-      "since": "2026-06-29",
-      "signal": "avoid",
-      "day": "2026-06-29",
-      "trend": "down"
-    },
     "SUIUSDT": {
-      "since": "2026-10-10",
-      "signal": "watch",
-      "day": "2026-10-15",
+      "signal": "avoid",
+      "since": "2026-01-04",
+      "lt_trend": "down",
+      "day": "2026-10-11",
       "trend": "up"
     },
     "NEARUSDT": {
-      "since": "2026-10-10",
       "signal": "watch",
-      "day": "2026-10-15",
+      "since": "2026-09-13",
+      "lt_trend": "up",
+      "day": "2026-10-11",
       "trend": "up"
     },
     "BCHUSDT": {
-      "since": "2026-10-15",
-      "signal": "watch",
-      "day": "2026-10-15",
+      "signal": "avoid",
+      "since": "2026-04-05",
+      "lt_trend": "down",
+      "day": "2026-10-11",
       "trend": "up"
     },
     "SPY": {
-      "since": "2026-10-12",
       "signal": "ready",
-      "day": "2026-10-15",
+      "since": "2026-08-28",
+      "lt_trend": "up",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "QQQ": {
-      "since": "2026-10-15",
-      "signal": "avoid",
-      "day": "2026-10-15",
+      "signal": "watch",
+      "since": "2026-09-25",
+      "lt_trend": "up",
+      "day": "2026-10-09",
       "trend": "sideways"
     },
     "AAPL": {
-      "since": "2026-10-07",
       "signal": "watch",
-      "day": "2026-10-15",
+      "since": "2026-08-28",
+      "lt_trend": "up",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "MSFT": {
-      "since": "2026-10-09",
       "signal": "watch",
-      "day": "2026-10-15",
+      "since": "2026-08-28",
+      "lt_trend": "up",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "NVDA": {
-      "since": "2026-10-09",
-      "signal": "ready",
-      "day": "2026-10-15",
+      "signal": "watch",
+      "since": "2026-08-07",
+      "lt_trend": "up",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "AMZN": {
-      "since": "2026-10-15",
       "signal": "ready",
-      "day": "2026-10-15",
+      "since": "2026-09-04",
+      "lt_trend": "up",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "GOOGL": {
-      "since": "2026-10-05",
-      "signal": "ready",
-      "day": "2026-10-15",
+      "signal": "buy",
+      "since": "2026-10-09",
+      "lt_trend": "up",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "META": {
-      "since": "2026-10-14",
       "signal": "watch",
-      "day": "2026-10-15",
+      "since": "2026-09-25",
+      "lt_trend": "up",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "TSLA": {
-      "since": "2026-10-12",
-      "signal": "ready",
-      "day": "2026-10-15",
+      "signal": "avoid",
+      "since": "2026-07-02",
+      "lt_trend": "down",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "AMD": {
-      "since": "2026-10-15",
       "signal": "watch",
-      "day": "2026-10-15",
+      "since": "2026-09-04",
+      "lt_trend": "up",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "NFLX": {
-      "since": "2026-10-02",
       "signal": "avoid",
-      "day": "2026-10-15",
+      "since": "2026-01-02",
+      "lt_trend": "down",
+      "day": "2026-10-09",
       "trend": "sideways"
     },
     "LLY": {
-      "since": "2026-10-15",
       "signal": "ready",
-      "day": "2026-10-15",
+      "since": "2026-08-28",
+      "lt_trend": "up",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "ASML": {
-      "since": "2026-10-13",
       "signal": "watch",
-      "day": "2026-10-15",
+      "since": "2026-10-02",
+      "lt_trend": "up",
+      "day": "2026-10-09",
       "trend": "up"
     },
     "PLTR": {
-      "since": "2026-10-07",
       "signal": "watch",
-      "day": "2026-10-15",
+      "since": "2026-08-21",
+      "lt_trend": "up",
+      "day": "2026-10-09",
       "trend": "up"
+    },
+    "ADYEN.AS": {
+      "signal": "avoid",
+      "since": "2026-01-02",
+      "lt_trend": "down",
+      "day": "2026-10-09",
+      "trend": "up"
+    },
+    "MU": {
+      "signal": "watch",
+      "since": "2026-04-02",
+      "lt_trend": "up",
+      "day": "2026-10-09",
+      "trend": "up"
+    },
+    "MPWR": {
+      "signal": "ready",
+      "since": "2026-10-09",
+      "lt_trend": "up",
+      "day": "2026-10-09",
+      "trend": "sideways"
+    },
+    "AVGO": {
+      "signal": "avoid",
+      "since": "2026-10-02",
+      "lt_trend": "down",
+      "day": "2026-10-09",
+      "trend": "sideways"
+    },
+    "TSM": {
+      "signal": "watch",
+      "since": "2026-09-04",
+      "lt_trend": "up",
+      "day": "2026-10-09",
+      "trend": "up"
+    },
+    "VWRL.AS": {
+      "signal": "watch",
+      "since": "2026-10-09",
+      "lt_trend": "up",
+      "day": "2026-10-09",
+      "trend": "sideways"
     }
   },
-  "digest": {
-    "crypto": "2026-10-15",
-    "stocks": "2026-10-15"
-  },
+  "changes": [],
   "history": [
     {
       "time": "2026-10-16T01:33:15+00:00",
@@ -667,5 +729,7 @@
       "title": "🟡 GET READY: Tesla (TSLA) is in its buy zone",
       "message": "In the buy zone, waiting for a 2x risk/reward.\nPrice is in the buy zone 364.26–369.07. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 369.07, stop 358.80, target 384.04."
     }
-  ]
+  ],
+  "pending_buys": [],
+  "last_digest": "2026-10-16"
 }
