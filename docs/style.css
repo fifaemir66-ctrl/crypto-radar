@@ -270,3 +270,5 @@ details .body { padding: 0 18px 18px; }
   .checklist li { grid-template-columns: 22px 1fr; }
   .checklist li .t { grid-column: 2; }
 }
+.row .reason small.stale { color: var(--avoid); }
+.short-timing { font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }

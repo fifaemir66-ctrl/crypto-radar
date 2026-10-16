@@ -12,10 +12,10 @@ const COLORS = {
 const STOCK_COLORS = ['#2563eb', '#7c3aed', '#0891b2', '#db2777', '#059669', '#d97706', '#4f46e5', '#0f766e'];
 const ORDER = { buy: 0, ready: 1, watch: 2, avoid: 3 };
 const TILES = [
-  ['buy', 'BUY SIGNAL', 'All strategy rules met'],
-  ['ready', 'GET READY', 'In a buy zone, waiting for trigger'],
-  ['watch', 'WATCH', 'Uptrend, waiting for a pullback'],
-  ['avoid', 'AVOID', 'No uptrend, stay out'],
+  ['buy', 'PULLBACK + UP WEEK', 'Uptrend, pulled back and closed a week higher'],
+  ['ready', 'IN VALUE ZONE', 'Uptrend, pulled back into the value zone'],
+  ['watch', 'UPTREND', 'Holders stay in, no pullback yet'],
+  ['avoid', 'NO UPTREND', 'No new money by these rules (not a sell signal)'],
 ];
 const WS_URL = 'wss://data-stream.binance.vision/stream?streams=';
 const REST_TICKER = 'https://data-api.binance.vision/api/v3/ticker/24hr?symbols=';
@@ -40,16 +40,16 @@ let charts = null;
 let ws = null, wsRetry = 0, pollTimer = null;
 
 /* ---------- formatting ---------- */
-function decimals(p) { return p >= 1000 ? 0 : p >= 1 ? 2 : p >= 0.01 ? 4 : 7; }
-function fmt(p) {
+function fmt(p) {   // 5 significant digits: 83,621 · 1,134.4 · 311.6 · 1.4823 · 0.09276
   if (p == null || isNaN(p)) return '–';
-  const d = decimals(Math.abs(p));
+  if (p === 0) return '0';
+  const d = Math.max(0, 4 - Math.floor(Math.log10(Math.abs(p))));
   return new Intl.NumberFormat('en-US', { minimumFractionDigits: Math.min(d, 2), maximumFractionDigits: d }).format(p);
 }
 function pct(x, sign = true) {
   if (x == null || isNaN(x)) return '–';
   const s = new Intl.NumberFormat('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 2 }).format(Math.abs(x));
-  return (sign ? (x >= 0 ? '+' : '−') : '') + s + '%';
+  return (sign ? (s.replace(/[0.,]/g, '') === '' ? '' : x >= 0 ? '+' : '−') : '') + s + '%';
 }
 const nf = (x, d = 1) => new Intl.NumberFormat('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }).format(x);
 const eur = (x) => '€' + new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(x);
@@ -61,8 +61,8 @@ function ago(iso) {
   return h < 24 ? `${h} h ago` : `${Math.floor(h / 24)} d ago`;
 }
 const when = (iso) => new Date(iso).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
-const dayLabel = (d) => d ? new Date(d + 'T12:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '–';
-const shortDate = (t) => new Date(t * 1000).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+const dayLabel = (d) => d ? new Date(d + 'T12:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' }) : '–';
+const shortDate = (t) => new Date(t * 1000).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
 const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 
 /* ---------- helpers ---------- */
@@ -76,16 +76,18 @@ const find = (sym) => DATA?.assets.find((a) => a.symbol === sym);
 const marketAssets = (m) => DATA ? DATA.assets.filter((a) => a.market === m) : [];
 const priceOf = (a) => live[a.symbol]?.price ?? a.price;
 function changeOf(a) {
-  if (live[a.symbol]?.change != null) return live[a.symbol].change;
-  return a.ref_price ? (a.price - a.ref_price) / a.ref_price * 100 : null;
+  const ref = live[a.symbol]?.open ?? a.ref_price;
+  return ref ? (priceOf(a) - ref) / ref * 100 : null;
 }
+const chgClass = (ch) => ch == null ? 'chg' : `chg ${ch >= 0 ? 'up' : 'down'}`;
+const isLive = (a) => a.market === 'crypto' && a.source === 'Binance';
 const sigColor = (k) => `var(--${k})`;
 function liveZoneNote(a) {
   if (!a.zone1 || a.signal.key === 'avoid') return '';
   const p = priceOf(a);
-  if (p >= a.zone1.low * 0.99 && p <= a.zone1.high * 1.01) return 'Live price is inside the buy zone now';
-  if (p < a.zone1.low) return 'Live price is below the buy zone';
-  return `Buy zone ${fmt(a.zone1.low)}–${fmt(a.zone1.high)} · ${pct((p - a.zone1.high) / p * 100, false)} away`;
+  if (p >= a.zone1.low * 0.99 && p <= a.zone1.high * 1.01) return 'Live price is inside the value zone now';
+  if (p < a.zone1.low) return 'Live price is below the value zone';
+  return `Value zone ${fmt(a.zone1.low)}–${fmt(a.zone1.high)} · ${pct((p - a.zone1.high) / p * 100, false)} away`;
 }
 
 /* ---------- routing ---------- */
@@ -104,7 +106,10 @@ function render() {
   const navKey = route.view === 'asset' ? find(route.symbol)?.market : route.view === 'alerts' ? 'alerts' : route.market;
   document.querySelectorAll('[data-nav]').forEach((a) => a.classList.toggle('on', a.dataset.nav === navKey));
   if (!DATA) return;
-  if (route.view === 'home') { store.set('zh-market', route.market); renderHome(); }
+  if (route.view === 'home') {
+    if (store.get('zh-market') !== route.market) { filter = null; query = ''; $('search').value = ''; }
+    store.set('zh-market', route.market); renderHome();
+  }
   else if (route.view === 'asset') renderAsset();
   else renderAlerts();
 }
@@ -121,11 +126,14 @@ function renderHome() {
   }).join('');
   $('tiles').querySelectorAll('.tile').forEach((b) => b.addEventListener('click', () => { filter = filter === b.dataset.k ? null : b.dataset.k; renderHome(); }));
   if (m === 'crypto') {
-    $('market-note').textContent = 'Live prices · signals set at the daily close (00:00 UTC)';
+    $('market-note').textContent = 'Live prices · change since 00:00 UTC · long-term signals set at the weekly close';
   } else {
-    const open = list.some((a) => a.market_open);
-    $('market-note').textContent = `US market ${open ? 'open' : 'closed'} · prices refresh hourly · signals set at the US close`;
+    const us = list.some((a) => a.market_open && a.currency === 'USD');
+    const eu = list.some((a) => a.market_open && a.currency === 'EUR');
+    $('market-note').textContent = `US market ${us ? 'open' : 'closed'} · EU market ${eu ? 'open' : 'closed'} · prices refresh hourly · long-term signals set at the weekly close`;
   }
+  const down = (DATA.errors || []).filter((e) => e.market === m).map((e) => e.symbol);
+  if (down.length) $('market-note').textContent += ` · unavailable this run: ${down.join(', ')}`;
   const q = query.trim().toLowerCase();
   const rows = list
     .filter((a) => !filter || a.signal.key === filter)
@@ -136,9 +144,11 @@ function renderHome() {
     const note = liveZoneNote(a);
     return `<a class="row" href="#/asset/${a.symbol}">
       <div class="name-cell coin-id">${iconHtml(a)}<div><div class="coin-name">${esc(a.name)}</div><div class="muted">${esc(a.symbol)}</div></div></div>
-      <div class="price-cell"><div class="p mono" data-price="${a.symbol}">${fmt(priceOf(a))}</div><div class="chg ${ch >= 0 ? 'up' : 'down'}" data-chg="${a.symbol}">${pct(ch)}</div></div>
+      <div class="price-cell"><div class="p mono" data-price="${a.symbol}">${fmt(priceOf(a))}</div><div class="${chgClass(ch)}" data-chg="${a.symbol}">${pct(ch)}</div></div>
       <div class="sig-cell">${sigBadge(a.signal)}<div class="meter" title="Signal strength ${a.signal.strength}/100"><i style="width:${a.signal.strength}%;background:${sigColor(a.signal.key)}"></i></div></div>
-      <div class="reason">${esc(a.signal.reason)}${note ? `<small data-zone="${a.symbol}">${esc(note)}</small>` : ''}</div>
+      <div class="reason">${esc(a.signal.reason)}${note ? `<small data-zone="${a.symbol}">${esc(note)}</small>` : ''}${
+        a.short ? `<small class="short">Short-term: ${esc(a.short.label)}</small>` : ''}${
+        a.stale ? `<small class="stale">No fresh data, showing the result from ${ago(a.updated_at)}</small>` : ''}</div>
       <div class="chev">›</div>
     </a>`;
   }).join('') : '<div class="empty">Nothing here with this filter.</div>';
@@ -168,8 +178,8 @@ function planGrid(p) {
   return `<div class="plan">
     <div><div class="k">Entry</div><div class="v mono">${fmt(p.entry)}</div></div>
     <div><div class="k">Stop (−${nf(p.stop_pct)}%)</div><div class="v mono">${fmt(p.stop)}</div></div>
-    <div><div class="k">Target (+${nf(p.win_pct)}%)</div><div class="v mono">${fmt(p.target)}</div></div>
-    <div><div class="k">Risk / reward</div><div class="v">${nf(p.rr)}x</div></div>
+    <div><div class="k">Target${p.target ? ` (+${nf(p.win_pct)}%)` : ''}</div><div class="v mono">${p.target ? fmt(p.target) : 'trend'}</div></div>
+    <div><div class="k">Risk / reward</div><div class="v">${p.rr != null ? nf(p.rr) + 'x' : '–'}</div></div>
     <div><div class="k">Position${p.capped ? ' (max)' : ''}</div><div class="v">${eur(p.position)} <span class="muted">risk ${eur(p.loss_eur)}</span></div></div>
   </div>`;
 }
@@ -214,7 +224,15 @@ function profileHtml(a, d) {
 
 async function renderAsset() {
   const a = find(route.symbol);
-  if (!a) { location.hash = '#/crypto'; return; }
+  if (!a) { location.hash = `#/${store.get('zh-market') || 'crypto'}`; return; }
+  if (charts && charts.symbol !== a.symbol) { charts.main.remove(); charts.sub.remove(); charts = null; }
+  if (!charts) {
+    $('a-signal').className = 'signal-card';
+    $('a-signal').innerHTML = '<p class="muted">Loading…</p>';
+    ['a-checklist', 'a-scenarios', 'a-pools', 'a-profile', 'a-extras', 'a-trend', 'a-fib', 'a-zones', 'legend']
+      .forEach((id) => { $(id).innerHTML = ''; });
+    ['s-check', 's-scen', 's-liq', 's-prof', 's-ind', 's-trend', 's-zones'].forEach((id) => { $(id).textContent = ''; });
+  }
   $('back').href = `#/${a.market}`;
   $('back').textContent = `← ${a.market === 'crypto' ? 'Crypto' : 'Stocks'}`;
   $('a-icon').outerHTML = iconHtml(a, ' lg', 'a-icon');
@@ -223,19 +241,22 @@ async function renderAsset() {
   updateAssetPrice();
 
   let d;
-  try { d = await loadDetail(a.symbol); } catch { $('a-signal').innerHTML = '<p class="muted">Could not load details.</p>'; return; }
+  try { d = await loadDetail(a.symbol); } catch {
+    if (route.view === 'asset' && route.symbol === a.symbol) $('a-signal').innerHTML = '<p class="muted">Could not load details. Try again in a moment.</p>';
+    return;
+  }
   if (route.view !== 'asset' || route.symbol !== a.symbol) return;
   const s = d.signal;
   const scenA = d.scenarios.find((x) => x.key === 'A');
-  const plan = s.key === 'buy' ? d.plan_close : s.key === 'avoid' ? null : scenA?.plan;
+  const plan = s.key === 'buy' || s.key === 'ready' ? d.plan_close : null;
   $('a-signal').className = `signal-card k-${s.key}`;
   $('a-signal').innerHTML = `
-    <div class="top">${sigBadge(s)}<span class="since">since ${dayLabel(a.signal_since)} · based on the ${dayLabel(d.close_day)} daily close</span></div>
+    <div class="top">${sigBadge(s)}<span class="since">long-term · since ${dayLabel(a.signal_since)} · based on the week that closed ${dayLabel(d.close_day)}</span></div>
     <p class="reason">${esc(s.reason)}.</p>
     <p class="plan-text">${esc(s.plan)}</p>
     <div class="strength">${ring(s.strength, sigColor(s.key))}<b>Signal strength</b></div>
-    ${plan ? `<div style="grid-column:1/-1" class="muted">${s.key === 'buy' ? 'Trade plan' : 'Plan if the trigger comes'} · position sized so the stop costs about ${eur(DATA.config.risk_eur)}${
-      s.key !== 'buy' && plan.rr < 2 ? ` · <b style="color:var(--avoid)">risk/reward below 2x: this zone alone would not give a buy signal</b>` : ''}</div>${planGrid(plan)}` : ''}`;
+    ${d.short ? `<div style="grid-column:1/-1" class="short-timing"><b>Short-term timing (daily):</b> ${sigBadge(d.short.signal)} ${esc(d.short.signal.reason)}.</div>` : ''}
+    ${plan ? `<div style="grid-column:1/-1" class="muted">${s.key === 'buy' ? 'Long-term plan' : 'Plan if the up week comes'} · invalidation on a weekly close under the stop · position sized so the stop costs about ${eur(DATA.config.risk_eur)}</div>${planGrid(plan)}` : ''}`;
 
   const passed = d.checklist.filter((c) => c.state === 'ok').length;
   $('s-check').textContent = `${passed} of ${d.checklist.length} checks passed`;
@@ -253,8 +274,9 @@ async function renderAsset() {
   $('a-profile').innerHTML = profileHtml(a, d);
   $('s-ind').textContent = `${d.confluence} of 7 positive`;
   $('a-extras').innerHTML = checkItems(d.extras);
-  $('s-trend').textContent = `${d.trend} · weekly ${d.weekly_trend}`;
-  $('a-trend').innerHTML = d.trend_reasons.map((t) => `<li>${esc(t)}</li>`).join('');
+  $('s-trend').textContent = `${d.trend}${d.short ? ` · short-term ${d.short.trend}` : ''}`;
+  $('a-trend').innerHTML = d.trend_reasons.map((t) => `<li>${esc(t)}</li>`).join('')
+    + (d.short ? `<li class="muted"><b>Short-term (daily):</b> ${d.short.trend_reasons.map(esc).join(' · ')}</li>` : '');
   const f = d.fib;
   let fib = f ? `<div class="fib-title">Fibonacci of the last swing ${fmt(f.low)} → ${fmt(f.high)}</div>
       <div class="fib-row"><span>38.2%</span><b class="mono">${fmt(f.f382)}</b></div>
@@ -274,8 +296,8 @@ function updateAssetPrice() {
   if (!a) return;
   const ch = changeOf(a);
   $('a-price').textContent = fmt(priceOf(a));
-  $('a-change').className = `chg ${ch >= 0 ? 'up' : 'down'}`;
-  $('a-change').textContent = `${pct(ch)} ${a.market === 'crypto' ? '24h' : 'today'}`;
+  $('a-change').className = chgClass(ch);
+  $('a-change').textContent = `${pct(ch)} ${a.market === 'crypto' ? 'since 00:00 UTC' : a.market_open ? 'today' : 'last session'}`;
 }
 
 /* ---------- chart ---------- */
@@ -317,7 +339,7 @@ function buildChart(a, d) {
   c.lines.filter((l) => shown.includes(l.kind)).forEach((l) => candles.createPriceLine({
     price: l.price, color: col[l.kind], lineWidth: l.kind.startsWith('zone') ? 2 : 1,
     lineStyle: l.kind === 'poc' ? 1 : l.kind === 'bsl' || l.kind === 'ssl' ? 3 : 2, axisLabelVisible: true, title: l.title }));
-  if (overlays.zones) legend.push(['--zone1', 'Buy zone 1'], ['--zone2', 'Buy zone 2'], ['--target', 'Target'], ['--down', 'Trend line']);
+  if (overlays.zones) legend.push(['--zone1', 'Value zone (long-term)'], ['--zone2', 'Short-term zone'], ['--target', '52-week high'], ['--down', 'Invalidation']);
   if (overlays.liq) legend.push(['--bsl', 'BSL (equal highs)'], ['--ssl', 'SSL (equal lows)'], ['--poc', 'Volume POC']);
   $('legend').innerHTML = legend.map(([v, l]) => `<span><i style="background:var(${v})"></i>${l}</span>`).join('');
 
@@ -375,9 +397,9 @@ $('alert-filter').querySelectorAll('.tg').forEach((b) => b.addEventListener('cli
 }));
 
 /* ---------- live crypto prices ---------- */
-function applyTick(sym, price, change) {
+function applyTick(sym, price, open) {
   const prev = live[sym]?.price;
-  live[sym] = { price, change };
+  live[sym] = { price, open: open ?? live[sym]?.open };
   document.querySelectorAll(`[data-price="${sym}"]`).forEach((p) => {
     p.textContent = fmt(price);
     if (prev != null && price !== prev) {
@@ -387,9 +409,9 @@ function applyTick(sym, price, change) {
       setTimeout(() => p.classList.remove('flash-up', 'flash-down'), 700);
     }
   });
-  const ch = document.querySelector(`[data-chg="${sym}"]`);
-  if (ch && change != null) { ch.textContent = pct(change); ch.className = `chg ${change >= 0 ? 'up' : 'down'}`; }
-  const a = find(sym), z = document.querySelector(`[data-zone="${sym}"]`);
+  const a = find(sym), ch = document.querySelector(`[data-chg="${sym}"]`);
+  if (ch && a) { const c = changeOf(a); ch.textContent = pct(c); ch.className = chgClass(c); }
+  const z = document.querySelector(`[data-zone="${sym}"]`);
   if (a && z) z.textContent = liveZoneNote(a);
   if (route.view === 'asset' && route.symbol === sym) updateAssetPrice();
 }
@@ -398,7 +420,7 @@ function setLive(on, label) {
   $('live').querySelector('span').textContent = label;
 }
 function connect() {
-  const cryptos = marketAssets('crypto');
+  const cryptos = DATA ? DATA.assets.filter(isLive) : [];
   if (!cryptos.length || ws) return;
   const streams = cryptos.flatMap((a) => [`${a.symbol.toLowerCase()}@miniTicker`, `${a.symbol.toLowerCase()}@kline_1d`]).join('/');
   try { ws = new WebSocket(WS_URL + streams); } catch { return startPolling(); }
@@ -406,10 +428,11 @@ function connect() {
   ws.onmessage = (ev) => {
     const { data } = JSON.parse(ev.data);
     if (data.e === '24hrMiniTicker') {
-      const price = +data.c, open = +data.o;
-      applyTick(data.s, price, (price - open) / open * 100);
-    } else if (data.e === 'kline' && charts && data.s === charts.symbol && route.view === 'asset') {
+      applyTick(data.s, +data.c);
+    } else if (data.e === 'kline') {
       const k = data.k, t = Math.floor(k.t / 1000), row = [t, +k.o, +k.h, +k.l, +k.c, +k.v];
+      applyTick(data.s, row[4], row[1]);   // today's (00:00 UTC) open
+      if (!charts || data.s !== charts.symbol || route.view !== 'asset') return;
       try {
         charts.candles.update({ time: t, open: row[1], high: row[2], low: row[3], close: row[4] });
         charts.volume.update({ time: t, value: row[5], color: charts.vcol(row) });
@@ -424,9 +447,9 @@ function connect() {
 }
 async function pollOnce() {
   try {
-    const syms = JSON.stringify(marketAssets('crypto').map((a) => a.symbol));
+    const syms = JSON.stringify(DATA.assets.filter(isLive).map((a) => a.symbol));
     const r = await fetch(REST_TICKER + encodeURIComponent(syms));
-    (await r.json()).forEach((t) => applyTick(t.symbol, +t.lastPrice, +t.priceChangePercent));
+    (await r.json()).forEach((t) => applyTick(t.symbol, +t.lastPrice));
     if (!ws) setLive(true, 'Live (30s)');
   } catch { setLive(false, 'Offline'); }
 }
@@ -445,12 +468,13 @@ async function load() {
     }
     DATA = fresh;
   } catch {
+    if (DATA) return;   // keep showing the last good data
     $('view-home').hidden = false;
     $('list').innerHTML = '<div class="empty">Data is being prepared. The next analysis run fills this in automatically.</div>';
     return;
   }
   render();
-  Object.entries(live).forEach(([s, v]) => applyTick(s, v.price, v.change));
+  Object.entries(live).forEach(([s, v]) => applyTick(s, v.price, v.open));
   connect();
 }
 

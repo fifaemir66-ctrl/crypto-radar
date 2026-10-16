@@ -15,21 +15,44 @@ concurrency:
 jobs:
   scan:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref_name }}   # always the newest commit, also for queued runs
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
-      - name: Analyse en meldingen
+      - name: Use the latest state
+        run: git pull --ff-only origin "${{ github.ref_name }}"
+
+      - name: Tests (stop here if the code is broken, so no wrong alerts go out)
+        run: python -m unittest discover tests
+
+      - name: Analysis and alerts
         env:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
         run: python monitor.py
 
-      - name: Data opslaan
+      - name: Save data
         run: |
-          git config user.name "crypto-radar-bot"
-          git config user.email "crypto-radar-bot@users.noreply.github.com"
+          git config user.name "zonehunter-bot"
+          git config user.email "zonehunter-bot@users.noreply.github.com"
           git add docs/data.json docs/charts state.json
-          git diff --staged --quiet || (git commit -m "Radar-update $(date -u +'%Y-%m-%d %H:%M')" && git push)
+          git diff --staged --quiet && exit 0
+          git commit -m "ZoneHunter update $(date -u +'%Y-%m-%d %H:%M')"
+          for i in 1 2 3; do
+            git push && exit 0
+            git pull --rebase -X theirs origin "${{ github.ref_name }}" || exit 1
+          done
+          exit 1
+
+      - name: Tell me when a run fails (otherwise the site silently goes stale)
+        if: failure()
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: |
+          [ -n "$NTFY_TOPIC" ] && curl -s -H "Title: ⚠️ ZoneHunter run failed" -H "Tags: warning" \
+            -d "A ZoneHunter run failed. Open the Actions tab on GitHub to see why." "https://ntfy.sh/$NTFY_TOPIC" || true

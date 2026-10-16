@@ -12,8 +12,10 @@ last CLOSED daily candle only, so they change at most once per day:
 Signals follow fixed strategy rules. Educational tool -- not financial advice.
 """
 
+import calendar
 import csv
 import io
+import math
 import json
 import time
 import urllib.request
@@ -28,11 +30,18 @@ BINANCE_URLS = [
 
 # ================================================================ data
 
-def _get(url, as_json=True):
+def _get(url, as_json=True, attempts=3):
+    """GET with retries and backoff: data APIs fail now and then for a few seconds."""
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (radar)"})
-    with urllib.request.urlopen(req, timeout=20) as r:
-        raw = r.read()
-    return json.loads(raw) if as_json else raw.decode()
+    for i in range(attempts):
+        try:
+            with urllib.request.urlopen(req, timeout=20) as r:
+                raw = r.read()
+            return json.loads(raw) if as_json else raw.decode()
+        except Exception:
+            if i == attempts - 1:
+                raise
+            time.sleep(2 * (i + 1))
 
 
 def _binance(symbol, limit):
@@ -47,23 +56,54 @@ def _binance(symbol, limit):
     raise RuntimeError(f"Binance: {last_err}")
 
 
-def _coinbase(symbol):
+def _coinbase(symbol, pages=3):
+    """Coinbase returns at most 300 candles per call: page back to get enough weekly history."""
     base = symbol[:-4] if symbol.endswith("USDT") else symbol[:-3]
-    raw = _get(f"https://api.exchange.coinbase.com/products/{base}-USD/candles?granularity=86400")
-    rows = sorted(raw, key=lambda k: k[0])
+    end = int(time.time())
+    rows = {}
+    for _ in range(pages):
+        start = end - 299 * 86400
+        iso = lambda t: time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(t))
+        raw = _get(f"https://api.exchange.coinbase.com/products/{base}-USD/candles?granularity=86400"
+                   f"&start={iso(start)}&end={iso(end)}")
+        if not raw:
+            break
+        rows.update({k[0]: k for k in raw})
+        end = start          # overlap one day: the dict removes the duplicate, nothing is skipped
+    rows = sorted(rows.values(), key=lambda k: k[0])
     return [{"t": int(k[0]), "o": float(k[3]), "h": float(k[2]), "l": float(k[1]),
              "c": float(k[4]), "v": float(k[5])} for k in rows]
 
 
-def fetch_crypto(symbol, limit=400):
-    """Returns (candles, source, last_is_closed). The last crypto candle is always still open."""
+MIN_HISTORY = 60  # closed daily candles needed for a reliable analysis
+
+
+def check_fresh(symbol, candles, max_age_days):
+    """Reject delisted / halted markets: the newest candle must be recent."""
+    age = (time.time() - candles[-1]["t"]) / 86400
+    if age > max_age_days:
+        raise RuntimeError(f"{symbol}: no new data for {age:.0f} days (delisted or halted?)")
+    if len(candles) < MIN_HISTORY + 1:
+        raise RuntimeError(f"{symbol}: only {len(candles)} candles of history, need {MIN_HISTORY}+")
+    return candles
+
+
+def _last_closed(candles):
+    """A daily crypto candle is closed once 24 hours have passed since it opened (a lagging source may not have today's yet)."""
+    return candles[-1]["t"] + 86400 <= time.time()
+
+
+def fetch_crypto(symbol, limit=1000):
+    """Returns (candles, source, last_is_closed)."""
     try:
-        return _binance(symbol, limit), "Binance", False
+        c = check_fresh(symbol, _binance(symbol, limit), 2)
+        return c, "Binance", _last_closed(c)
     except Exception as e:
         try:
-            return _coinbase(symbol), "Coinbase", False
+            c = check_fresh(symbol, _coinbase(symbol), 2)
+            return c, "Coinbase", _last_closed(c)
         except Exception as e2:
-            raise RuntimeError(f"No data for {symbol} ({e}; Coinbase: {e2})")
+            raise RuntimeError(f"No usable data for {symbol} ({e}; Coinbase: {e2})")
 
 
 def _yahoo(ticker):
@@ -71,7 +111,7 @@ def _yahoo(ticker):
     for host in ("query1", "query2"):
         for attempt in range(2):
             try:
-                d = _get(f"https://{host}.finance.yahoo.com/v8/finance/chart/{ticker}?range=2y&interval=1d")
+                d = _get(f"https://{host}.finance.yahoo.com/v8/finance/chart/{ticker}?range=5y&interval=1d", attempts=1)
                 res = d["chart"]["result"][0]
                 q = res["indicators"]["quote"][0]
                 candles = []
@@ -99,8 +139,11 @@ def _stooq(ticker):
     if not rows or "Close" not in rows[0]:
         raise RuntimeError("Stooq: no data")
     candles = []
-    for r in rows[-500:]:
-        t = int(time.mktime(time.strptime(r["Date"], "%Y-%m-%d")))
+    today = time.strftime("%Y-%m-%d", time.gmtime())
+    for r in rows[-1300:]:
+        if r["Date"] >= today:      # today's row may be a partial session: never use it
+            continue
+        t = calendar.timegm(time.strptime(r["Date"] + " 14:30", "%Y-%m-%d %H:%M"))
         candles.append({"t": t, "o": float(r["Open"]), "h": float(r["High"]), "l": float(r["Low"]),
                         "c": float(r["Close"]), "v": float(r.get("Volume") or 0)})
     return candles
@@ -110,10 +153,12 @@ def fetch_stock(ticker):
     """Returns (candles, source, last_is_closed, currency)."""
     try:
         candles, closed, cur = _yahoo(ticker)
-        return candles, "Yahoo Finance", closed, cur
+        return check_fresh(ticker, candles, 6), "Yahoo Finance", closed, cur
     except Exception as e:
+        if "." in ticker:   # Stooq fallback only knows US tickers
+            raise RuntimeError(f"No data for {ticker} ({e})")
         try:
-            return _stooq(ticker), "Stooq", True, "USD"
+            return check_fresh(ticker, _stooq(ticker), 6), "Stooq", True, "USD"
         except Exception as e2:
             raise RuntimeError(f"No data for {ticker} ({e}; {e2})")
 
@@ -277,10 +322,10 @@ def candle_pattern(c, prev):
         return "Bullish engulfing", "bullish"
     if prev_real and not green and prev["c"] > prev["o"] and c["o"] >= prev["c"] and c["c"] <= prev["o"] and body > prev_body:
         return "Bearish engulfing", "bearish"
+    if lower >= 2 * body and lower >= 0.5 * rng and upper <= 0.35 * rng:
+        return ("Green hammer" if green else "Red hammer"), "bullish"
     if body <= 0.1 * rng:
         return "Doji (indecision)", "neutral"
-    if lower >= 2 * body and upper <= 0.35 * rng:
-        return ("Green hammer" if green else "Red hammer"), "bullish"
     if upper >= 2 * body and lower <= 0.35 * rng:
         return "Shooting star", "bearish"
     if body >= 0.7 * rng:
@@ -393,16 +438,18 @@ def cluster_levels(levels, tol=0.015):
 # ================================================================ formatting
 
 def fmt(x):
+    """Price with 5 significant digits: 83,621 · 1,134.4 · 311.6 · 1.4823 · 0.09276."""
     if x is None:
         return "-"
-    ax = abs(x)
-    if ax >= 1000:
-        return f"{x:,.0f}"
-    if ax >= 1:
-        return f"{x:,.2f}"
-    if ax >= 0.01:
-        return f"{x:.4f}"
-    return f"{x:.8f}".rstrip("0")
+    if x == 0:
+        return "0"
+    d = max(0, 4 - math.floor(math.log10(abs(x))))
+    out = f"{x:,.{d}f}"
+    if d > 2 and "." in out:
+        out = out.rstrip("0")
+        if len(out.split(".")[1]) < 2:
+            out = f"{x:,.2f}" if abs(x) >= 1 else out
+    return out.rstrip(".")
 
 
 def dec(x, n=1):
@@ -426,9 +473,12 @@ def weekly_candles(closed):
         key = time.strftime("%G-%V", time.gmtime(c["t"]))
         if weeks and weeks[-1]["key"] == key:
             wk = weeks[-1]
-            wk["h"] = max(wk["h"], c["h"]); wk["l"] = min(wk["l"], c["l"]); wk["c"] = c["c"]
+            wk["h"] = max(wk["h"], c["h"]); wk["l"] = min(wk["l"], c["l"]); wk["c"] = c["c"]; wk["n"] += 1
         else:
-            weeks.append({"key": key, "t": c["t"], "o": c["o"], "h": c["h"], "l": c["l"], "c": c["c"]})
+            weeks.append({"key": key, "t": c["t"], "o": c["o"], "h": c["h"], "l": c["l"], "c": c["c"], "n": 1})
+    # drop the unfinished current week (fewer trading days than a normal week)
+    if len(weeks) > 5 and weeks[-1]["n"] < max(w["n"] for w in weeks[-5:-1]):
+        weeks.pop()
     return weeks
 
 
@@ -462,6 +512,8 @@ def analyse(symbol, candles, pivot_len=7, risk_eur=10, capital=500, last_closed=
         closed, live = candles, candles[-1]
     else:
         closed, live = candles[:-1], candles[-1]
+    if len(closed) < MIN_HISTORY:
+        raise ValueError(f"{symbol}: not enough history ({len(closed)} closed candles)")
     closes = [c["c"] for c in closed]
     last = closed[-1]
     ref = last["c"]            # reference price for all decisions: the last daily close
@@ -500,10 +552,11 @@ def analyse(symbol, candles, pivot_len=7, risk_eur=10, capital=500, last_closed=
     score += 1 if ema_slope > 0 else -1
     reasons.append(f"EMA 50 is {'rising' if ema_slope > 0 else 'falling'}")
 
-    # hysteresis: a trend only flips when the evidence is clearly on the other side
-    if score >= 2 or (prev_trend == "up" and score >= 1):
+    # hysteresis: once a trend is established it holds until the evidence is clearly against it
+    # (the score is a sum of four +/-1 terms, so it is always even: -4, -2, 0, 2, 4)
+    if score >= 2 or (prev_trend == "up" and score >= 0):
         daily = "up"
-    elif score <= -2 or (prev_trend == "down" and score <= -1):
+    elif score <= -2 or (prev_trend == "down" and score <= 0):
         daily = "down"
     else:
         daily = "sideways"
@@ -531,50 +584,54 @@ def analyse(symbol, candles, pivot_len=7, risk_eur=10, capital=500, last_closed=
     # --- liquidity and volume profile
     pools = liquidity_pools(closed, atr_now)
     profile = volume_profile(closed)
-    ssl_open = sorted((p for p in pools if p["kind"] == "SSL" and p["status"] == "open" and p["price"] < ref),
-                      key=lambda p: -p["price"])
+    # equal lows that were still untouched BEFORE the last candle (a sweep on the last candle keeps its zone)
+    ssl_pre = sorted((p for p in pools if p["kind"] == "SSL" and p["formed_before_last"]
+                      and p["status_before_last"] == "open" and p["price"] < ref * 1.02),
+                     key=lambda p: -p["price"])
+    ssl_open = [p for p in ssl_pre if p["status"] == "open" and p["price"] < ref]
     bsl_open = sorted((p for p in pools if p["kind"] == "BSL" and p["status"] == "open" and p["price"] > ref),
                       key=lambda p: p["price"])
-    sweep = next((p for p in pools if p["kind"] == "SSL" and p["formed_before_last"]
-                  and p["status_before_last"] == "open" and last["l"] < p["price"] < last["c"]), None)
+    sweep = next((p for p in ssl_pre if last["l"] < p["price"] < last["c"]), None)
     sweep_bear = next((p for p in pools if p["kind"] == "BSL" and p["formed_before_last"]
                        and p["status_before_last"] == "open" and last["h"] > p["price"] > last["c"]), None)
 
-    # --- support levels below the last close -> buy zones
+    # --- support levels around and below the last close -> buy zones
+    # each level has a family; a zone's strength = number of DIFFERENT families that overlap
     levels = []
+    lo_lim, hi_lim = ref * 0.8, ref * 1.02
     for t in tops:
-        if t["price"] < ref:
-            levels.append({"price": t["price"], "name": f"Old high {t['label']}"})
+        levels.append({"price": t["price"], "name": f"Old high {t['label']}", "fam": "structure"})
     for bt in bottoms[-4:]:
-        if bt["price"] < ref:
-            levels.append({"price": bt["price"], "name": f"Swing low {bt['label']}"})
+        levels.append({"price": bt["price"], "name": f"Swing low {bt['label']}", "fam": "structure"})
     if fib:
         for k in ("38.2", "50", "61.8"):
-            if fib[k] < ref:
-                levels.append({"price": fib[k], "name": f"Fibonacci {k}%"})
-    if ema50[-1] < ref:
-        levels.append({"price": ema50[-1], "name": "EMA 50"})
-    if profile["poc"] < ref:
-        levels.append({"price": profile["poc"], "name": "Volume POC"})
+            levels.append({"price": fib[k], "name": f"Fibonacci {k}%", "fam": "fibonacci"})
+    levels.append({"price": ema50[-1], "name": "EMA 50", "fam": "average"})
+    levels.append({"price": profile["poc"], "name": "Volume POC", "fam": "volume"})
     for z in profile["hvn"]:
         mid = (z["low"] + z["high"]) / 2
-        if mid < ref and abs(mid - profile["poc"]) / ref > 0.01:
-            levels.append({"price": mid, "name": "High-volume node"})
-    for p in ssl_open[:2]:
-        levels.append({"price": p["price"], "name": f"Liquidity: equal lows ({p['touches']}x)"})
-    levels = [lv for lv in levels if lv["price"] > ref * 0.8]
+        if abs(mid - profile["poc"]) / ref > 0.01:
+            levels.append({"price": mid, "name": "High-volume node", "fam": "volume"})
+    for p in ssl_pre[:2]:
+        levels.append({"price": p["price"], "name": f"Liquidity: equal lows ({p['touches']}x)", "fam": "liquidity"})
+    levels = [lv for lv in levels if lo_lim <= lv["price"] <= hi_lim]
     zones = cluster_levels(levels)
+    for z in zones:
+        z["score"] = len({i["fam"] for i in z["items"]})
     zones.sort(key=lambda z: -z["high"])
-    # a buy zone needs confluence: at least 2 overlapping levels (a single line is too weak)
-    strong = [z for z in zones if z["score"] >= 2]
-    zone1 = strong[0] if strong else (zones[0] if zones else None)
-    rest = [z for z in zones if z is not zone1 and z["high"] < zone1["low"]] if zone1 else []
+    # a buy zone needs confluence: at least 2 different kinds of support (one line alone is too weak)
+    strong = [z for z in zones if z["score"] >= 2 and z["low"] <= ref * 1.005]
+    zone1 = strong[0] if strong else None
+    rest = [z for z in zones if zone1 and z is not zone1 and z["high"] < zone1["low"]]
     zone2 = max(rest, key=lambda z: (z["score"], z["high"])) if rest else None
 
-    # --- target: first obstacle above (old high, swing high or open BSL)
-    above = [t["price"] for t in tops if t["price"] > ref]
-    if fib and fib["high"] > ref:
+    # --- target: first obstacle above (old high, swing high, recent unconfirmed high or open BSL)
+    above = [t["price"] for t in tops if t["price"] > ref * 1.005]
+    if fib and fib["high"] > ref * 1.005:
         above.append(fib["high"])
+    recent_high = max(c["h"] for c in closed[-pivot_len:])
+    if recent_high > ref * 1.005:
+        above.append(recent_high)
     if bsl_open:
         above.append(bsl_open[0]["price"])
     target = min(above) if above else None
@@ -584,13 +641,13 @@ def analyse(symbol, candles, pivot_len=7, risk_eur=10, capital=500, last_closed=
     in_zone = bool(zone1 and (
         zone1["low"] * 0.99 <= ref <= zone1["high"] * 1.01
         or (last["l"] <= zone1["high"] * 1.005 and zone1["high"] < ref <= zone1["high"] * 1.02)))
-    dist_zone = (ref - zone1["high"]) / ref * 100 if zone1 else None
+    dist_zone = max(0.0, (ref - zone1["high"]) / ref * 100) if zone1 else None
 
-    # --- 3/4. RSI and trigger candle
+    # --- 3/4. RSI and trigger candle (only these patterns count)
     r_now, r_prev = rsi14[-1], rsi14[-6]
     rsi_ok = r_now < 70
     pattern, bias = candle_pattern(last, closed[-2])
-    trigger = bias == "bullish" or sweep is not None
+    trigger = pattern in ("Green hammer", "Red hammer", "Bullish engulfing") or sweep is not None
     trigger_text = pattern + (f" + liquidity sweep at {fmt(sweep['price'])}" if sweep else "")
 
     # --- volume
@@ -623,7 +680,8 @@ def analyse(symbol, candles, pivot_len=7, risk_eur=10, capital=500, last_closed=
                 "position": position, "capped": position < full,
                 "loss_eur": position * stop_pct, "win_eur": position * (tgt - entry) / entry}
 
-    plan_close = plan(ref, stop_for(zone1), target) if zone1 else None
+    # buying at the close: the stop must also sit below the trigger candle's low
+    plan_close = plan(ref, min(stop_for(zone1), last["l"] * 0.995), target) if zone1 else None
     plan_z1 = plan(zone1["high"], stop_for(zone1), target) if zone1 else None
     plan_z2 = plan(zone2["high"], stop_for(zone2), target) if zone2 else None
     rr_ok = bool(plan_close and plan_close["rr"] >= 2)
@@ -716,8 +774,8 @@ def analyse(symbol, candles, pivot_len=7, risk_eur=10, capital=500, last_closed=
             plan_text = (f"Don't chase. Wait for a pullback into the buy zone {fmt(zone1['low'])}–{fmt(zone1['high'])}, "
                          f"{dist_zone:.1f}% below the last close.")
         else:
-            reason = "Uptrend, no buy zone below price yet"
-            plan_text = "Don't chase. Wait for a pullback that forms a new higher low."
+            reason = "Uptrend, but no confluent buy zone below price yet"
+            plan_text = "Don't chase. Wait for a pullback that forms a new higher low and a zone where several supports overlap."
 
     # --- signal strength 0-100
     pts = (20 if daily == "up" else 0) + (5 if score >= 4 else 0)
@@ -737,7 +795,7 @@ def analyse(symbol, candles, pivot_len=7, risk_eur=10, capital=500, last_closed=
                           "text": "Wait for a daily close with a hammer, bullish engulfing or liquidity sweep in the zone.", "plan": plan_z1})
     if zone2:
         scenarios.append({"key": "B", "title": f"Deeper pullback to buy zone 2 ({fmt(zone2['low'])} – {fmt(zone2['high'])})",
-                          "text": f"Stronger zone ({zone2['score']} levels overlap). Same trigger required.", "plan": plan_z2})
+                          "text": f"Stronger zone ({zone2['score']} kinds of support overlap). Same trigger required.", "plan": plan_z2})
     if target:
         what = "untapped equal highs" if bsl_open and target == bsl_open[0]["price"] else "resistance"
         scenarios.append({"key": "C", "title": f"Daily close above {fmt(target)} ({what})",
