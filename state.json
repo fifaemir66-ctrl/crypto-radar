@@ -13,7 +13,7 @@
       "since": "2026-01-04",
       "lt_trend": "down",
       "day": "2026-10-11",
-      "trend": "sideways"
+      "trend": "down"
     },
     "SOLUSDT": {
       "signal": "avoid",
@@ -83,7 +83,7 @@
       "since": "2026-06-07",
       "lt_trend": "up",
       "day": "2026-10-11",
-      "trend": "sideways"
+      "trend": "up"
     },
     "SUIUSDT": {
       "signal": "avoid",
