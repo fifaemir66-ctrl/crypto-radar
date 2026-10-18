@@ -104,7 +104,7 @@
       "since": "2026-04-05",
       "lt_trend": "down",
       "day": "2026-10-11",
-      "trend": "up"
+      "trend": "down"
     },
     "SPY": {
       "signal": "ready",
