@@ -5,249 +5,322 @@
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-10-11",
+      "day": "2026-10-18",
       "trend": "sideways"
     },
     "ETHUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-10-11",
+      "day": "2026-10-18",
       "trend": "down"
     },
     "SOLUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-10-11",
+      "day": "2026-10-18",
       "trend": "up"
     },
     "XRPUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-10-11",
+      "day": "2026-10-18",
       "trend": "down"
     },
     "BNBUSDT": {
       "signal": "avoid",
       "since": "2026-02-15",
       "lt_trend": "down",
-      "day": "2026-10-11",
+      "day": "2026-10-18",
       "trend": "up"
     },
     "DOGEUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-10-11",
+      "day": "2026-10-18",
       "trend": "down"
     },
     "ADAUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-10-11",
+      "day": "2026-10-18",
       "trend": "up"
     },
     "AVAXUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-10-11",
+      "day": "2026-10-18",
       "trend": "up"
     },
     "LINKUSDT": {
       "signal": "watch",
       "since": "2026-10-04",
       "lt_trend": "up",
-      "day": "2026-10-11",
+      "day": "2026-10-18",
       "trend": "sideways"
     },
     "DOTUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-10-11",
+      "day": "2026-10-18",
       "trend": "up"
     },
     "LTCUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-10-11",
+      "day": "2026-10-18",
       "trend": "up"
     },
     "TRXUSDT": {
       "signal": "ready",
       "since": "2026-06-07",
       "lt_trend": "up",
-      "day": "2026-10-11",
+      "day": "2026-10-18",
       "trend": "up"
     },
     "SUIUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-10-11",
+      "day": "2026-10-18",
       "trend": "up"
     },
     "NEARUSDT": {
       "signal": "watch",
       "since": "2026-09-13",
       "lt_trend": "up",
-      "day": "2026-10-11",
+      "day": "2026-10-18",
       "trend": "up"
     },
     "BCHUSDT": {
       "signal": "avoid",
       "since": "2026-04-05",
       "lt_trend": "down",
-      "day": "2026-10-11",
+      "day": "2026-10-18",
       "trend": "down"
     },
     "SPY": {
       "signal": "ready",
       "since": "2026-08-28",
       "lt_trend": "up",
-      "day": "2026-10-09",
+      "day": "2026-10-16",
       "trend": "up"
     },
     "QQQ": {
-      "signal": "watch",
-      "since": "2026-09-25",
+      "signal": "ready",
+      "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-10-09",
+      "day": "2026-10-16",
       "trend": "sideways"
     },
     "AAPL": {
       "signal": "watch",
       "since": "2026-08-28",
       "lt_trend": "up",
-      "day": "2026-10-09",
+      "day": "2026-10-16",
       "trend": "up"
     },
     "MSFT": {
       "signal": "watch",
       "since": "2026-08-28",
       "lt_trend": "up",
-      "day": "2026-10-09",
+      "day": "2026-10-16",
       "trend": "up"
     },
     "NVDA": {
-      "signal": "watch",
-      "since": "2026-08-07",
+      "signal": "ready",
+      "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-10-09",
+      "day": "2026-10-16",
       "trend": "up"
     },
     "AMZN": {
       "signal": "ready",
       "since": "2026-09-04",
       "lt_trend": "up",
-      "day": "2026-10-09",
+      "day": "2026-10-16",
       "trend": "up"
     },
     "GOOGL": {
-      "signal": "buy",
-      "since": "2026-10-09",
+      "signal": "ready",
+      "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-10-09",
+      "day": "2026-10-16",
       "trend": "up"
     },
     "META": {
       "signal": "watch",
       "since": "2026-09-25",
       "lt_trend": "up",
-      "day": "2026-10-09",
+      "day": "2026-10-16",
       "trend": "up"
     },
     "TSLA": {
       "signal": "avoid",
       "since": "2026-07-02",
       "lt_trend": "down",
-      "day": "2026-10-09",
+      "day": "2026-10-16",
       "trend": "up"
     },
     "AMD": {
       "signal": "watch",
       "since": "2026-09-04",
       "lt_trend": "up",
-      "day": "2026-10-09",
+      "day": "2026-10-16",
       "trend": "up"
     },
     "NFLX": {
       "signal": "avoid",
       "since": "2026-01-02",
       "lt_trend": "down",
-      "day": "2026-10-09",
+      "day": "2026-10-16",
       "trend": "sideways"
     },
     "LLY": {
-      "signal": "ready",
-      "since": "2026-08-28",
+      "signal": "watch",
+      "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-10-09",
+      "day": "2026-10-16",
       "trend": "up"
     },
     "ASML": {
-      "signal": "watch",
-      "since": "2026-10-02",
+      "signal": "ready",
+      "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-10-09",
+      "day": "2026-10-16",
       "trend": "up"
     },
     "PLTR": {
       "signal": "watch",
       "since": "2026-08-21",
       "lt_trend": "up",
-      "day": "2026-10-09",
+      "day": "2026-10-16",
       "trend": "up"
     },
     "ADYEN.AS": {
       "signal": "avoid",
       "since": "2026-01-02",
       "lt_trend": "down",
-      "day": "2026-10-09",
+      "day": "2026-10-16",
       "trend": "up"
     },
     "MU": {
-      "signal": "watch",
-      "since": "2026-04-02",
+      "signal": "ready",
+      "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-10-09",
+      "day": "2026-10-16",
       "trend": "up"
     },
     "MPWR": {
-      "signal": "ready",
-      "since": "2026-10-09",
+      "signal": "watch",
+      "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-10-09",
+      "day": "2026-10-16",
       "trend": "sideways"
     },
     "AVGO": {
       "signal": "avoid",
       "since": "2026-10-02",
       "lt_trend": "down",
-      "day": "2026-10-09",
+      "day": "2026-10-16",
       "trend": "sideways"
     },
     "TSM": {
-      "signal": "watch",
-      "since": "2026-09-04",
+      "signal": "ready",
+      "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-10-09",
+      "day": "2026-10-16",
       "trend": "up"
     },
     "VWRL.AS": {
-      "signal": "watch",
-      "since": "2026-10-09",
+      "signal": "ready",
+      "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-10-09",
+      "day": "2026-10-16",
       "trend": "up"
     }
   },
-  "changes": [],
+  "changes": [
+    {
+      "symbol": "QQQ",
+      "name": "Nasdaq 100 ETF (EU: CNDX/EQQQ)",
+      "market": "stocks",
+      "day": "2026-10-16",
+      "from": "watch",
+      "to": "ready"
+    },
+    {
+      "symbol": "NVDA",
+      "name": "Nvidia",
+      "market": "stocks",
+      "day": "2026-10-16",
+      "from": "watch",
+      "to": "ready"
+    },
+    {
+      "symbol": "GOOGL",
+      "name": "Alphabet",
+      "market": "stocks",
+      "day": "2026-10-16",
+      "from": "buy",
+      "to": "ready"
+    },
+    {
+      "symbol": "LLY",
+      "name": "Eli Lilly",
+      "market": "stocks",
+      "day": "2026-10-16",
+      "from": "ready",
+      "to": "watch"
+    },
+    {
+      "symbol": "ASML",
+      "name": "ASML",
+      "market": "stocks",
+      "day": "2026-10-16",
+      "from": "watch",
+      "to": "ready"
+    },
+    {
+      "symbol": "MU",
+      "name": "Micron",
+      "market": "stocks",
+      "day": "2026-10-16",
+      "from": "watch",
+      "to": "ready"
+    },
+    {
+      "symbol": "MPWR",
+      "name": "Monolithic Power",
+      "market": "stocks",
+      "day": "2026-10-16",
+      "from": "ready",
+      "to": "watch"
+    },
+    {
+      "symbol": "TSM",
+      "name": "TSMC",
+      "market": "stocks",
+      "day": "2026-10-16",
+      "from": "watch",
+      "to": "ready"
+    },
+    {
+      "symbol": "VWRL.AS",
+      "name": "FTSE All-World ETF",
+      "market": "stocks",
+      "day": "2026-10-16",
+      "from": "watch",
+      "to": "ready"
+    }
+  ],
   "history": [
     {
       "time": "2026-10-16T01:33:15+00:00",
