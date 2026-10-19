@@ -247,81 +247,16 @@
       "trend": "up"
     }
   },
-  "changes": [
-    {
-      "symbol": "QQQ",
-      "name": "Nasdaq 100 ETF (EU: CNDX/EQQQ)",
-      "market": "stocks",
-      "day": "2026-10-16",
-      "from": "watch",
-      "to": "ready"
-    },
-    {
-      "symbol": "NVDA",
-      "name": "Nvidia",
-      "market": "stocks",
-      "day": "2026-10-16",
-      "from": "watch",
-      "to": "ready"
-    },
-    {
-      "symbol": "GOOGL",
-      "name": "Alphabet",
-      "market": "stocks",
-      "day": "2026-10-16",
-      "from": "buy",
-      "to": "ready"
-    },
-    {
-      "symbol": "LLY",
-      "name": "Eli Lilly",
-      "market": "stocks",
-      "day": "2026-10-16",
-      "from": "ready",
-      "to": "watch"
-    },
-    {
-      "symbol": "ASML",
-      "name": "ASML",
-      "market": "stocks",
-      "day": "2026-10-16",
-      "from": "watch",
-      "to": "ready"
-    },
-    {
-      "symbol": "MU",
-      "name": "Micron",
-      "market": "stocks",
-      "day": "2026-10-16",
-      "from": "watch",
-      "to": "ready"
-    },
-    {
-      "symbol": "MPWR",
-      "name": "Monolithic Power",
-      "market": "stocks",
-      "day": "2026-10-16",
-      "from": "ready",
-      "to": "watch"
-    },
-    {
-      "symbol": "TSM",
-      "name": "TSMC",
-      "market": "stocks",
-      "day": "2026-10-16",
-      "from": "watch",
-      "to": "ready"
-    },
-    {
-      "symbol": "VWRL.AS",
-      "name": "FTSE All-World ETF",
-      "market": "stocks",
-      "day": "2026-10-16",
-      "from": "watch",
-      "to": "ready"
-    }
-  ],
+  "changes": [],
   "history": [
+    {
+      "time": "2026-10-19T06:46:12+00:00",
+      "symbol": null,
+      "market": "all",
+      "kind": "digest",
+      "title": "📊 ZoneHunter update · Mon 19 Oct",
+      "message": "Crypto: 0 up week · 1 value zone · 2 uptrend · 12 no uptrend\nStocks: 0 up week · 9 value zone · 7 uptrend · 4 no uptrend\n\nChanged since the last update:\n🟡 Nasdaq 100 ETF (EU: CNDX/EQQQ): uptrend → in value zone\n🟡 Nvidia: uptrend → in value zone\n🟡 Alphabet: pullback + up week → in value zone\n🔵 Eli Lilly: in value zone → uptrend\n🟡 ASML: uptrend → in value zone\n🟡 Micron: uptrend → in value zone\n🔵 Monolithic Power: in value zone → uptrend\n🟡 TSMC: uptrend → in value zone\n+1 more on the site\n\nPullbacks now:\n🟡 Amazon 250.00 · in value zone\n🟡 ASML 1,641.5 · in value zone\n🟡 TSMC 412.61 · in value zone\n🟡 S&P 500 ETF (EU: CSPX/VUSA) 763.25 · in value zone\n🟡 Nasdaq 100 ETF (EU: CNDX/EQQQ) 709.80 · in value zone\n🟡 Nvidia 214.13 · in value zone\n🟡 Alphabet 340.59 · in value zone\n🟡 Micron 878.84 · in value zone\n+2 more on the site\n\nYour monthly plan continues regardless of these signals. Educational, not advice."
+    },
     {
       "time": "2026-10-16T01:33:15+00:00",
       "symbol": null,
@@ -793,16 +728,8 @@
       "kind": "digest",
       "title": "📊 Daily digest: Stocks",
       "message": "0 buy · 6 get ready · 4 watch · 4 avoid\n🟡 Nasdaq 100 ETF 747.58 · GET READY\n🟡 Microsoft 522.61 · GET READY\n🟡 Alphabet 348.29 · GET READY\n🟡 Meta 720.89 · GET READY\n🟡 Tesla 375.00 · GET READY\n🟡 Eli Lilly 1,170 · GET READY"
-    },
-    {
-      "time": "2026-10-09T01:23:54+00:00",
-      "symbol": "TSLA",
-      "market": "stocks",
-      "kind": "ready",
-      "title": "🟡 GET READY: Tesla (TSLA) is in its buy zone",
-      "message": "In the buy zone, waiting for a 2x risk/reward.\nPrice is in the buy zone 364.26–369.07. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 369.07, stop 358.80, target 384.04."
     }
   ],
   "pending_buys": [],
-  "last_digest": "2026-10-16"
+  "last_digest": "2026-10-19"
 }
