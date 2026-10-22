@@ -250,6 +250,14 @@
   "changes": [],
   "history": [
     {
+      "time": "2026-10-22T06:42:09+00:00",
+      "symbol": null,
+      "market": "all",
+      "kind": "digest",
+      "title": "📊 ZoneHunter update · Thu 22 Oct",
+      "message": "Crypto: 0 up week · 1 value zone · 2 uptrend · 12 no uptrend\nStocks: 0 up week · 9 value zone · 7 uptrend · 4 no uptrend\n\nNo signal changes since the last update.\n\nPullbacks now:\n🟡 Amazon 262.37 · in value zone\n🟡 ASML 1,676.7 · in value zone\n🟡 TSMC 431.89 · in value zone\n🟡 S&P 500 ETF (EU: CSPX/VUSA) 773.09 · in value zone\n🟡 Nasdaq 100 ETF (EU: CNDX/EQQQ) 725.20 · in value zone\n🟡 Nvidia 221.97 · in value zone\n🟡 Alphabet 334.76 · in value zone\n🟡 Micron 913.67 · in value zone\n+2 more on the site\n\nYour monthly plan continues regardless of these signals. Educational, not advice."
+    },
+    {
       "time": "2026-10-19T06:46:12+00:00",
       "symbol": null,
       "market": "all",
@@ -720,16 +728,8 @@
       "kind": "ready",
       "title": "🟡 GET READY: Nvidia (NVDA) is in its buy zone",
       "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 225.31–227.92. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 227.92, stop 221.93, target 232.28."
-    },
-    {
-      "time": "2026-10-09T01:23:54+00:00",
-      "symbol": null,
-      "market": "stocks",
-      "kind": "digest",
-      "title": "📊 Daily digest: Stocks",
-      "message": "0 buy · 6 get ready · 4 watch · 4 avoid\n🟡 Nasdaq 100 ETF 747.58 · GET READY\n🟡 Microsoft 522.61 · GET READY\n🟡 Alphabet 348.29 · GET READY\n🟡 Meta 720.89 · GET READY\n🟡 Tesla 375.00 · GET READY\n🟡 Eli Lilly 1,170 · GET READY"
     }
   ],
   "pending_buys": [],
-  "last_digest": "2026-10-19"
+  "last_digest": "2026-10-22"
 }
