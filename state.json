@@ -6,7 +6,7 @@
       "since": "2026-01-04",
       "lt_trend": "down",
       "day": "2026-10-18",
-      "trend": "sideways"
+      "trend": "up"
     },
     "ETHUSDT": {
       "signal": "avoid",
@@ -104,7 +104,7 @@
       "since": "2026-04-05",
       "lt_trend": "down",
       "day": "2026-10-18",
-      "trend": "down"
+      "trend": "up"
     },
     "SPY": {
       "signal": "ready",
