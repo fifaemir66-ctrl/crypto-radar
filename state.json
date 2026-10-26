@@ -247,41 +247,16 @@
       "trend": "up"
     }
   },
-  "changes": [
-    {
-      "symbol": "LINKUSDT",
-      "name": "Chainlink",
-      "market": "crypto",
-      "day": "2026-10-25",
-      "from": "watch",
-      "to": "ready"
-    },
-    {
-      "symbol": "GOOGL",
-      "name": "Alphabet",
-      "market": "stocks",
-      "day": "2026-10-23",
-      "from": "ready",
-      "to": "watch"
-    },
-    {
-      "symbol": "META",
-      "name": "Meta",
-      "market": "stocks",
-      "day": "2026-10-23",
-      "from": "watch",
-      "to": "ready"
-    },
-    {
-      "symbol": "AMD",
-      "name": "AMD",
-      "market": "stocks",
-      "day": "2026-10-23",
-      "from": "watch",
-      "to": "ready"
-    }
-  ],
+  "changes": [],
   "history": [
+    {
+      "time": "2026-10-26T06:45:39+00:00",
+      "symbol": null,
+      "market": "all",
+      "kind": "digest",
+      "title": "📊 ZoneHunter update · Mon 26 Oct",
+      "message": "Crypto: 0 up week · 2 value zone · 1 uptrend · 12 no uptrend\nStocks: 0 up week · 10 value zone · 6 uptrend · 4 no uptrend\n\nChanged since the last update:\n🟡 Chainlink: uptrend → in value zone\n🔵 Alphabet: in value zone → uptrend\n🟡 Meta: uptrend → in value zone\n🟡 AMD: uptrend → in value zone\n\nPullbacks now:\n🟡 Nvidia 210.96 · in value zone\n🟡 Amazon 248.00 · in value zone\n🟡 TSMC 418.51 · in value zone\n🟡 S&P 500 ETF (EU: CSPX/VUSA) 759.97 · in value zone\n🟡 Nasdaq 100 ETF (EU: CNDX/EQQQ) 704.40 · in value zone\n🟡 AMD 516.79 · in value zone\n🟡 ASML 1,571.8 · in value zone\n🟡 Micron 877.55 · in value zone\n+4 more on the site\n\nYour monthly plan continues regardless of these signals. Educational, not advice."
+    },
     {
       "time": "2026-10-22T06:42:09+00:00",
       "symbol": null,
@@ -753,16 +728,8 @@
       "kind": "digest",
       "title": "📊 Daily digest: Stocks",
       "message": "0 buy · 4 get ready · 6 watch · 4 avoid\n🟡 Nasdaq 100 ETF 751.27 · GET READY\n🟡 Nvidia 229.28 · GET READY\n🟡 Alphabet 351.66 · GET READY\n🟡 Eli Lilly 1,179 · GET READY"
-    },
-    {
-      "time": "2026-10-09T20:21:31+00:00",
-      "symbol": "NVDA",
-      "market": "stocks",
-      "kind": "ready",
-      "title": "🟡 GET READY: Nvidia (NVDA) is in its buy zone",
-      "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 225.31–227.92. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 227.92, stop 221.93, target 232.28."
     }
   ],
   "pending_buys": [],
-  "last_digest": "2026-10-22"
+  "last_digest": "2026-10-26"
 }
