@@ -160,7 +160,7 @@
       "since": "2026-10-23",
       "lt_trend": "up",
       "day": "2026-10-23",
-      "trend": "up"
+      "trend": "down"
     },
     "TSLA": {
       "signal": "avoid",
