@@ -20,7 +20,7 @@
       "since": "2026-01-04",
       "lt_trend": "down",
       "day": "2026-10-25",
-      "trend": "up"
+      "trend": "down"
     },
     "XRPUSDT": {
       "signal": "avoid",
