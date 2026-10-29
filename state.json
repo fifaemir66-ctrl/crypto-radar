@@ -250,6 +250,14 @@
   "changes": [],
   "history": [
     {
+      "time": "2026-10-29T06:53:49+00:00",
+      "symbol": null,
+      "market": "all",
+      "kind": "digest",
+      "title": "📊 ZoneHunter update · Thu 29 Oct",
+      "message": "Crypto: 0 up week · 2 value zone · 1 uptrend · 12 no uptrend\nStocks: 0 up week · 10 value zone · 6 uptrend · 4 no uptrend\n\nNo signal changes since the last update.\n\nPullbacks now:\n🟡 Nvidia 215.38 · in value zone\n🟡 Amazon 254.60 · in value zone\n🟡 TSMC 439.51 · in value zone\n🟡 S&P 500 ETF (EU: CSPX/VUSA) 772.31 · in value zone\n🟡 Nasdaq 100 ETF (EU: CNDX/EQQQ) 725.61 · in value zone\n🟡 AMD 578.44 · in value zone\n🟡 ASML 1,662.8 · in value zone\n🟡 Micron 983.23 · in value zone\n+4 more on the site\n\nYour monthly plan continues regardless of these signals. Educational, not advice."
+    },
+    {
       "time": "2026-10-26T06:45:39+00:00",
       "symbol": null,
       "market": "all",
@@ -720,16 +728,8 @@
       "kind": "avoid",
       "title": "🔴 AVOID: Bitcoin lost its uptrend",
       "message": "No clear trend: the strategy only buys in uptrends.\nStay out. Re-check when price makes a higher low and closes above the EMA 50 (79,775)."
-    },
-    {
-      "time": "2026-10-09T20:21:31+00:00",
-      "symbol": null,
-      "market": "stocks",
-      "kind": "digest",
-      "title": "📊 Daily digest: Stocks",
-      "message": "0 buy · 4 get ready · 6 watch · 4 avoid\n🟡 Nasdaq 100 ETF 751.27 · GET READY\n🟡 Nvidia 229.28 · GET READY\n🟡 Alphabet 351.66 · GET READY\n🟡 Eli Lilly 1,179 · GET READY"
     }
   ],
   "pending_buys": [],
-  "last_digest": "2026-10-26"
+  "last_digest": "2026-10-29"
 }
