@@ -5,249 +5,266 @@
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-10-25",
+      "day": "2026-11-01",
       "trend": "down"
     },
     "ETHUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-10-25",
+      "day": "2026-11-01",
       "trend": "down"
     },
     "SOLUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-10-25",
+      "day": "2026-11-01",
       "trend": "down"
     },
     "XRPUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-10-25",
+      "day": "2026-11-01",
       "trend": "down"
     },
     "BNBUSDT": {
       "signal": "avoid",
       "since": "2026-02-15",
       "lt_trend": "down",
-      "day": "2026-10-25",
+      "day": "2026-11-01",
       "trend": "down"
     },
     "DOGEUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-10-25",
+      "day": "2026-11-01",
       "trend": "down"
     },
     "ADAUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-10-25",
+      "day": "2026-11-01",
       "trend": "up"
     },
     "AVAXUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-10-25",
+      "day": "2026-11-01",
       "trend": "up"
     },
     "LINKUSDT": {
       "signal": "ready",
       "since": "2026-10-25",
       "lt_trend": "up",
-      "day": "2026-10-25",
+      "day": "2026-11-01",
       "trend": "down"
     },
     "DOTUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-10-25",
+      "day": "2026-11-01",
       "trend": "down"
     },
     "LTCUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-10-25",
+      "day": "2026-11-01",
       "trend": "up"
     },
     "TRXUSDT": {
-      "signal": "ready",
-      "since": "2026-06-07",
+      "signal": "watch",
+      "since": "2026-11-01",
       "lt_trend": "up",
-      "day": "2026-10-25",
+      "day": "2026-11-01",
       "trend": "down"
     },
     "SUIUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-10-25",
+      "day": "2026-11-01",
       "trend": "down"
     },
     "NEARUSDT": {
       "signal": "watch",
       "since": "2026-09-13",
       "lt_trend": "up",
-      "day": "2026-10-25",
+      "day": "2026-11-01",
       "trend": "up"
     },
     "BCHUSDT": {
       "signal": "avoid",
       "since": "2026-04-05",
       "lt_trend": "down",
-      "day": "2026-10-25",
+      "day": "2026-11-01",
       "trend": "up"
     },
     "SPY": {
       "signal": "ready",
       "since": "2026-08-28",
       "lt_trend": "up",
-      "day": "2026-10-23",
+      "day": "2026-10-30",
       "trend": "up"
     },
     "QQQ": {
       "signal": "ready",
       "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-10-23",
+      "day": "2026-10-30",
       "trend": "down"
     },
     "AAPL": {
       "signal": "watch",
       "since": "2026-08-28",
       "lt_trend": "up",
-      "day": "2026-10-23",
+      "day": "2026-10-30",
       "trend": "up"
     },
     "MSFT": {
       "signal": "watch",
       "since": "2026-08-28",
       "lt_trend": "up",
-      "day": "2026-10-23",
+      "day": "2026-10-30",
       "trend": "up"
     },
     "NVDA": {
       "signal": "ready",
       "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-10-23",
+      "day": "2026-10-30",
       "trend": "up"
     },
     "AMZN": {
       "signal": "ready",
       "since": "2026-09-04",
       "lt_trend": "up",
-      "day": "2026-10-23",
+      "day": "2026-10-30",
       "trend": "up"
     },
     "GOOGL": {
-      "signal": "watch",
-      "since": "2026-10-23",
-      "lt_trend": "up",
-      "day": "2026-10-23",
+      "signal": "avoid",
+      "since": "2026-10-30",
+      "lt_trend": "down",
+      "day": "2026-10-30",
       "trend": "down"
     },
     "META": {
       "signal": "ready",
       "since": "2026-10-23",
       "lt_trend": "up",
-      "day": "2026-10-23",
+      "day": "2026-10-30",
       "trend": "down"
     },
     "TSLA": {
       "signal": "avoid",
       "since": "2026-07-02",
       "lt_trend": "down",
-      "day": "2026-10-23",
+      "day": "2026-10-30",
       "trend": "up"
     },
     "AMD": {
       "signal": "ready",
       "since": "2026-10-23",
       "lt_trend": "up",
-      "day": "2026-10-23",
+      "day": "2026-10-30",
       "trend": "down"
     },
     "NFLX": {
       "signal": "avoid",
       "since": "2026-01-02",
       "lt_trend": "down",
-      "day": "2026-10-23",
+      "day": "2026-10-30",
       "trend": "down"
     },
     "LLY": {
       "signal": "watch",
       "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-10-23",
+      "day": "2026-10-30",
       "trend": "up"
     },
     "ASML": {
       "signal": "ready",
       "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-10-23",
+      "day": "2026-10-30",
       "trend": "up"
     },
     "PLTR": {
       "signal": "watch",
       "since": "2026-08-21",
       "lt_trend": "up",
-      "day": "2026-10-23",
+      "day": "2026-10-30",
       "trend": "up"
     },
     "ADYEN.AS": {
       "signal": "avoid",
       "since": "2026-01-02",
       "lt_trend": "down",
-      "day": "2026-10-23",
+      "day": "2026-10-30",
       "trend": "up"
     },
     "MU": {
       "signal": "ready",
       "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-10-23",
+      "day": "2026-10-30",
       "trend": "up"
     },
     "MPWR": {
       "signal": "watch",
       "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-10-23",
+      "day": "2026-10-30",
       "trend": "down"
     },
     "AVGO": {
       "signal": "avoid",
       "since": "2026-10-02",
       "lt_trend": "down",
-      "day": "2026-10-23",
+      "day": "2026-10-30",
       "trend": "sideways"
     },
     "TSM": {
       "signal": "ready",
       "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-10-23",
+      "day": "2026-10-30",
       "trend": "down"
     },
     "VWRL.AS": {
       "signal": "ready",
       "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-10-23",
+      "day": "2026-10-30",
       "trend": "up"
     }
   },
-  "changes": [],
+  "changes": [
+    {
+      "symbol": "TRXUSDT",
+      "name": "TRON",
+      "market": "crypto",
+      "day": "2026-11-01",
+      "from": "ready",
+      "to": "watch"
+    },
+    {
+      "symbol": "GOOGL",
+      "name": "Alphabet",
+      "market": "stocks",
+      "day": "2026-10-30",
+      "from": "watch",
+      "to": "avoid"
+    }
+  ],
   "history": [
     {
       "time": "2026-10-29T06:53:49+00:00",
