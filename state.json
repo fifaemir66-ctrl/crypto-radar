@@ -247,25 +247,16 @@
       "trend": "up"
     }
   },
-  "changes": [
-    {
-      "symbol": "TRXUSDT",
-      "name": "TRON",
-      "market": "crypto",
-      "day": "2026-11-01",
-      "from": "ready",
-      "to": "watch"
-    },
-    {
-      "symbol": "GOOGL",
-      "name": "Alphabet",
-      "market": "stocks",
-      "day": "2026-10-30",
-      "from": "watch",
-      "to": "avoid"
-    }
-  ],
+  "changes": [],
   "history": [
+    {
+      "time": "2026-11-02T10:53:56+00:00",
+      "symbol": null,
+      "market": "all",
+      "kind": "digest",
+      "title": "📊 ZoneHunter update · Mon 02 Nov",
+      "message": "Crypto: 0 up week · 1 value zone · 2 uptrend · 12 no uptrend\nStocks: 0 up week · 10 value zone · 5 uptrend · 5 no uptrend\n\nChanged since the last update:\n🔵 TRON: in value zone → uptrend\n🔴 Alphabet: uptrend → no uptrend\n\nPullbacks now:\n🟡 TSMC 406.13 · in value zone\n🟡 Nasdaq 100 ETF (EU: CNDX/EQQQ) 690.49 · in value zone\n🟡 Nvidia 204.64 · in value zone\n🟡 S&P 500 ETF (EU: CSPX/VUSA) 755.72 · in value zone\n🟡 AMD 504.80 · in value zone\n🟡 ASML 1,565.9 · in value zone\n🟡 Micron 884.74 · in value zone\n🟡 FTSE All-World ETF 163.12 · in value zone\n+3 more on the site\n\nYour monthly plan continues regardless of these signals. Educational, not advice."
+    },
     {
       "time": "2026-10-29T06:53:49+00:00",
       "symbol": null,
@@ -737,16 +728,8 @@
       "kind": "avoid",
       "title": "🔴 AVOID: Ethereum lost its uptrend",
       "message": "No clear trend: the strategy only buys in uptrends.\nStay out. Re-check when price makes a higher low and closes above the EMA 50 (2,502)."
-    },
-    {
-      "time": "2026-10-10T00:33:21+00:00",
-      "symbol": "BTCUSDT",
-      "market": "crypto",
-      "kind": "avoid",
-      "title": "🔴 AVOID: Bitcoin lost its uptrend",
-      "message": "No clear trend: the strategy only buys in uptrends.\nStay out. Re-check when price makes a higher low and closes above the EMA 50 (79,775)."
     }
   ],
   "pending_buys": [],
-  "last_digest": "2026-10-29"
+  "last_digest": "2026-11-02"
 }
