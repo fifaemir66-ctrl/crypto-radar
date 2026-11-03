@@ -209,7 +209,7 @@
       "since": "2026-01-02",
       "lt_trend": "down",
       "day": "2026-10-30",
-      "trend": "up"
+      "trend": "down"
     },
     "MU": {
       "signal": "ready",
