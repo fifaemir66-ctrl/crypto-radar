@@ -97,7 +97,7 @@
       "since": "2026-09-13",
       "lt_trend": "up",
       "day": "2026-11-01",
-      "trend": "up"
+      "trend": "down"
     },
     "BCHUSDT": {
       "signal": "avoid",
