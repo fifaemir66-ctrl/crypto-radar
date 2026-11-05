@@ -250,6 +250,14 @@
   "changes": [],
   "history": [
     {
+      "time": "2026-11-05T10:44:21+00:00",
+      "symbol": null,
+      "market": "all",
+      "kind": "digest",
+      "title": "📊 ZoneHunter update · Thu 05 Nov",
+      "message": "Crypto: 0 up week · 1 value zone · 2 uptrend · 12 no uptrend\nStocks: 0 up week · 10 value zone · 5 uptrend · 5 no uptrend\n\nNo signal changes since the last update.\n\nPullbacks now:\n🟡 TSMC 395.75 · in value zone\n🟡 Nasdaq 100 ETF (EU: CNDX/EQQQ) 691.95 · in value zone\n🟡 Nvidia 200.13 · in value zone\n🟡 S&P 500 ETF (EU: CSPX/VUSA) 766.81 · in value zone\n🟡 AMD 488.78 · in value zone\n🟡 ASML 1,496.3 · in value zone\n🟡 Micron 795.23 · in value zone\n🟡 FTSE All-World ETF 164.22 · in value zone\n+3 more on the site\n\nYour monthly plan continues regardless of these signals. Educational, not advice."
+    },
+    {
       "time": "2026-11-02T10:53:56+00:00",
       "symbol": null,
       "market": "all",
@@ -720,16 +728,8 @@
       "kind": "ready",
       "title": "🟡 GET READY: Sui is in its buy zone",
       "message": "In the buy zone, waiting for a 2x risk/reward.\nPrice is in the buy zone 1.04–1.06. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 1.06, stop 1.03, target 1.08."
-    },
-    {
-      "time": "2026-10-10T00:33:21+00:00",
-      "symbol": "ETHUSDT",
-      "market": "crypto",
-      "kind": "avoid",
-      "title": "🔴 AVOID: Ethereum lost its uptrend",
-      "message": "No clear trend: the strategy only buys in uptrends.\nStay out. Re-check when price makes a higher low and closes above the EMA 50 (2,502)."
     }
   ],
   "pending_buys": [],
-  "last_digest": "2026-11-02"
+  "last_digest": "2026-11-05"
 }
