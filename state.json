@@ -216,7 +216,7 @@
       "since": "2026-10-16",
       "lt_trend": "up",
       "day": "2026-10-30",
-      "trend": "up"
+      "trend": "down"
     },
     "MPWR": {
       "signal": "watch",
@@ -230,7 +230,7 @@
       "since": "2026-10-02",
       "lt_trend": "down",
       "day": "2026-10-30",
-      "trend": "sideways"
+      "trend": "down"
     },
     "TSM": {
       "signal": "ready",
@@ -244,7 +244,7 @@
       "since": "2026-10-16",
       "lt_trend": "up",
       "day": "2026-10-30",
-      "trend": "up"
+      "trend": "down"
     }
   },
   "changes": [],
