@@ -5,250 +5,268 @@
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-01",
+      "day": "2026-11-08",
       "trend": "down"
     },
     "ETHUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-01",
+      "day": "2026-11-08",
       "trend": "down"
     },
     "SOLUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-01",
+      "day": "2026-11-08",
       "trend": "down"
     },
     "XRPUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-01",
+      "day": "2026-11-08",
       "trend": "down"
     },
     "BNBUSDT": {
       "signal": "avoid",
       "since": "2026-02-15",
       "lt_trend": "down",
-      "day": "2026-11-01",
+      "day": "2026-11-08",
       "trend": "down"
     },
     "DOGEUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-01",
+      "day": "2026-11-08",
       "trend": "down"
     },
     "ADAUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-01",
+      "day": "2026-11-08",
       "trend": "up"
     },
     "AVAXUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-01",
+      "day": "2026-11-08",
       "trend": "up"
     },
     "LINKUSDT": {
       "signal": "ready",
       "since": "2026-10-25",
       "lt_trend": "up",
-      "day": "2026-11-01",
+      "day": "2026-11-08",
       "trend": "down"
     },
     "DOTUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-01",
+      "day": "2026-11-08",
       "trend": "down"
     },
     "LTCUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-01",
+      "day": "2026-11-08",
       "trend": "up"
     },
     "TRXUSDT": {
-      "signal": "watch",
-      "since": "2026-11-01",
+      "signal": "buy",
+      "since": "2026-11-08",
       "lt_trend": "up",
-      "day": "2026-11-01",
-      "trend": "down"
+      "day": "2026-11-08",
+      "trend": "down",
+      "buy_alert_day": "2026-11-08"
     },
     "SUIUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-01",
+      "day": "2026-11-08",
       "trend": "down"
     },
     "NEARUSDT": {
       "signal": "watch",
       "since": "2026-09-13",
       "lt_trend": "up",
-      "day": "2026-11-01",
+      "day": "2026-11-08",
       "trend": "down"
     },
     "BCHUSDT": {
       "signal": "avoid",
       "since": "2026-04-05",
       "lt_trend": "down",
-      "day": "2026-11-01",
+      "day": "2026-11-08",
       "trend": "down"
     },
     "SPY": {
       "signal": "ready",
       "since": "2026-08-28",
       "lt_trend": "up",
-      "day": "2026-10-30",
+      "day": "2026-11-06",
       "trend": "up"
     },
     "QQQ": {
-      "signal": "ready",
-      "since": "2026-10-16",
+      "signal": "watch",
+      "since": "2026-11-06",
       "lt_trend": "up",
-      "day": "2026-10-30",
+      "day": "2026-11-06",
       "trend": "down"
     },
     "AAPL": {
       "signal": "watch",
       "since": "2026-08-28",
       "lt_trend": "up",
-      "day": "2026-10-30",
+      "day": "2026-11-06",
       "trend": "up"
     },
     "MSFT": {
       "signal": "watch",
       "since": "2026-08-28",
       "lt_trend": "up",
-      "day": "2026-10-30",
+      "day": "2026-11-06",
       "trend": "up"
     },
     "NVDA": {
-      "signal": "ready",
-      "since": "2026-10-16",
+      "signal": "watch",
+      "since": "2026-11-06",
       "lt_trend": "up",
-      "day": "2026-10-30",
+      "day": "2026-11-06",
       "trend": "up"
     },
     "AMZN": {
-      "signal": "ready",
-      "since": "2026-09-04",
+      "signal": "buy",
+      "since": "2026-11-06",
       "lt_trend": "up",
-      "day": "2026-10-30",
-      "trend": "up"
+      "day": "2026-11-06",
+      "trend": "up",
+      "buy_alert_day": "2026-11-06"
     },
     "GOOGL": {
       "signal": "avoid",
       "since": "2026-10-30",
       "lt_trend": "down",
-      "day": "2026-10-30",
+      "day": "2026-11-06",
       "trend": "down"
     },
     "META": {
-      "signal": "ready",
-      "since": "2026-10-23",
-      "lt_trend": "up",
-      "day": "2026-10-30",
+      "signal": "avoid",
+      "since": "2026-11-06",
+      "lt_trend": "down",
+      "day": "2026-11-06",
       "trend": "down"
     },
     "TSLA": {
       "signal": "avoid",
       "since": "2026-07-02",
       "lt_trend": "down",
-      "day": "2026-10-30",
+      "day": "2026-11-06",
       "trend": "up"
     },
     "AMD": {
       "signal": "ready",
       "since": "2026-10-23",
       "lt_trend": "up",
-      "day": "2026-10-30",
+      "day": "2026-11-06",
       "trend": "down"
     },
     "NFLX": {
       "signal": "avoid",
       "since": "2026-01-02",
       "lt_trend": "down",
-      "day": "2026-10-30",
+      "day": "2026-11-06",
       "trend": "down"
     },
     "LLY": {
       "signal": "watch",
       "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-10-30",
+      "day": "2026-11-06",
       "trend": "up"
     },
     "ASML": {
-      "signal": "ready",
-      "since": "2026-10-16",
+      "signal": "watch",
+      "since": "2026-11-06",
       "lt_trend": "up",
-      "day": "2026-10-30",
+      "day": "2026-11-06",
       "trend": "up"
     },
     "PLTR": {
-      "signal": "watch",
-      "since": "2026-08-21",
+      "signal": "ready",
+      "since": "2026-11-06",
       "lt_trend": "up",
-      "day": "2026-10-30",
+      "day": "2026-11-06",
       "trend": "up"
     },
     "ADYEN.AS": {
       "signal": "avoid",
       "since": "2026-01-02",
       "lt_trend": "down",
-      "day": "2026-10-30",
+      "day": "2026-11-06",
       "trend": "down"
     },
     "MU": {
-      "signal": "ready",
-      "since": "2026-10-16",
+      "signal": "watch",
+      "since": "2026-11-06",
       "lt_trend": "up",
-      "day": "2026-10-30",
+      "day": "2026-11-06",
       "trend": "down"
     },
     "MPWR": {
       "signal": "watch",
       "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-10-30",
+      "day": "2026-11-06",
       "trend": "down"
     },
     "AVGO": {
       "signal": "avoid",
       "since": "2026-10-02",
       "lt_trend": "down",
-      "day": "2026-10-30",
+      "day": "2026-11-06",
       "trend": "down"
     },
     "TSM": {
-      "signal": "ready",
-      "since": "2026-10-16",
+      "signal": "watch",
+      "since": "2026-11-06",
       "lt_trend": "up",
-      "day": "2026-10-30",
+      "day": "2026-11-06",
       "trend": "down"
     },
     "VWRL.AS": {
       "signal": "ready",
       "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-10-30",
+      "day": "2026-11-06",
       "trend": "down"
     }
   },
   "changes": [],
   "history": [
+    {
+      "time": "2026-11-09T06:06:31+00:00",
+      "symbol": null,
+      "market": "all",
+      "kind": "digest",
+      "title": "📊 ZoneHunter update · Mon 09 Nov",
+      "message": "Crypto: 1 up week · 1 value zone · 1 uptrend · 12 no uptrend\nStocks: 1 up week · 4 value zone · 9 uptrend · 6 no uptrend\n\nChanged since the last update:\n🟢 TRON: uptrend → pullback + up week\n🔵 Nasdaq 100 ETF (EU: CNDX/EQQQ): in value zone → uptrend\n🔵 Nvidia: in value zone → uptrend\n🟢 Amazon: in value zone → pullback + up week\n🔴 Meta: in value zone → no uptrend\n🔵 ASML: in value zone → uptrend\n🟡 Palantir: uptrend → in value zone\n🔵 Micron: in value zone → uptrend\n+1 more on the site\n\nPullbacks now:\n🟢 Amazon 259.30 · pullback + up week\n🟢 Speculative · TRON 0.3194 · pullback + up week\n🟡 AMD 449.04 · in value zone\n🟡 S&P 500 ETF (EU: CSPX/VUSA) 735.29 · in value zone\n🟡 FTSE All-World ETF 160.22 · in value zone\n🟡 Palantir 160.38 · in value zone\n🟡 Speculative · Chainlink 10.411 · in value zone\n\nYour monthly plan continues regardless of these signals. Educational, not advice."
+    },
+    {
+      "time": "2026-11-09T06:06:31+00:00",
+      "symbol": null,
+      "market": "all",
+      "kind": "buy",
+      "title": "🟢 2 markets pulled back and closed a week higher",
+      "message": "🟢 Speculative · TRON 0.3194: Long-term uptrend, pulled back to the value zone and the week closed higher.\n🟢 Amazon 259.30: Long-term uptrend, pulled back to the value zone and the week closed higher.\n\nIf you already planned to own these, this is a calmer moment to add part of your monthly amount. Historically this did not beat buying on a fixed date. Check the chart yourself."
+    },
     {
       "time": "2026-11-05T10:44:21+00:00",
       "symbol": null,
@@ -712,24 +730,8 @@
       "kind": "ready",
       "title": "🟡 GET READY: Microsoft (MSFT) is in its buy zone",
       "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 517.78–519.30. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 519.30, stop 510.01, target 531.03."
-    },
-    {
-      "time": "2026-10-10T00:33:21+00:00",
-      "symbol": "NEARUSDT",
-      "market": "crypto",
-      "kind": "buy",
-      "title": "🟢 BUY SIGNAL: NEAR",
-      "message": "Uptrend, daily close in the buy zone with a trigger (strong green candle).\nBuy setup at the daily close. Entry ≈ 4.88, stop 4.76 (−2.5%), target 5.58 (+14.2%). Position €397 → max loss ≈ €10.\nStrength 100/100. Check the chart yourself."
-    },
-    {
-      "time": "2026-10-10T00:33:21+00:00",
-      "symbol": "SUIUSDT",
-      "market": "crypto",
-      "kind": "ready",
-      "title": "🟡 GET READY: Sui is in its buy zone",
-      "message": "In the buy zone, waiting for a 2x risk/reward.\nPrice is in the buy zone 1.04–1.06. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 1.06, stop 1.03, target 1.08."
     }
   ],
   "pending_buys": [],
-  "last_digest": "2026-11-05"
+  "last_digest": "2026-11-09"
 }
