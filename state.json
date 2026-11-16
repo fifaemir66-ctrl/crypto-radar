@@ -112,14 +112,16 @@
       "since": "2026-11-13",
       "lt_trend": "up",
       "day": "2026-11-13",
-      "trend": "down"
+      "trend": "down",
+      "buy_alert_day": "2026-11-13"
     },
     "QQQ": {
       "signal": "buy",
       "since": "2026-11-13",
       "lt_trend": "up",
       "day": "2026-11-13",
-      "trend": "down"
+      "trend": "down",
+      "buy_alert_day": "2026-11-13"
     },
     "AAPL": {
       "signal": "watch",
@@ -162,7 +164,8 @@
       "since": "2026-11-13",
       "lt_trend": "up",
       "day": "2026-11-13",
-      "trend": "down"
+      "trend": "down",
+      "buy_alert_day": "2026-11-13"
     },
     "TSLA": {
       "signal": "avoid",
@@ -204,7 +207,8 @@
       "since": "2026-11-13",
       "lt_trend": "up",
       "day": "2026-11-13",
-      "trend": "up"
+      "trend": "up",
+      "buy_alert_day": "2026-11-13"
     },
     "ADYEN.AS": {
       "signal": "avoid",
@@ -218,14 +222,16 @@
       "since": "2026-11-13",
       "lt_trend": "up",
       "day": "2026-11-13",
-      "trend": "down"
+      "trend": "down",
+      "buy_alert_day": "2026-11-13"
     },
     "MPWR": {
       "signal": "buy",
       "since": "2026-11-13",
       "lt_trend": "up",
       "day": "2026-11-13",
-      "trend": "up"
+      "trend": "up",
+      "buy_alert_day": "2026-11-13"
     },
     "AVGO": {
       "signal": "avoid",
@@ -239,7 +245,8 @@
       "since": "2026-11-13",
       "lt_trend": "up",
       "day": "2026-11-13",
-      "trend": "down"
+      "trend": "down",
+      "buy_alert_day": "2026-11-13"
     },
     "VWRL.AS": {
       "signal": "ready",
@@ -249,113 +256,24 @@
       "trend": "down"
     }
   },
-  "changes": [
-    {
-      "symbol": "LINKUSDT",
-      "name": "Chainlink",
-      "market": "crypto",
-      "day": "2026-11-15",
-      "from": "ready",
-      "to": "avoid"
-    },
-    {
-      "symbol": "TRXUSDT",
-      "name": "TRON",
-      "market": "crypto",
-      "day": "2026-11-15",
-      "from": "buy",
-      "to": "watch"
-    },
-    {
-      "symbol": "NEARUSDT",
-      "name": "NEAR",
-      "market": "crypto",
-      "day": "2026-11-15",
-      "from": "watch",
-      "to": "ready"
-    },
-    {
-      "symbol": "SPY",
-      "name": "S&P 500 ETF (EU: CSPX/VUSA)",
-      "market": "stocks",
-      "day": "2026-11-13",
-      "from": "ready",
-      "to": "buy"
-    },
-    {
-      "symbol": "QQQ",
-      "name": "Nasdaq 100 ETF (EU: CNDX/EQQQ)",
-      "market": "stocks",
-      "day": "2026-11-13",
-      "from": "watch",
-      "to": "buy"
-    },
-    {
-      "symbol": "NVDA",
-      "name": "Nvidia",
-      "market": "stocks",
-      "day": "2026-11-13",
-      "from": "watch",
-      "to": "avoid"
-    },
-    {
-      "symbol": "AMZN",
-      "name": "Amazon",
-      "market": "stocks",
-      "day": "2026-11-13",
-      "from": "buy",
-      "to": "watch"
-    },
-    {
-      "symbol": "META",
-      "name": "Meta",
-      "market": "stocks",
-      "day": "2026-11-13",
-      "from": "avoid",
-      "to": "buy"
-    },
-    {
-      "symbol": "AMD",
-      "name": "AMD",
-      "market": "stocks",
-      "day": "2026-11-13",
-      "from": "ready",
-      "to": "watch"
-    },
-    {
-      "symbol": "PLTR",
-      "name": "Palantir",
-      "market": "stocks",
-      "day": "2026-11-13",
-      "from": "ready",
-      "to": "buy"
-    },
-    {
-      "symbol": "MU",
-      "name": "Micron",
-      "market": "stocks",
-      "day": "2026-11-13",
-      "from": "watch",
-      "to": "buy"
-    },
-    {
-      "symbol": "MPWR",
-      "name": "Monolithic Power",
-      "market": "stocks",
-      "day": "2026-11-13",
-      "from": "watch",
-      "to": "buy"
-    },
-    {
-      "symbol": "TSM",
-      "name": "TSMC",
-      "market": "stocks",
-      "day": "2026-11-13",
-      "from": "watch",
-      "to": "buy"
-    }
-  ],
+  "changes": [],
   "history": [
+    {
+      "time": "2026-11-16T10:59:16+00:00",
+      "symbol": null,
+      "market": "all",
+      "kind": "digest",
+      "title": "📊 ZoneHunter update · Mon 16 Nov",
+      "message": "Crypto: 0 up week · 1 value zone · 1 uptrend · 13 no uptrend\nStocks: 7 up week · 1 value zone · 6 uptrend · 6 no uptrend\n\nChanged since the last update:\n🔴 Chainlink: in value zone → no uptrend\n🔵 TRON: pullback + up week → uptrend\n🟡 NEAR: uptrend → in value zone\n🟢 S&P 500 ETF (EU: CSPX/VUSA): in value zone → pullback + up week\n🟢 Nasdaq 100 ETF (EU: CNDX/EQQQ): uptrend → pullback + up week\n🔴 Nvidia: uptrend → no uptrend\n🔵 Amazon: pullback + up week → uptrend\n🟢 Meta: no uptrend → pullback + up week\n+5 more on the site\n\nPullbacks now:\n🟢 S&P 500 ETF (EU: CSPX/VUSA) 754.37 · pullback + up week\n🟢 Micron 778.31 · pullback + up week\n🟢 Nasdaq 100 ETF (EU: CNDX/EQQQ) 679.89 · pullback + up week\n🟢 Monolithic Power 1,390.5 · pullback + up week\n🟢 TSMC 398.73 · pullback + up week\n🟢 Meta 641.69 · pullback + up week\n🟢 Palantir 167.99 · pullback + up week\n🟡 FTSE All-World ETF 164.10 · in value zone\n+1 more on the site\n\nYour monthly plan continues regardless of these signals. Educational, not advice."
+    },
+    {
+      "time": "2026-11-16T10:59:16+00:00",
+      "symbol": null,
+      "market": "all",
+      "kind": "buy",
+      "title": "🟢 7 markets pulled back and closed a week higher",
+      "message": "🟢 S&P 500 ETF (EU: CSPX/VUSA) 754.37: Long-term uptrend, pulled back to the value zone and the week closed higher.\n🟢 Nasdaq 100 ETF (EU: CNDX/EQQQ) 679.89: Long-term uptrend, pulled back to the value zone and the week closed higher.\n🟢 Meta 641.69: Long-term uptrend, pulled back to the value zone and the week closed higher.\n🟢 Palantir 167.99: Long-term uptrend, pulled back to the value zone and the week closed higher.\n🟢 Micron 778.31: Long-term uptrend, pulled back to the value zone and the week closed higher.\n🟢 Monolithic Power 1,390.5: Long-term uptrend, pulled back to the value zone and the week closed higher.\n🟢 TSMC 398.73: Long-term uptrend, pulled back to the value zone and the week closed higher.\n\nIf you already planned to own these, this is a calmer moment to add part of your monthly amount. Historically this did not beat buying on a fixed date. Check the chart yourself."
+    },
     {
       "time": "2026-11-12T10:54:59+00:00",
       "symbol": null,
@@ -819,53 +737,8 @@
       "kind": "digest",
       "title": "📊 Daily digest: Crypto",
       "message": "1 buy · 2 get ready · 6 watch · 7 avoid\n🟢 NEAR 4.88 · BUY SIGNAL\n🟡 Chainlink 12.81 · GET READY\n🟡 Sui 1.07 · GET READY"
-    },
-    {
-      "time": "2026-10-10T00:33:21+00:00",
-      "symbol": "TSLA",
-      "market": "stocks",
-      "kind": "ready",
-      "title": "🟡 GET READY: Tesla (TSLA) is in its buy zone",
-      "message": "In the buy zone, waiting for a 2x risk/reward.\nPrice is in the buy zone 364.26–369.07. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 369.07, stop 358.80, target 384.04."
-    },
-    {
-      "time": "2026-10-10T00:33:21+00:00",
-      "symbol": "META",
-      "market": "stocks",
-      "kind": "ready",
-      "title": "🟡 GET READY: Meta (META) is in its buy zone",
-      "message": "In the buy zone, waiting for a 2x risk/reward.\nPrice is in the buy zone 708.87–711.00. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 711.00, stop 698.24, target 740.91."
     }
   ],
-  "pending_buys": [
-    {
-      "symbol": "SPY",
-      "day": "2026-11-13"
-    },
-    {
-      "symbol": "QQQ",
-      "day": "2026-11-13"
-    },
-    {
-      "symbol": "META",
-      "day": "2026-11-13"
-    },
-    {
-      "symbol": "PLTR",
-      "day": "2026-11-13"
-    },
-    {
-      "symbol": "MU",
-      "day": "2026-11-13"
-    },
-    {
-      "symbol": "MPWR",
-      "day": "2026-11-13"
-    },
-    {
-      "symbol": "TSM",
-      "day": "2026-11-13"
-    }
-  ],
-  "last_digest": "2026-11-12"
+  "pending_buys": [],
+  "last_digest": "2026-11-16"
 }
