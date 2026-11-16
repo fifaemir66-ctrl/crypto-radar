@@ -5,84 +5,84 @@
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-08",
+      "day": "2026-11-15",
       "trend": "down"
     },
     "ETHUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-08",
+      "day": "2026-11-15",
       "trend": "down"
     },
     "SOLUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-08",
+      "day": "2026-11-15",
       "trend": "down"
     },
     "XRPUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-08",
+      "day": "2026-11-15",
       "trend": "down"
     },
     "BNBUSDT": {
       "signal": "avoid",
       "since": "2026-02-15",
       "lt_trend": "down",
-      "day": "2026-11-08",
+      "day": "2026-11-15",
       "trend": "down"
     },
     "DOGEUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-08",
+      "day": "2026-11-15",
       "trend": "down"
     },
     "ADAUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-08",
+      "day": "2026-11-15",
       "trend": "up"
     },
     "AVAXUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-08",
+      "day": "2026-11-15",
       "trend": "up"
     },
     "LINKUSDT": {
-      "signal": "ready",
-      "since": "2026-10-25",
-      "lt_trend": "up",
-      "day": "2026-11-08",
+      "signal": "avoid",
+      "since": "2026-11-15",
+      "lt_trend": "down",
+      "day": "2026-11-15",
       "trend": "down"
     },
     "DOTUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-08",
+      "day": "2026-11-15",
       "trend": "down"
     },
     "LTCUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-08",
+      "day": "2026-11-15",
       "trend": "up"
     },
     "TRXUSDT": {
-      "signal": "buy",
-      "since": "2026-11-08",
+      "signal": "watch",
+      "since": "2026-11-15",
       "lt_trend": "up",
-      "day": "2026-11-08",
+      "day": "2026-11-15",
       "trend": "down",
       "buy_alert_day": "2026-11-08"
     },
@@ -90,63 +90,63 @@
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-08",
+      "day": "2026-11-15",
       "trend": "down"
     },
     "NEARUSDT": {
-      "signal": "watch",
-      "since": "2026-09-13",
+      "signal": "ready",
+      "since": "2026-11-15",
       "lt_trend": "up",
-      "day": "2026-11-08",
+      "day": "2026-11-15",
       "trend": "down"
     },
     "BCHUSDT": {
       "signal": "avoid",
       "since": "2026-04-05",
       "lt_trend": "down",
-      "day": "2026-11-08",
+      "day": "2026-11-15",
       "trend": "down"
     },
     "SPY": {
-      "signal": "ready",
-      "since": "2026-08-28",
+      "signal": "buy",
+      "since": "2026-11-13",
       "lt_trend": "up",
-      "day": "2026-11-06",
+      "day": "2026-11-13",
       "trend": "down"
     },
     "QQQ": {
-      "signal": "watch",
-      "since": "2026-11-06",
+      "signal": "buy",
+      "since": "2026-11-13",
       "lt_trend": "up",
-      "day": "2026-11-06",
+      "day": "2026-11-13",
       "trend": "down"
     },
     "AAPL": {
       "signal": "watch",
       "since": "2026-08-28",
       "lt_trend": "up",
-      "day": "2026-11-06",
+      "day": "2026-11-13",
       "trend": "up"
     },
     "MSFT": {
       "signal": "watch",
       "since": "2026-08-28",
       "lt_trend": "up",
-      "day": "2026-11-06",
+      "day": "2026-11-13",
       "trend": "up"
     },
     "NVDA": {
-      "signal": "watch",
-      "since": "2026-11-06",
-      "lt_trend": "up",
-      "day": "2026-11-06",
+      "signal": "avoid",
+      "since": "2026-11-13",
+      "lt_trend": "down",
+      "day": "2026-11-13",
       "trend": "up"
     },
     "AMZN": {
-      "signal": "buy",
-      "since": "2026-11-06",
+      "signal": "watch",
+      "since": "2026-11-13",
       "lt_trend": "up",
-      "day": "2026-11-06",
+      "day": "2026-11-13",
       "trend": "up",
       "buy_alert_day": "2026-11-06"
     },
@@ -154,102 +154,207 @@
       "signal": "avoid",
       "since": "2026-10-30",
       "lt_trend": "down",
-      "day": "2026-11-06",
+      "day": "2026-11-13",
       "trend": "down"
     },
     "META": {
-      "signal": "avoid",
-      "since": "2026-11-06",
-      "lt_trend": "down",
-      "day": "2026-11-06",
+      "signal": "buy",
+      "since": "2026-11-13",
+      "lt_trend": "up",
+      "day": "2026-11-13",
       "trend": "down"
     },
     "TSLA": {
       "signal": "avoid",
       "since": "2026-07-02",
       "lt_trend": "down",
-      "day": "2026-11-06",
+      "day": "2026-11-13",
       "trend": "up"
     },
     "AMD": {
-      "signal": "ready",
-      "since": "2026-10-23",
+      "signal": "watch",
+      "since": "2026-11-13",
       "lt_trend": "up",
-      "day": "2026-11-06",
+      "day": "2026-11-13",
       "trend": "down"
     },
     "NFLX": {
       "signal": "avoid",
       "since": "2026-01-02",
       "lt_trend": "down",
-      "day": "2026-11-06",
+      "day": "2026-11-13",
       "trend": "down"
     },
     "LLY": {
       "signal": "watch",
       "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-11-06",
+      "day": "2026-11-13",
       "trend": "up"
     },
     "ASML": {
       "signal": "watch",
       "since": "2026-11-06",
       "lt_trend": "up",
-      "day": "2026-11-06",
+      "day": "2026-11-13",
       "trend": "down"
     },
     "PLTR": {
-      "signal": "ready",
-      "since": "2026-11-06",
+      "signal": "buy",
+      "since": "2026-11-13",
       "lt_trend": "up",
-      "day": "2026-11-06",
+      "day": "2026-11-13",
       "trend": "up"
     },
     "ADYEN.AS": {
       "signal": "avoid",
       "since": "2026-01-02",
       "lt_trend": "down",
-      "day": "2026-11-06",
+      "day": "2026-11-13",
       "trend": "down"
     },
     "MU": {
-      "signal": "watch",
-      "since": "2026-11-06",
+      "signal": "buy",
+      "since": "2026-11-13",
       "lt_trend": "up",
-      "day": "2026-11-06",
+      "day": "2026-11-13",
       "trend": "down"
     },
     "MPWR": {
-      "signal": "watch",
-      "since": "2026-10-16",
+      "signal": "buy",
+      "since": "2026-11-13",
       "lt_trend": "up",
-      "day": "2026-11-06",
+      "day": "2026-11-13",
       "trend": "up"
     },
     "AVGO": {
       "signal": "avoid",
       "since": "2026-10-02",
       "lt_trend": "down",
-      "day": "2026-11-06",
+      "day": "2026-11-13",
       "trend": "down"
     },
     "TSM": {
-      "signal": "watch",
-      "since": "2026-11-06",
+      "signal": "buy",
+      "since": "2026-11-13",
       "lt_trend": "up",
-      "day": "2026-11-06",
+      "day": "2026-11-13",
       "trend": "down"
     },
     "VWRL.AS": {
       "signal": "ready",
       "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-11-06",
+      "day": "2026-11-13",
       "trend": "down"
     }
   },
-  "changes": [],
+  "changes": [
+    {
+      "symbol": "LINKUSDT",
+      "name": "Chainlink",
+      "market": "crypto",
+      "day": "2026-11-15",
+      "from": "ready",
+      "to": "avoid"
+    },
+    {
+      "symbol": "TRXUSDT",
+      "name": "TRON",
+      "market": "crypto",
+      "day": "2026-11-15",
+      "from": "buy",
+      "to": "watch"
+    },
+    {
+      "symbol": "NEARUSDT",
+      "name": "NEAR",
+      "market": "crypto",
+      "day": "2026-11-15",
+      "from": "watch",
+      "to": "ready"
+    },
+    {
+      "symbol": "SPY",
+      "name": "S&P 500 ETF (EU: CSPX/VUSA)",
+      "market": "stocks",
+      "day": "2026-11-13",
+      "from": "ready",
+      "to": "buy"
+    },
+    {
+      "symbol": "QQQ",
+      "name": "Nasdaq 100 ETF (EU: CNDX/EQQQ)",
+      "market": "stocks",
+      "day": "2026-11-13",
+      "from": "watch",
+      "to": "buy"
+    },
+    {
+      "symbol": "NVDA",
+      "name": "Nvidia",
+      "market": "stocks",
+      "day": "2026-11-13",
+      "from": "watch",
+      "to": "avoid"
+    },
+    {
+      "symbol": "AMZN",
+      "name": "Amazon",
+      "market": "stocks",
+      "day": "2026-11-13",
+      "from": "buy",
+      "to": "watch"
+    },
+    {
+      "symbol": "META",
+      "name": "Meta",
+      "market": "stocks",
+      "day": "2026-11-13",
+      "from": "avoid",
+      "to": "buy"
+    },
+    {
+      "symbol": "AMD",
+      "name": "AMD",
+      "market": "stocks",
+      "day": "2026-11-13",
+      "from": "ready",
+      "to": "watch"
+    },
+    {
+      "symbol": "PLTR",
+      "name": "Palantir",
+      "market": "stocks",
+      "day": "2026-11-13",
+      "from": "ready",
+      "to": "buy"
+    },
+    {
+      "symbol": "MU",
+      "name": "Micron",
+      "market": "stocks",
+      "day": "2026-11-13",
+      "from": "watch",
+      "to": "buy"
+    },
+    {
+      "symbol": "MPWR",
+      "name": "Monolithic Power",
+      "market": "stocks",
+      "day": "2026-11-13",
+      "from": "watch",
+      "to": "buy"
+    },
+    {
+      "symbol": "TSM",
+      "name": "TSMC",
+      "market": "stocks",
+      "day": "2026-11-13",
+      "from": "watch",
+      "to": "buy"
+    }
+  ],
   "history": [
     {
       "time": "2026-11-12T10:54:59+00:00",
@@ -732,6 +837,35 @@
       "message": "In the buy zone, waiting for a 2x risk/reward.\nPrice is in the buy zone 708.87–711.00. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 711.00, stop 698.24, target 740.91."
     }
   ],
-  "pending_buys": [],
+  "pending_buys": [
+    {
+      "symbol": "SPY",
+      "day": "2026-11-13"
+    },
+    {
+      "symbol": "QQQ",
+      "day": "2026-11-13"
+    },
+    {
+      "symbol": "META",
+      "day": "2026-11-13"
+    },
+    {
+      "symbol": "PLTR",
+      "day": "2026-11-13"
+    },
+    {
+      "symbol": "MU",
+      "day": "2026-11-13"
+    },
+    {
+      "symbol": "MPWR",
+      "day": "2026-11-13"
+    },
+    {
+      "symbol": "TSM",
+      "day": "2026-11-13"
+    }
+  ],
   "last_digest": "2026-11-12"
 }
