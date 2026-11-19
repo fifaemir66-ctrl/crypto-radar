@@ -259,6 +259,14 @@
   "changes": [],
   "history": [
     {
+      "time": "2026-11-19T12:52:47+00:00",
+      "symbol": null,
+      "market": "all",
+      "kind": "digest",
+      "title": "📊 ZoneHunter update · Thu 19 Nov",
+      "message": "Crypto: 0 up week · 1 value zone · 1 uptrend · 13 no uptrend\nStocks: 7 up week · 1 value zone · 6 uptrend · 6 no uptrend\n\nNo signal changes since the last update.\n\nPullbacks now:\n🟢 S&P 500 ETF (EU: CSPX/VUSA) 730.20 · pullback + up week\n🟢 Micron 705.27 · pullback + up week\n🟢 Nasdaq 100 ETF (EU: CNDX/EQQQ) 659.51 · pullback + up week\n🟢 Monolithic Power 1,310.9 · pullback + up week\n🟢 TSMC 362.62 · pullback + up week\n🟢 Meta 616.38 · pullback + up week\n🟢 Palantir 156.67 · pullback + up week\n🟡 FTSE All-World ETF 159.72 · in value zone\n+1 more on the site\n\nYour monthly plan continues regardless of these signals. Educational, not advice."
+    },
+    {
       "time": "2026-11-16T10:59:16+00:00",
       "symbol": null,
       "market": "all",
@@ -729,16 +737,8 @@
       "kind": "digest",
       "title": "📊 Daily digest: Stocks",
       "message": "0 buy · 6 get ready · 4 watch · 4 avoid\n🟡 Nasdaq 100 ETF 747.58 · GET READY\n🟡 Microsoft 522.61 · GET READY\n🟡 Alphabet 348.29 · GET READY\n🟡 Meta 720.89 · GET READY\n🟡 Tesla 375.00 · GET READY\n🟡 Eli Lilly 1,170 · GET READY"
-    },
-    {
-      "time": "2026-10-10T00:33:21+00:00",
-      "symbol": null,
-      "market": "crypto",
-      "kind": "digest",
-      "title": "📊 Daily digest: Crypto",
-      "message": "1 buy · 2 get ready · 6 watch · 7 avoid\n🟢 NEAR 4.88 · BUY SIGNAL\n🟡 Chainlink 12.81 · GET READY\n🟡 Sui 1.07 · GET READY"
     }
   ],
   "pending_buys": [],
-  "last_digest": "2026-11-16"
+  "last_digest": "2026-11-19"
 }
