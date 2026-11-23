@@ -5,84 +5,84 @@
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-15",
+      "day": "2026-11-22",
       "trend": "down"
     },
     "ETHUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-15",
+      "day": "2026-11-22",
       "trend": "down"
     },
     "SOLUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-15",
+      "day": "2026-11-22",
       "trend": "down"
     },
     "XRPUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-15",
+      "day": "2026-11-22",
       "trend": "down"
     },
     "BNBUSDT": {
       "signal": "avoid",
       "since": "2026-02-15",
       "lt_trend": "down",
-      "day": "2026-11-15",
+      "day": "2026-11-22",
       "trend": "down"
     },
     "DOGEUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-15",
+      "day": "2026-11-22",
       "trend": "down"
     },
     "ADAUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-15",
+      "day": "2026-11-22",
       "trend": "up"
     },
     "AVAXUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-15",
+      "day": "2026-11-22",
       "trend": "up"
     },
     "LINKUSDT": {
       "signal": "avoid",
       "since": "2026-11-15",
       "lt_trend": "down",
-      "day": "2026-11-15",
+      "day": "2026-11-22",
       "trend": "down"
     },
     "DOTUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-15",
+      "day": "2026-11-22",
       "trend": "down"
     },
     "LTCUSDT": {
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-15",
+      "day": "2026-11-22",
       "trend": "up"
     },
     "TRXUSDT": {
       "signal": "watch",
       "since": "2026-11-15",
       "lt_trend": "up",
-      "day": "2026-11-15",
+      "day": "2026-11-22",
       "trend": "down",
       "buy_alert_day": "2026-11-08"
     },
@@ -90,36 +90,36 @@
       "signal": "avoid",
       "since": "2026-01-04",
       "lt_trend": "down",
-      "day": "2026-11-15",
+      "day": "2026-11-22",
       "trend": "down"
     },
     "NEARUSDT": {
       "signal": "ready",
       "since": "2026-11-15",
       "lt_trend": "up",
-      "day": "2026-11-15",
+      "day": "2026-11-22",
       "trend": "down"
     },
     "BCHUSDT": {
       "signal": "avoid",
       "since": "2026-04-05",
       "lt_trend": "down",
-      "day": "2026-11-15",
+      "day": "2026-11-22",
       "trend": "down"
     },
     "SPY": {
-      "signal": "buy",
-      "since": "2026-11-13",
+      "signal": "watch",
+      "since": "2026-11-20",
       "lt_trend": "up",
-      "day": "2026-11-13",
+      "day": "2026-11-20",
       "trend": "down",
       "buy_alert_day": "2026-11-13"
     },
     "QQQ": {
-      "signal": "buy",
-      "since": "2026-11-13",
+      "signal": "watch",
+      "since": "2026-11-20",
       "lt_trend": "up",
-      "day": "2026-11-13",
+      "day": "2026-11-20",
       "trend": "down",
       "buy_alert_day": "2026-11-13"
     },
@@ -127,28 +127,28 @@
       "signal": "watch",
       "since": "2026-08-28",
       "lt_trend": "up",
-      "day": "2026-11-13",
+      "day": "2026-11-20",
       "trend": "up"
     },
     "MSFT": {
-      "signal": "watch",
-      "since": "2026-08-28",
+      "signal": "ready",
+      "since": "2026-11-20",
       "lt_trend": "up",
-      "day": "2026-11-13",
+      "day": "2026-11-20",
       "trend": "up"
     },
     "NVDA": {
       "signal": "avoid",
       "since": "2026-11-13",
       "lt_trend": "down",
-      "day": "2026-11-13",
+      "day": "2026-11-20",
       "trend": "up"
     },
     "AMZN": {
-      "signal": "watch",
-      "since": "2026-11-13",
+      "signal": "ready",
+      "since": "2026-11-20",
       "lt_trend": "up",
-      "day": "2026-11-13",
+      "day": "2026-11-20",
       "trend": "up",
       "buy_alert_day": "2026-11-06"
     },
@@ -156,14 +156,14 @@
       "signal": "avoid",
       "since": "2026-10-30",
       "lt_trend": "down",
-      "day": "2026-11-13",
+      "day": "2026-11-20",
       "trend": "down"
     },
     "META": {
-      "signal": "buy",
-      "since": "2026-11-13",
-      "lt_trend": "up",
-      "day": "2026-11-13",
+      "signal": "avoid",
+      "since": "2026-11-20",
+      "lt_trend": "down",
+      "day": "2026-11-20",
       "trend": "down",
       "buy_alert_day": "2026-11-13"
     },
@@ -171,42 +171,42 @@
       "signal": "avoid",
       "since": "2026-07-02",
       "lt_trend": "down",
-      "day": "2026-11-13",
+      "day": "2026-11-20",
       "trend": "up"
     },
     "AMD": {
-      "signal": "watch",
-      "since": "2026-11-13",
+      "signal": "ready",
+      "since": "2026-11-20",
       "lt_trend": "up",
-      "day": "2026-11-13",
+      "day": "2026-11-20",
       "trend": "down"
     },
     "NFLX": {
       "signal": "avoid",
       "since": "2026-01-02",
       "lt_trend": "down",
-      "day": "2026-11-13",
+      "day": "2026-11-20",
       "trend": "down"
     },
     "LLY": {
       "signal": "watch",
       "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-11-13",
+      "day": "2026-11-20",
       "trend": "up"
     },
     "ASML": {
       "signal": "watch",
       "since": "2026-11-06",
       "lt_trend": "up",
-      "day": "2026-11-13",
+      "day": "2026-11-20",
       "trend": "down"
     },
     "PLTR": {
-      "signal": "buy",
-      "since": "2026-11-13",
+      "signal": "watch",
+      "since": "2026-11-20",
       "lt_trend": "up",
-      "day": "2026-11-13",
+      "day": "2026-11-20",
       "trend": "down",
       "buy_alert_day": "2026-11-13"
     },
@@ -214,22 +214,22 @@
       "signal": "avoid",
       "since": "2026-01-02",
       "lt_trend": "down",
-      "day": "2026-11-13",
+      "day": "2026-11-20",
       "trend": "down"
     },
     "MU": {
-      "signal": "buy",
-      "since": "2026-11-13",
+      "signal": "watch",
+      "since": "2026-11-20",
       "lt_trend": "up",
-      "day": "2026-11-13",
+      "day": "2026-11-20",
       "trend": "down",
       "buy_alert_day": "2026-11-13"
     },
     "MPWR": {
-      "signal": "buy",
-      "since": "2026-11-13",
+      "signal": "watch",
+      "since": "2026-11-20",
       "lt_trend": "up",
-      "day": "2026-11-13",
+      "day": "2026-11-20",
       "trend": "up",
       "buy_alert_day": "2026-11-13"
     },
@@ -237,14 +237,14 @@
       "signal": "avoid",
       "since": "2026-10-02",
       "lt_trend": "down",
-      "day": "2026-11-13",
+      "day": "2026-11-20",
       "trend": "down"
     },
     "TSM": {
-      "signal": "buy",
-      "since": "2026-11-13",
+      "signal": "watch",
+      "since": "2026-11-20",
       "lt_trend": "up",
-      "day": "2026-11-13",
+      "day": "2026-11-20",
       "trend": "down",
       "buy_alert_day": "2026-11-13"
     },
@@ -252,11 +252,92 @@
       "signal": "ready",
       "since": "2026-10-16",
       "lt_trend": "up",
-      "day": "2026-11-13",
+      "day": "2026-11-20",
       "trend": "down"
     }
   },
-  "changes": [],
+  "changes": [
+    {
+      "symbol": "SPY",
+      "name": "S&P 500 ETF (EU: CSPX/VUSA)",
+      "market": "stocks",
+      "day": "2026-11-20",
+      "from": "buy",
+      "to": "watch"
+    },
+    {
+      "symbol": "QQQ",
+      "name": "Nasdaq 100 ETF (EU: CNDX/EQQQ)",
+      "market": "stocks",
+      "day": "2026-11-20",
+      "from": "buy",
+      "to": "watch"
+    },
+    {
+      "symbol": "MSFT",
+      "name": "Microsoft",
+      "market": "stocks",
+      "day": "2026-11-20",
+      "from": "watch",
+      "to": "ready"
+    },
+    {
+      "symbol": "AMZN",
+      "name": "Amazon",
+      "market": "stocks",
+      "day": "2026-11-20",
+      "from": "watch",
+      "to": "ready"
+    },
+    {
+      "symbol": "META",
+      "name": "Meta",
+      "market": "stocks",
+      "day": "2026-11-20",
+      "from": "buy",
+      "to": "avoid"
+    },
+    {
+      "symbol": "AMD",
+      "name": "AMD",
+      "market": "stocks",
+      "day": "2026-11-20",
+      "from": "watch",
+      "to": "ready"
+    },
+    {
+      "symbol": "PLTR",
+      "name": "Palantir",
+      "market": "stocks",
+      "day": "2026-11-20",
+      "from": "buy",
+      "to": "watch"
+    },
+    {
+      "symbol": "MU",
+      "name": "Micron",
+      "market": "stocks",
+      "day": "2026-11-20",
+      "from": "buy",
+      "to": "watch"
+    },
+    {
+      "symbol": "MPWR",
+      "name": "Monolithic Power",
+      "market": "stocks",
+      "day": "2026-11-20",
+      "from": "buy",
+      "to": "watch"
+    },
+    {
+      "symbol": "TSM",
+      "name": "TSMC",
+      "market": "stocks",
+      "day": "2026-11-20",
+      "from": "buy",
+      "to": "watch"
+    }
+  ],
   "history": [
     {
       "time": "2026-11-19T12:52:47+00:00",
