@@ -259,6 +259,14 @@
   "changes": [],
   "history": [
     {
+      "time": "2026-11-26T09:24:00+00:00",
+      "symbol": null,
+      "market": "all",
+      "kind": "digest",
+      "title": "📊 ZoneHunter update · Thu 26 Nov",
+      "message": "Crypto: 0 up week · 1 value zone · 1 uptrend · 13 no uptrend\nStocks: 0 up week · 4 value zone · 9 uptrend · 7 no uptrend\n\nNo signal changes since the last update.\n\nPullbacks now:\n🟡 Amazon 244.43 · in value zone\n🟡 AMD 406.03 · in value zone\n🟡 FTSE All-World ETF 156.40 · in value zone\n🟡 Microsoft 489.93 · in value zone\n🟡 Speculative · NEAR 3.055 · in value zone\n\nYour monthly plan continues regardless of these signals. Educational, not advice."
+    },
+    {
       "time": "2026-11-23T12:16:26+00:00",
       "symbol": null,
       "market": "all",
@@ -729,16 +737,8 @@
       "kind": "digest",
       "title": "📊 Daily digest: Stocks",
       "message": "0 buy · 4 get ready · 6 watch · 4 avoid\n🟡 Nasdaq 100 ETF 751.27 · GET READY\n🟡 Nvidia 229.28 · GET READY\n🟡 Alphabet 351.66 · GET READY\n🟡 Eli Lilly 1,179 · GET READY"
-    },
-    {
-      "time": "2026-10-10T02:22:01+00:00",
-      "symbol": "NVDA",
-      "market": "stocks",
-      "kind": "ready",
-      "title": "🟡 GET READY: Nvidia (NVDA) is in its buy zone",
-      "message": "In the buy zone, waiting for a trigger candle and a 2x risk/reward.\nPrice is in the buy zone 225.31–227.92. Wait for a daily close with a hammer, bullish engulfing or liquidity sweep. Then: entry ≈ 227.92, stop 221.93, target 232.28."
     }
   ],
   "pending_buys": [],
-  "last_digest": "2026-11-23"
+  "last_digest": "2026-11-26"
 }
